@@ -2,6 +2,7 @@ import { createGlobalStyle } from "styled-components";
 
 export default createGlobalStyle`
     :root {
+        --max-width: 1200px;
         --primary-colour: #383838;
         --secondary-colour: #02ba67;
         --border-radius: 20px;
@@ -36,6 +37,7 @@ export default createGlobalStyle`
         vertical-align: baseline;
         box-sizing: border-box;
         font-family: var(--primary-font-family);
+        color: var(--primary-colour);
     }
     /* HTML5 display-role reset for older browsers */
     article, aside, details, figcaption, figure,

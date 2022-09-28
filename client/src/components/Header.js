@@ -5,23 +5,25 @@ const Header = () => {
 
     return(
         <Wrapper>
-            <HeaderLinks to={"/"}>SignIn</HeaderLinks>
+            <HeaderLinks to={"/sign-in"}>SignIn</HeaderLinks>
             <HeaderLinks to={"/"}>Feed</HeaderLinks>
-            <HeaderLinks to={"/"}>My Schedule</HeaderLinks>
-            <HeaderLinks to={"/"}>Search</HeaderLinks>
-            <HeaderLinks to={"/"}>Notifications</HeaderLinks>
-            <HeaderLinks to={"/"}>profile</HeaderLinks>
+            <HeaderLinks to={"/my-schedule"}>My Schedule</HeaderLinks>
+            <HeaderLinks to={"/search"}>Search</HeaderLinks>
+            <HeaderLinks to={"/notifications"}>Notifications</HeaderLinks>
+            <HeaderLinks to={"/profile"}>profile</HeaderLinks>
         </Wrapper>
     )
 };
 const Wrapper = styled.div`
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
-    width: 90%;
+    max-width: var(--max-width);
+    border-bottom: var(--border) ;
     margin: auto;
-    margin-top: 2vw;
+    padding: 2vw;
 `;
 const HeaderLinks = styled(Link)`
+    text-align: center;
     color: var(--primary-colour);
     text-decoration: none;
     font-size: var(--subheader-font-size);

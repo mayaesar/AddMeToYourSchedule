@@ -3,7 +3,7 @@ import { createGlobalStyle } from "styled-components";
 export default createGlobalStyle`
     :root {
         --primary-colour: #383838;
-        --secondary-colour: #125161;
+        --secondary-colour: #02ba67;
         --border-radius: 20px;
         --border: 1px #383838 solid;
         --primary-font-family: 'Poppins', sans-serif;

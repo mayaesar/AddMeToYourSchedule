@@ -14,21 +14,21 @@ express()
     .use(morgan('tiny'))
 
     //manages all user information
-    .get("/api/get-user", getUser)
+    .get("/api/get-user/:userId", getUser)
     .get("/api/get-users", getUsers)
     .post("/api/add-user", addUser)
-    .patch("/api/update-user", updateUser)
+    .patch("/api/update-user/:userId", updateUser)
 
     //manages all schedule information
-    .get("/api/get-schedule", getSchedule)
-    .patch("/api/update-schedule", updateSchedule)
+    .get("/api/get-schedule/:scheduleId", getSchedule)
+    .patch("/api/update-schedule/:scheduleId", updateSchedule)
 
     //manages all event information
-    .get("/api/get-event", getEvent)
+    .get("/api/get-event/:eventId", getEvent)
     .get("/api/get-events", getEvents)
     .post("/api/add-event", addEvent)
-    .patch("/api/update-event", updateEvent)
-    .delete("/api/delete-event", deleteEvent)
+    .patch("/api/update-event/:eventId", updateEvent)
+    .delete("/api/delete-event/:eventId", deleteEvent)
 
     //oops!
     .get("*", (req, res) => {

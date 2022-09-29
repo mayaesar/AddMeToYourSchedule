@@ -6,7 +6,7 @@ const Notifications = () => {
     return(
         <Wrapper>
             <h2>Notifications</h2>
-            <Notifications array={notifications}/>
+            <DisplayNotifications array={notifications}/>
         </Wrapper>
     )
 };

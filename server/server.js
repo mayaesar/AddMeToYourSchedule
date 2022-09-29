@@ -6,13 +6,32 @@ const morgan = require("morgan");
 
 const {getUser, getUsers, addUser, updateUser} = require("./handlers/usersHandlers");
 const {getSchedule, updateSchedule} = require("./handlers/schedulesHandlers");
-const {getEvent, getEvents, addEvent, updateEvent, deleteEvent} = require("./handlers/eventsHandlers")
+const {getEvent, getEvents, addEvent, updateEvent, deleteEvent} = require("./handlers/eventsHandlers");
+const { preClient } = require("./handlers/createGoogleClient");
+
+preClient();
+//const { getLogin } = require("./handlers/signinHandler");
+
+
+//Google OAuth2-----------------------------------------------------------
+// const {OAuth2Client} = require('google-auth-library');
+// const http = require('http');
+// const url = require('url');
+// const open = require('open');
+// const destroyer = require('server-destroy');
+
+// const keys = require('./oauth2.keys.json');
+
+// const 
 
 express()
 
     .use(helmet())
     .use(morgan('tiny'))
 
+    //endpoints ----------------------------------------------------------- 
+
+    //.get("/auth/google/url", getLogin)
     //manages all user information
     .get("/api/get-user/:userId", getUser)
     .get("/api/get-users", getUsers)
@@ -37,6 +56,8 @@ express()
         message: "This is obviously not what you are looking for.",
         });
     })
+
+
 
     .listen(8000, () => {
         console.log(`Server launched on port 8000`)

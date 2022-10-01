@@ -1,12 +1,12 @@
 // event{
 //     _id: … ,
 //     userId: …,
+//     title:...,
 //     date: DD/MM/YYYY,
 //     startTime: MM:HH,
 //     endTime: MM:HH,
 //     tags: […],
-//     description: ...,
-//     acceptedRequest: true/false
+//     joining:[userId],
 //     }
 
 const { createClient } = require("./createClient");

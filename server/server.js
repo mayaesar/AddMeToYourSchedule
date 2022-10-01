@@ -4,47 +4,31 @@ const express = require("express");
 const helmet = require("helmet");
 const morgan = require("morgan");
 
-const {getUser, getUsers, addUser, updateUser} = require("./handlers/usersHandlers");
+const {getUserId, getUser, getUsers, addUser, updateUser} = require("./handlers/usersHandlers");
 const {getSchedule, updateSchedule} = require("./handlers/schedulesHandlers");
 const {getEvent, getEvents, addEvent, updateEvent, deleteEvent} = require("./handlers/eventsHandlers");
-const { preClient } = require("./handlers/createGoogleClient");
-
-preClient();
-//const { getLogin } = require("./handlers/signinHandler");
-
-
-//Google OAuth2-----------------------------------------------------------
-// const {OAuth2Client} = require('google-auth-library');
-// const http = require('http');
-// const url = require('url');
-// const open = require('open');
-// const destroyer = require('server-destroy');
-
-// const keys = require('./oauth2.keys.json');
-
-// const 
 
 express()
 
     .use(helmet())
     .use(morgan('tiny'))
-
     //endpoints ----------------------------------------------------------- 
 
-    //.get("/auth/google/url", getLogin)
     //manages all user information
+    .get("/api/get-user-id/:email", getUserId)
     .get("/api/get-user/:userId", getUser)
     .get("/api/get-users", getUsers)
-    .post("/api/add-user", addUser)
+    .post("/api/create-user", addUser)
     .patch("/api/update-user/:userId", updateUser)
 
     //manages all schedule information
     .get("/api/get-schedule/:scheduleId", getSchedule)
-    .patch("/api/update-schedule/:scheduleId", updateSchedule)
 
     //manages all event information
     .get("/api/get-event/:eventId", getEvent)
+    //dont do yet vvv
     .get("/api/get-events", getEvents)
+    .patch("/api/update-schedule/:scheduleId", updateSchedule)
     .post("/api/add-event", addEvent)
     .patch("/api/update-event/:eventId", updateEvent)
     .delete("/api/delete-event/:eventId", deleteEvent)

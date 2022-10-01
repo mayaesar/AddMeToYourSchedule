@@ -1,8 +1,8 @@
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 
-const Header = () => {
-
+const Header = ({currentUser}) => {
+//console.log(currentUser)
     return(
         <Wrapper>
             <HeaderLinks to={"/sign-in"}>SignIn</HeaderLinks>

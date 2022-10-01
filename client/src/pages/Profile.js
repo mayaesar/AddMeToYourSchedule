@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-const Profile = () => {
+import Logout from "../components/Logout";
+const Profile = ({logout, setCurrentUser}) => {
 
     return(
         <Wrapper>
@@ -13,9 +14,7 @@ const Profile = () => {
                         <Buttons to={"/friends-list"}>
                             My friends
                         </Buttons>
-                        <Buttons to={"/"}>
-                            Settings
-                        </Buttons>
+                        <Logout logout={logout} setCurrentUser={setCurrentUser}/>
                     </div>
                 </div>
             </Top>

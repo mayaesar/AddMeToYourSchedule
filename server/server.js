@@ -3,10 +3,12 @@
 const express = require("express");
 const helmet = require("helmet");
 const morgan = require("morgan");
+const bodyParser = require("body-parser");
 
 const {getUserId, getUser, getUsers, addUser, updateUser} = require("./handlers/usersHandlers");
 const {getSchedule, updateSchedule} = require("./handlers/schedulesHandlers");
 const {getEvent, getEvents, addEvent, updateEvent, deleteEvent} = require("./handlers/eventsHandlers");
+const jsonParser = bodyParser.json();
 
 express()
 
@@ -18,7 +20,7 @@ express()
     .get("/api/get-user-id/:email", getUserId)
     .get("/api/get-user/:userId", getUser)
     .get("/api/get-users", getUsers)
-    .post("/api/create-user", addUser)
+    .post("/api/create-user", jsonParser, addUser)
     .patch("/api/update-user/:userId", updateUser)
 
     //manages all schedule information

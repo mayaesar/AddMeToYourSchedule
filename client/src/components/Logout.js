@@ -5,7 +5,6 @@ const Logout = ({logout, setCurrentUser}) => {
     const handleLogout = () => {
         logout();
         window.localStorage.setItem("userId", null);
-        setCurrentUser(null);
     }
     return (
         <Wrapper>

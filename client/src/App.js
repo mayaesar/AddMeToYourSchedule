@@ -12,7 +12,8 @@ import FriendsList from "./pages/FriendsList";
 import styled from "styled-components";
 
 const App = () => {
-
+  
+// used for 0auth
   const {
     loginWithRedirect,
     logout,

@@ -5,22 +5,25 @@ import { useNavigate } from "react-router-dom";
 
 const Signin = ({loginWithRedirect, isAuthenticated, user}) => {
 const [userId, setUserId] = useState(null);
-//const [IsError, setIsError] = useState(null);
 
 const navigate = useNavigate();
 
+// make sure the user cannot access this page if signed in
     useEffect(() => {
-        let user = null;
         try {
-            user = window.localStorage.getItem("userId");
-            if(user !== null){
+            const user = window.localStorage.getItem("userId");
+            console.log("=== user ===");
+            console.log(user);
+            if(!user){
                 navigate("/");
             }
         } catch (error) {
             console.log("Waiting for user to sign in...")
         }
-    },[])
+    }, []);
 
+    // once the user is authenticated this useEffect will check if user exists in the database
+    // if user does not exist it will update userId with 'notFound'
     useEffect(() => {
         if (isAuthenticated){
             console.log(isAuthenticated);
@@ -32,8 +35,9 @@ const navigate = useNavigate();
                     const response = await fetch(`/api/get-user-id/${user.email}`);
                     const json = await response.json();
                     if (response.ok == true){
-                        window.localStorage.setItem("userId", json.data.data);
-                        setUserId(json.data.data);
+                        console.log(json.data);
+                        window.localStorage.setItem("userId", json.data);
+                        setUserId(json.data);
                         navigate("/");
                     }
                     else{ 
@@ -48,6 +52,7 @@ const navigate = useNavigate();
         }
     }, [isAuthenticated])
 
+    // if userId is updated it will create a new user ONLY if userId is = to 'notFound'
     useEffect(() => {
         if(userId == "notFound"){
             console.log("==== CREATING USER ====");
@@ -66,8 +71,6 @@ const navigate = useNavigate();
             })
         }
     }, [userId])
-
-
 
     return (
         <Wrapper>

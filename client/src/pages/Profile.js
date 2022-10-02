@@ -1,20 +1,23 @@
+import { useContext } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import Logout from "../components/Logout";
-const Profile = ({logout}) => {
+import { UserContext } from "../context/UserContext";
 
+const Profile = ({logout}) => {
+    //gets user information
+    const { user, setUserId } = useContext(UserContext);
     return(
         <Wrapper>
             <Top>
                 <div className="icon">profile icon</div>
                 <div className="info">
-                    <p>@handler</p>
-                    <p>Name</p>
+                    <p>{user.name}</p>
                     <div className="buttons">
                         <Buttons to={"/friends-list"}>
                             My friends
                         </Buttons>
-                        <Logout logout={logout}/>
+                        <Logout logout={logout} setUserId= {setUserId}/>
                     </div>
                 </div>
             </Top>

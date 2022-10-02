@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 
-const Header = ({currentUser}) => {
+const Header = () => {
 //console.log(currentUser)
     return(
         <Wrapper>

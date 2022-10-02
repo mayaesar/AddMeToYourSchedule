@@ -14,8 +14,8 @@ express()
 
     .use(helmet())
     .use(morgan('tiny'))
-    //endpoints ----------------------------------------------------------- 
 
+    //ENDPOINTS -----------------------------------------------------------> 
     //manages all user information
     .get("/api/get-user-id/:email", getUserId)
     .get("/api/get-user/:userId", getUser)
@@ -28,12 +28,12 @@ express()
 
     //manages all event information
     .get("/api/get-event/:eventId", getEvent)
-    //dont do yet vvv
-    .get("/api/get-events", getEvents)
     .patch("/api/update-schedule/:scheduleId", updateSchedule)
     .post("/api/add-event", addEvent)
     .patch("/api/update-event/:eventId", updateEvent)
     .delete("/api/delete-event/:eventId", deleteEvent)
+                //dont do yet vvv
+    .get("/api/get-events", getEvents)
 
     //oops!
     .get("*", (req, res) => {
@@ -42,7 +42,7 @@ express()
         message: "This is obviously not what you are looking for.",
         });
     })
-
+//<------------------------------------------------ENDPOINTS
 
 
     .listen(8000, () => {

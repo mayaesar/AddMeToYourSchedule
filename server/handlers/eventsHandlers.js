@@ -1,6 +1,6 @@
 // event{
 //     _id: … ,
-//     userId: …,
+//     scheduleId: …,
 //     title:...,
 //     date: DD/MM/YYYY,
 //     startTime: MM:HH,

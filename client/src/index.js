@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom/client';
 import App from './App';
 import {Auth0Provider} from '@auth0/auth0-react';
 import { UserProvider } from './context/UserContext';
+import { EventActionProvider } from './context/EventActionContext';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -13,9 +14,11 @@ root.render(
       redirectUri='http://localhost:3000/sign-in'
     >
       <UserProvider>
-        <App />
+        <EventActionProvider>
+          <App />
+        </EventActionProvider>
       </UserProvider>
     </Auth0Provider>
   </React.StrictMode>
-);
+)
 

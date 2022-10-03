@@ -82,7 +82,7 @@ const getUser = async (req, res) => {
         await client.connect();
         const result = await users.findOne({_id:userId});
         result 
-        //the user found
+        // user found
         ? res.status(200).json({ status: 200, data: result})
         // user not found
         : res.status(404).json({ status: 404, data: "User not found." });

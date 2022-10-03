@@ -12,6 +12,7 @@ export const UserProvider = ({children}) => {
     const [friendRequests, setFriendRequests] = useState(null);
     const [planRequests, setPlanRequests] = useState(null);
     const [notifications, setNotifications] = useState(null);
+    const [isUpdated, setIsUpdated] = useState(true);
     
 
     // fetch user info 
@@ -58,6 +59,8 @@ export const UserProvider = ({children}) => {
                 notifications,
                 setIsError,
                 isError,
+                setIsUpdated,
+                isUpdated,
             }}>
                 {children}
             </UserContext.Provider>

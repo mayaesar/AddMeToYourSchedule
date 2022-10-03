@@ -1,13 +1,27 @@
 import { useContext } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate} from "react-router-dom";
 import styled from "styled-components";
 import Logout from "../components/Logout";
 import { UserContext } from "../context/UserContext";
 
 const Profile = ({logout}) => {
     //gets user information
-    const { user, setUserId } = useContext(UserContext);
-    return(
+    const { user, setUserId, userId, isError } = useContext(UserContext);
+    const navigate = useNavigate();
+
+    if(!userId){
+        navigate("/sign-out");
+    }
+
+    if (isError){
+        return(
+            <Wrapper>
+                <h1>Error</h1>
+            </Wrapper>
+        );
+    }
+    
+    return (
         <Wrapper>
             <Top>
                 <div className="icon">profile icon</div>

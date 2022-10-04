@@ -1,7 +1,7 @@
 // event{
 //     _id: … ,
 //     scheduleId: …,
-//     title:...,
+//     title:...
 //     date: DD/MM/YYYY,
 //     startTime: MM:HH,
 //     endTime: MM:HH,

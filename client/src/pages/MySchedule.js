@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { UserContext } from "../context/UserContext";
 import { EventActionContext } from "../context/EventActionContext";
+import DisplaySchedule from "../components/schedule/DisplaySchedule";
 
 const MySchedule = () => {
     const [schedule, setSchedule] = useState(null);
@@ -33,6 +34,7 @@ const MySchedule = () => {
             <h1>
                 My Schedule
             </h1>
+            <DisplaySchedule eventList={eventList} />
         </Wrapper>
     )
 };

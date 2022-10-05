@@ -23,7 +23,6 @@ export const EventActionProvider = ({children}) => {
         }
     }, [userId]);
 
-    console.log(schedulerData);
     // add all fetches here-------------------------------------------------->
         const updateEventList = () => {
             console.log("=== updating list ===")

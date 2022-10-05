@@ -3,13 +3,28 @@ import styled from "styled-components";
 import axios from 'axios';
 import { useNavigate } from "react-router-dom";
 
-const Signin = ({loginWithRedirect, isAuthenticated, user}) => {
+const SignIn = ({loginWithRedirect, isAuthenticated, user}) => {
 const [userId, setUserId] = useState(null);
 
 const navigate = useNavigate();
 
-// make sure the user cannot access this page if signed in
-
+useEffect(() => {
+    try {
+        const result = window.localStorage.getItem("userId");
+        if(result === "[object Object]"){
+            window.localStorage.setItem("userId", userId.data);
+            console.log(window.localStorage.getItem("userId"))
+            navigate("/")
+        }
+        else{
+            if(result != 'null'){
+                navigate("/")
+            }
+        }
+    } catch (error) {
+        
+    }
+}, [userId])
 
     // once the user is authenticated this useEffect will check if user exists in the database
     // if user does not exist it will update userId with 'notFound'
@@ -27,7 +42,6 @@ const navigate = useNavigate();
                         console.log(json.data);
                         window.localStorage.setItem("userId", json.data);
                         setUserId(json.data);
-                        navigate("/");
                     }
                     else{ 
                         setUserId("notFound");
@@ -52,8 +66,6 @@ const navigate = useNavigate();
             .then(data => {
                 window.localStorage.setItem("userId", data.data);
                 setUserId(data.data);
-                navigate("/");
-                
             })
             .catch((err) => {
                 console.log(err.message);
@@ -74,4 +86,4 @@ const Wrapper = styled.div`
     margin: auto;
 `;
 
-export default Signin;
+export default SignIn;

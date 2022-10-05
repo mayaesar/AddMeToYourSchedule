@@ -40,6 +40,8 @@ export const UserProvider = ({children}) => {
         }
     }, [userId])
 
+
+
     //once everything is loaded then it will return 
     if((user !== null)&&(friends !== null)&&(tags !== null)&&(friendRequests !== null)&&(planRequests !== null)&&(notifications !== null)){
         return(

@@ -21,10 +21,6 @@ const MySchedule = () => {
         }
     }, [])
 
-    if(!userId){
-        navigate("/sign-in");
-    }
-
     if (isError){
         return(
             <Wrapper>

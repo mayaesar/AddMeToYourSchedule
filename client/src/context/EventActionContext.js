@@ -6,19 +6,18 @@ export const EventActionContext = createContext(null);
 
 export const EventActionProvider = ({children}) => {
     const {
-        tags,
         setIsError, 
         user, 
         userId,
-        isUpdated,
-        setIsUpdated,
     } = useContext(UserContext);
     const [schedulerData, setSchedulerData] = useState([]);
+    const [isUpdated, setIsUpdated] = useState(false)
 
     const scheduleId = user.scheduleId;
 
     useEffect(() => {
         if(userId !== null){
+            setIsUpdated(false)
             updateEventList();
         }
     }, [userId]);
@@ -34,7 +33,7 @@ export const EventActionProvider = ({children}) => {
             .catch(() => {
                 setIsError(true);
             })
-            setIsUpdated(true);
+            .finally(() => setIsUpdated(true))
         }
         const addEvent = (title, startDate, endDate, description) => {
             console.log("=== adding event ===")
@@ -55,13 +54,13 @@ export const EventActionProvider = ({children}) => {
                 setIsError(true);
             })
         }
-
     // <-------------------------------------------------- add all fetches here
     return(
         <EventActionContext.Provider 
         value={{
             addEvent,
             schedulerData,
+            isUpdated,
         }}
         >
             {children}

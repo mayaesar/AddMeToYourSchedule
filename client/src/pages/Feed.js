@@ -19,9 +19,6 @@ const Feed = () => {
         }
     }, [])
 
-    if(!userId){
-        navigate("/sign-in");
-    }
 //fetch users feed
 const array = [];
     return(

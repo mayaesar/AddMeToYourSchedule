@@ -1,30 +1,37 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import styled from "styled-components";
 import axios from 'axios';
 import { useNavigate } from "react-router-dom";
+import { UserContext } from "../context/UserContext";
 
 const SignIn = ({loginWithRedirect, isAuthenticated, user}) => {
-const [userId, setUserId] = useState(null);
+const [currentUserId, setCurrentUserId] = useState(null);
+const { setUserId, userId } = useContext(UserContext);
 
 const navigate = useNavigate();
 
 useEffect(() => {
+    if(userId !== 'null'){
+        navigate("/")
+    }
     try {
         const result = window.localStorage.getItem("userId");
         if(result === "[object Object]"){
-            window.localStorage.setItem("userId", userId.data);
+            window.localStorage.setItem("userId", currentUserId.data);
             console.log(window.localStorage.getItem("userId"))
+            setUserId(currentUserId.data)
             navigate("/")
         }
         else{
-            if(result != 'null'){
+            if(result !== 'null'){
+                setUserId(currentUserId)
                 navigate("/")
             }
         }
     } catch (error) {
         
     }
-}, [userId])
+}, [currentUserId])
 
     // once the user is authenticated this useEffect will check if user exists in the database
     // if user does not exist it will update userId with 'notFound'
@@ -41,14 +48,14 @@ useEffect(() => {
                     if (response.ok == true){
                         console.log(json.data);
                         window.localStorage.setItem("userId", json.data);
-                        setUserId(json.data);
+                        setCurrentUserId(json.data);
                     }
                     else{ 
-                        setUserId("notFound");
+                        setCurrentUserId("notFound");
                     }
                 } 
                 catch (err) {
-                    setUserId("notFound")
+                    setCurrentUserId("notFound")
                 }
             } 
             getId();
@@ -57,7 +64,7 @@ useEffect(() => {
 
     // if userId is updated it will create a new user ONLY if userId is = to 'notFound'
     useEffect(() => {
-        if(userId == "notFound"){
+        if(currentUserId == "notFound"){
             console.log("==== CREATING USER ====");
             const email = user.email;
             const name = `${user.given_name} ${user.family_name}`;
@@ -65,13 +72,13 @@ useEffect(() => {
             axios.post("/api/create-user", {email, name, profileImg})
             .then(data => {
                 window.localStorage.setItem("userId", data.data);
-                setUserId(data.data);
+                setCurrentUserId(data.data);
             })
             .catch((err) => {
                 console.log(err.message);
             })
         }
-    }, [userId])
+    }, [currentUserId])
 
     return (
         <Wrapper>

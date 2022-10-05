@@ -18,10 +18,6 @@ const Notifications = () => {
             navigate("/sign-in")
         }
     }, [])
-
-    if(!userId){
-        navigate("/sign-in");
-    }
     // fetch users notifications
     const notifications = [];
     return(

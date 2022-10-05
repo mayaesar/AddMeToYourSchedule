@@ -20,10 +20,6 @@ const Profile = ({logout}) => {
         }
     }, [])
 
-    if(!userId){
-        navigate("/sign-in");
-    }
-
     if (isError){
         return(
             <Wrapper>

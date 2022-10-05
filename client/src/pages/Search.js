@@ -21,9 +21,6 @@ const Search = () => {
         }
     }, [])
 
-    if(!userId){
-        navigate("/sign-in");
-    }
 // in search there will be 3 lists
 // users that aren't friends
 // pending

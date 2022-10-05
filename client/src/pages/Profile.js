@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { Link, useNavigate} from "react-router-dom";
 import styled from "styled-components";
 import Logout from "../components/Logout";
@@ -9,8 +9,19 @@ const Profile = ({logout}) => {
     const { user, setUserId, userId, isError } = useContext(UserContext);
     const navigate = useNavigate();
 
+    useEffect(() => {
+        try {
+            const result = window.localStorage.getItem("userId");
+            if (result === "null"){
+                navigate("/sign-in")
+            }
+        } catch (error) {
+            navigate("/sign-in")
+        }
+    }, [])
+
     if(!userId){
-        navigate("/sign-out");
+        navigate("/sign-in");
     }
 
     if (isError){

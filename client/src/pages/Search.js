@@ -2,7 +2,28 @@ import styled from "styled-components";
 import SearchBar from "../components/SearchBar";
 import DisplayFriends from "../components/DisplayFriends";
 import DisplayRequests from "../components/DisplayRequests";
+import { useContext, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { UserContext } from "../context/UserContext";
 const Search = () => {
+
+    const { userId } = useContext(UserContext);
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        try {
+            const result = window.localStorage.getItem("userId");
+            if (result === "null"){
+                navigate("/sign-in")
+            }
+        } catch (error) {
+            navigate("/sign-in")
+        }
+    }, [])
+
+    if(!userId){
+        navigate("/sign-in");
+    }
 // in search there will be 3 lists
 // users that aren't friends
 // pending

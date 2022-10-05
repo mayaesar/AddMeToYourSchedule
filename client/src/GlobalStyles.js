@@ -4,7 +4,7 @@ export default createGlobalStyle`
     :root {
         --max-width: 1200px;
         --primary-colour: #383838;
-        --secondary-colour: #73c980;
+        --secondary-colour: #3D8AD9;
         --border-radius: 20px;
         --border: 1px #383838 solid;
         --primary-font-family: 'Poppins', sans-serif;

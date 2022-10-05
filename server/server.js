@@ -29,7 +29,7 @@ express()
     //manages all event information
     .get("/api/get-event/:eventId", getEvent)
     .patch("/api/update-schedule/:scheduleId", updateSchedule)
-    .post("/api/add-event", addEvent)
+    .post("/api/add-event", jsonParser, addEvent)
     .patch("/api/update-event/:eventId", updateEvent)
     .delete("/api/delete-event/:eventId", deleteEvent)
                 //dont do yet vvv

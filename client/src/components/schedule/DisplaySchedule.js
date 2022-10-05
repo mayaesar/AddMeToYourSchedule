@@ -6,16 +6,11 @@ import { useContext } from "react";
 import { EventActionContext } from "../../context/EventActionContext";
 import BasicLayout from './BasicLayout';
 
-const schedulerData = [
-    { _id:123, startDate: '2022-10-05T10:45', endDate: '2022-10-05T13:00', title: 'Meeting' },
-    { _id:223, startDate: '2022-10-04T12:00', endDate: '2022-10-04T13:30', title: 'Go to a gym' },
-];
+
 
 const DisplaySchedule = ({ eventList }) => {
 
-    const {addEvent, Joining} = useContext(EventActionContext);
-    console.log("=== Event list ===")
-    console.log(eventList)
+    const {addEvent, schedulerData} = useContext(EventActionContext);
 
 
 
@@ -24,18 +19,23 @@ const DisplaySchedule = ({ eventList }) => {
         let data = null;
         if (added){
             data = added;
+            console.log("=== added data ===");
+            console.log(data);
+            let description = null;
+            if(data.notes){
+                description = (data.notes);
+            }
             const title = (data.title);
             const startDate = (data.startDate);
             const endDate = (data.endDate);
-            addEvent(title, startDate, endDate);
+            addEvent(title, startDate, endDate, description);
         }
         if (changed){
             data = changed;
         }
-        if (deleted === undefined){
+        if (deleted !== undefined){
             data = deleted;
         }
-        console.log(data);
     }
 
 

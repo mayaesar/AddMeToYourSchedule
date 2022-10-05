@@ -7,7 +7,7 @@ import DisplaySchedule from "../components/schedule/DisplaySchedule";
 
 const MySchedule = () => {
     const {userId, isError, isUpdated} = useContext(UserContext);
-    const {eventList} = useContext(EventActionContext);
+    const {schedulerData} = useContext(EventActionContext);
     const navigate = useNavigate();
 
 
@@ -23,12 +23,12 @@ const MySchedule = () => {
         );
     }    
 
-    return eventList && isUpdated?(
+    return (schedulerData || !schedulerData) &&isUpdated?(
         <Wrapper>
             <h1>
                 My Schedule
             </h1>
-            <DisplaySchedule eventList={eventList}/>
+            <DisplaySchedule />
         </Wrapper>
     ):(
         <Wrapper>

@@ -9,18 +9,7 @@ const [userId, setUserId] = useState(null);
 const navigate = useNavigate();
 
 // make sure the user cannot access this page if signed in
-    useEffect(() => {
-        try {
-            const user = window.localStorage.getItem("userId");
-            console.log("=== user ===");
-            console.log(user);
-            if(!user){
-                navigate("/");
-            }
-        } catch (error) {
-            console.log("Waiting for user to sign in...")
-        }
-    }, []);
+
 
     // once the user is authenticated this useEffect will check if user exists in the database
     // if user does not exist it will update userId with 'notFound'

@@ -7,7 +7,6 @@ import { EventActionProvider } from './context/EventActionContext';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <React.StrictMode>
     <Auth0Provider
       domain='dev-ezg7z3yq.us.auth0.com'
       clientId='syS1ZiebRu91CqrbuC0i5fa9DqFkcQCQ'
@@ -19,6 +18,5 @@ root.render(
         </EventActionProvider>
       </UserProvider>
     </Auth0Provider>
-  </React.StrictMode>
 )
 

@@ -21,8 +21,7 @@ const App = () => {
     isAuthenticated,
   } = useAuth0();
 
-    return (
-      <Router>
+    return <Router>
         <GlobalStyles />
         <Header />
         <Routes>
@@ -35,7 +34,6 @@ const App = () => {
           <Route path="/friends-list" element={<FriendsList />} />
         </Routes>
       </Router>
-    )
 };
 
 const Wrapper = styled.div`

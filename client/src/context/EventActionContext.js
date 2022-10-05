@@ -1,4 +1,4 @@
-import axios from "axios";
+
 import { createContext, useState, useContext, useEffect } from "react";
 import { UserContext } from "./UserContext";
 
@@ -13,7 +13,6 @@ export const EventActionProvider = ({children}) => {
         isUpdated,
         setIsUpdated,
     } = useContext(UserContext);
-    const [eventList, setEventList] = useState(null);
     const [schedulerData, setSchedulerData] = useState([]);
 
     const scheduleId = user.scheduleId;
@@ -24,14 +23,6 @@ export const EventActionProvider = ({children}) => {
         }
     }, [userId]);
 
-    useEffect(() => {
-        if(eventList){
-            eventList.map(eventId => {
-                getEvent(eventId);
-            })
-        }
-    }, [eventList])
-
     console.log(schedulerData);
     // add all fetches here-------------------------------------------------->
         const updateEventList = () => {
@@ -39,37 +30,26 @@ export const EventActionProvider = ({children}) => {
             fetch(`/api/get-schedule/${scheduleId}`)
             .then(res => res.json())
             .then(json => {
-                setEventList(json.data.events);
+                setSchedulerData(json.data.events);
             })
             .catch(() => {
                 setIsError(true);
             })
             setIsUpdated(true);
         }
-        const addEvent = (title, startDate, endDate) => {
+        const addEvent = (title, startDate, endDate, description) => {
             console.log("=== adding event ===")
-            fetch('/api/add-event', {
-                method: "POST",
+            fetch(`/api/add-event/${scheduleId}`, {
+                method: "PATCH",
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ scheduleId, title, startDate, endDate})
+                body: JSON.stringify({title, startDate, endDate, description})
             })
             .then(res => res.json())
             .then(data => {
                 console.log(data);
                 updateEventList();
-            })
-            .catch((err) => {
-                console.log(err.message);
-                setIsError(true);
-            })
-        }
-        const getEvent = async(eventId) => {
-            fetch(`/api/get-event/${eventId}`)
-            .then(res => res.json())
-            .then(data => {
-                setSchedulerData(arr => [...arr, data.data]);
             })
             .catch((err) => {
                 console.log(err.message);
@@ -82,10 +62,10 @@ export const EventActionProvider = ({children}) => {
         <EventActionContext.Provider 
         value={{
             addEvent,
-            eventList,
+            schedulerData,
         }}
         >
-            ({children})
+            {children}
         </EventActionContext.Provider>
     );
 };

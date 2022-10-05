@@ -93,9 +93,21 @@ const getUser = async (req, res) => {
     console.log("disconnected");
 }
 const getUsers = async (req, res) => {
-    res.status(200).json({ status: 200, message: "hello"})
-}
+    const {client, db} = createClient();
+    const users = db.collection('users');
+    try {
+        await client.connect();
+        const result = await users.find().toArray();
+        result.length > 0 
+        ? res.status(200).json({status: 200, data: result}) 
+        : res.status(404).json({status: 404, data: "Data not found."});
 
+    } catch (err) {
+        res.status(500).json({status: 500, message: err.message});
+    }
+    client.close();
+    console.log('disconnected');
+}
 
 const updateUser = async (req, res) => {
     res.status(200).json({ status: 200, message: "hello"})

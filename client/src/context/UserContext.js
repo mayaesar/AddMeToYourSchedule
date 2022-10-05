@@ -7,12 +7,13 @@ export const UserProvider = ({children}) => {
     const [userId, setUserId] = useState(window.localStorage.getItem("userId"));
     // user will hold name, email, profileImg and scheduleId
     const [user, setUser] = useState(null);
+    const [users, setUsers] = useState(null);
     const [friends, setFriends] = useState(null);
     const [tags, setTags] = useState(null);
     const [friendRequests, setFriendRequests] = useState(null);
     const [planRequests, setPlanRequests] = useState(null);
     const [notifications, setNotifications] = useState(null);
-    const [isUpdated, setIsUpdated] = useState(true);
+
     
 
     // fetch user info 
@@ -32,10 +33,22 @@ export const UserProvider = ({children}) => {
             setIsError(true);
         }
     }
+
+    const getUsers = async () => {
+        try {
+            const res = await fetch('/api/get-users');
+            const data = await res.json();
+            setUsers(data.data);
+        } catch (err) {
+            setIsError(true);
+        }
+    }
+    
     //if user is signed in then it will fetch information
     useEffect(() => {
         if (userId !== null){
             getUserInfo();
+            getUsers();
             setIsError(false);
         }
     }, [userId])
@@ -43,26 +56,21 @@ export const UserProvider = ({children}) => {
 
 
     //once everything is loaded then it will return 
-    if((user !== null)&&(friends !== null)&&(tags !== null)&&(friendRequests !== null)&&(planRequests !== null)&&(notifications !== null)){
+    if(user !== null){
         return(
             <UserContext.Provider value={{
                 userId,
                 setUserId,
                 user,
-                setFriends,
+                users,
                 friends,
-                setTags,
                 tags,
                 setFriendRequests,
                 friendRequests,
                 setPlanRequests,
                 planRequests,
-                setNotifications,
                 notifications,
-                setIsError,
                 isError,
-                setIsUpdated,
-                isUpdated,
             }}>
                 {children}
             </UserContext.Provider>

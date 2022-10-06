@@ -29,7 +29,7 @@ const MySchedule = () => {
         );
     }    
 
-    return (schedulerData || !schedulerData) &&isUpdated?(
+    return (schedulerData || !schedulerData)?(
         <Wrapper>
             <h1>
                 My Schedule

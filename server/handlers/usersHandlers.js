@@ -47,7 +47,11 @@ const addUser = async (req, res) => {
         ...req.body,
         friends: [],
         tags: [],
+        // will hold all friend requests that user has received
         friendRequests: [],
+        // holds all requests that user has sent
+        requested: [],
+        // hold all requests from other users for plans
         planRequests: [],
         Notifications: [],
         scheduleId: scheduleId,
@@ -110,7 +114,65 @@ const getUsers = async (req, res) => {
 }
 
 const updateUser = async (req, res) => {
-    res.status(200).json({ status: 200, message: "hello"})
+    const {client, db} = createClient();
+    const users = db.collection('users');
+    const {
+        _id,
+        name,
+        email,
+        profileImg,
+        friends,
+        tags,
+        friendRequests,
+        requested,
+        planRequests,
+        notifications,
+        scheduleId,
+    } = req.body;
+
+    try {
+        await client.connect();
+        const user = await users.findOne({_id});
+        if (!user){
+            res.status(404).json({status: 404, data: "User not found."});
+            client.close();
+            return;
+        }
+        if(name || email || profileImg || scheduleId){
+            res.status(404).json({status: 404, data: "Cannot change this information."});
+            client.close();
+            return;
+        }
+        if(friends){
+            const updateFriends = await users.updateOne({_id}, {friends: {$set: friends}})
+            res.status(200).json({status: 200, data: updateFriends, message:"friends list is updated!"})
+        }
+        if(tags){
+            const updateTags = await users.updateOne({_id}, {tags: {$set: tags}})
+            res.status(200).json({status: 200, data: updateTags, message:"Tags list is updated!"})
+        }
+        if(friendRequests){
+            //const updateTags = await users.updateOne({_id}, {friendRequests: {$set: friendRequests}})
+            res.status(200).json({status: 200, message:"not coded yet"})
+        }
+        if(requested){
+            //const sentTo = await users.updateOne({_id: requested}, {tags: {$set: tags}})
+            //const updateTags = await users.updateOne({_id}, {tags: {$set: tags}})
+            res.status(200).json({status: 200, message:"Not coded yet"})
+        }
+        if(planRequests){
+            res.status(200).json({status: 200, message:"Not coded yet"})
+        }
+        if(notifications){
+            const updateNotifications = await users.updateOne({_id}, {notifications: {$set: notifications}})
+            res.status(200).json({status: 200, data: updateNotifications, message:"Notifications are updated!"})
+        }
+
+    } catch (err) {
+        res.status(500).json({ status: 500, message: err.message });
+    }
+    client.close();
+    console.log("disconnected");
 }
 
 module.exports={getUserId, getUser, getUsers, addUser, updateUser};

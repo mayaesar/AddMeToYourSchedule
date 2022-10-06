@@ -20,7 +20,7 @@ express()
     .get("/api/get-user/:userId", getUser)
     .get("/api/get-users", getUsers)
     .post("/api/create-user", jsonParser, addUser)
-    .patch("/api/update-user/:userId", updateUser)
+    .patch("/api/update-user", jsonParser, updateUser)
 
     //manages all schedule information
     .get("/api/get-schedule/:scheduleId", getSchedule)

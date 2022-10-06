@@ -11,7 +11,7 @@ const SearchBar = ({users}) => {
             users.map(user => {
                 const name = user.name.toLowerCase();
                 if (name.search(typedValue.toLowerCase()) !== -1){
-                    matches.push(<p> {user.name} <button>addFriend</button></p>);
+                    matches.push(<p className="suggested"><img src=""/> {user.name} <button>addFriend</button></p>);
                 }
             })
             setSuggestions(matches);
@@ -30,12 +30,12 @@ const SearchBar = ({users}) => {
 
     return(
         <Wrapper>
-            <span className="searchbar">
+            <div className="searchBar">
                 <input placeholder="🔍 Search users" 
                 value={typedValue}
                 onChange={getValue}/>
                 <button onClick={() => setTypedValue("")}>Clear</button>
-            </span>
+            </div>
 
             {suggestions? (
                 <Suggestions>
@@ -44,17 +44,17 @@ const SearchBar = ({users}) => {
                     })}
                 </Suggestions>
             ):(
-                <div className="noSuggestions">
-
-                </div>
+                <></>
             )}
         </Wrapper>
     );
 };
 
 const Wrapper = styled.div`
+    padding: 2vw;
     .searchBar{
-        
+        display: flex;
+        gap: 2vw;
     }
     input {
         width: 25vw;
@@ -67,7 +67,19 @@ const Wrapper = styled.div`
     
 `;
 const Suggestions = styled.div`
+    padding-top: 1vw;
+    z-index: 1;
+    max-width: 25vw;
+    background-color: lightgray;
+    display: grid;
+    gap: 1vw;
+    max-height: 35vw;
+    overflow: scroll;
 
+    .suggested{
+        padding: 0.5vw;
+        border-bottom: var(--border);
+    }
 `
 
 export default SearchBar;

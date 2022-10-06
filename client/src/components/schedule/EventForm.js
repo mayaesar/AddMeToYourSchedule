@@ -3,7 +3,7 @@ import styled from "styled-components"
 const EventForm = ({formType}) => {
 
 
-    return formType === 'default'?(
+    return (
         <Wrapper> 
             <form>
                 <div>
@@ -13,12 +13,6 @@ const EventForm = ({formType}) => {
                     <input type='date' />
                 </div>
                 
-            </form>
-        </Wrapper>
-    ):(
-        <Wrapper> 
-            <form>
-            <input type='text' placeholder="Title"/>
             </form>
         </Wrapper>
     );

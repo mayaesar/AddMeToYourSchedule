@@ -3,9 +3,10 @@ import DisplayNotifications from "../components/DisplayNotifications";
 import { useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "../context/UserContext";
+import DisplayRequests from "../components/DisplayRequests";
 
 const Notifications = () => {
-    const { userId } = useContext(UserContext);
+    const {userId, friendRequests, planRequests, notifications} = useContext(UserContext);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -19,11 +20,11 @@ const Notifications = () => {
         }
     }, [])
     // fetch users notifications
-    const notifications = [];
     return(
         <Wrapper>
             <h2>Notifications</h2>
-            <DisplayNotifications array={notifications}/>
+            <DisplayNotifications notifications={notifications}/>
+            <DisplayRequests friendRequests={friendRequests} planRequests={planRequests}/>
         </Wrapper>
     )
 };

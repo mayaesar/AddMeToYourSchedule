@@ -42,6 +42,7 @@ const addEvent = async (req, res) => {
     const {scheduleId} = req.params;
     const newEvent = {
         _id: eventId,
+        id: eventId,
         ...req.body,
         tags: [],
         joining: [],

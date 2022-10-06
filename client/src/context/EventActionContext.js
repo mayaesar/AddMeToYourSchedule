@@ -36,7 +36,9 @@ export const EventActionProvider = ({children}) => {
             .finally(() => setIsUpdated(true))
         }
         const addEvent = (title, startDate, endDate, description) => {
+
             console.log("=== adding event ===")
+            
             fetch(`/api/add-event/${scheduleId}`, {
                 method: "PATCH",
                 headers: {

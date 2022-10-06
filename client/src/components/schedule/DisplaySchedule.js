@@ -4,7 +4,8 @@ import {Scheduler, Toolbar, WeekView, Appointments, AppointmentForm, DateNavigat
 import styled from 'styled-components';
 import { useContext } from "react";
 import { EventActionContext } from "../../context/EventActionContext";
-import BasicLayout from './BasicLayout';
+import BasicLayout, {Select} from './BasicLayout';
+
 
 
 
@@ -15,7 +16,8 @@ const DisplaySchedule = ({ eventList }) => {
 
 
     const handleChangeEvent = ({added, changed, deleted}) => {
-        console.log("=== commit changes ===")
+        console.log("=== commit changes ===", deleted)
+        
         let data = null;
         if (added){
             data = added;
@@ -28,6 +30,7 @@ const DisplaySchedule = ({ eventList }) => {
             const title = (data.title);
             const startDate = (data.startDate);
             const endDate = (data.endDate);
+            
             addEvent(title, startDate, endDate, description);
         }
         if (changed){
@@ -36,6 +39,7 @@ const DisplaySchedule = ({ eventList }) => {
         if (deleted !== undefined){
             data = deleted;
         }
+        
     }
 
 
@@ -53,7 +57,7 @@ const DisplaySchedule = ({ eventList }) => {
                 <TodayButton />
                 <Appointments />
                 <AppointmentTooltip showOpenButton={true} showDeleteButton={true} showCloseButton={true}/>
-                <AppointmentForm basicLayoutComponent={BasicLayout}/>
+                <AppointmentForm basicLayoutComponent={BasicLayout} selectPropsComponent={Select}/>
             </Scheduler>
         </Wrapper>
     );

@@ -152,8 +152,7 @@ const updateUser = async (req, res) => {
             res.status(200).json({status: 200, data: updateTags, message:"Tags list is updated!"})
         }
         if(friendRequests){
-            //const updateTags = await users.updateOne({_id}, {friendRequests: {$set: friendRequests}})
-            res.status(200).json({status: 200, message:"not coded yet"})
+            res.status(200).json({status: 204, message:"wrong endpoint"})
         }
         if(requested){
             console.log("=== requested ===")
@@ -201,4 +200,74 @@ const updateUser = async (req, res) => {
     console.log("disconnected");
 }
 
-module.exports={getUserId, getUser, getUsers, addUser, updateUser};
+const friendRequests = async (req, res) => {
+    const {client, db} = createClient();
+    const users = db.collection('users');
+    const {
+        _id,
+        userId,
+        reply,
+    } = req.body;
+    console.log(reply)
+    try {
+        await client.connect();
+        const user = await users.findOne({_id});
+        if (!user){
+            res.status(404).json({status: 404, message: "User not found."});
+            client.close();
+            return;
+        }
+        console.log("=== user ===")
+        console.log(user)
+        const otherUser = await users.findOne({_id:userId});
+        if (!otherUser){
+            res.status(404).json({status: 404, message: "Other user not found."});
+            client.close();
+            return;
+        }
+        console.log("=== other user ===")
+        console.log(otherUser)
+
+        const updateFriendRequest = await users.updateOne({_id}, {$pull: {friendRequests: {userId:userId}}})
+        const updateRequested = await users.updateOne({_id:userId}, {$pull: {requested: {addUserId:_id}}})
+        if (!updateFriendRequest || !updateRequested){
+            res.status(404).json({status: 404, message: "request not complete."});
+            client.close();
+            return;
+        }
+        if(reply === "accepted"){
+            const userFriends = user.friends
+            userFriends.push(userId);
+            const addedOtherUser = await users.updateOne({_id}, {$set:{friends:userFriends}});
+            if (!addedOtherUser){
+                res.status(404).json({status: 404, message: "friend was not added properly."});
+                client.close();
+                return;
+            }
+            const otherUserFriends = otherUser.friends
+            otherUserFriends.push(_id);
+            const addedUser = await users.updateOne({_id:userId}, {$set:{friends:otherUserFriends}});
+            if (!addedUser){
+                res.status(404).json({status: 404, message: "Other friend's was not added properly."});
+                client.close();
+                return;
+            }
+            const notificationArr = otherUser.notifications;
+            notificationArr.push(`${user.name} has accepted your friend request!`); 
+            const newNotification = await users.updateOne({_id:userId},  {$set: {notifications: notificationArr}});
+            if (!newNotification){
+                res.status(404).json({status: 404, message: "notification did not send."});
+                client.close();
+                return;
+            }
+            res.status(200).json({status: 200, message:"friend added"})
+        }
+
+    } catch (err) {
+        res.status(500).json({ status: 500, message: err.message });
+    }
+    client.close();
+    console.log("disconnected");
+}
+
+module.exports={getUserId, getUser, getUsers, addUser, updateUser, friendRequests};

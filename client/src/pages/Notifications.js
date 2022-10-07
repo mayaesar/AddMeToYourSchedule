@@ -9,21 +9,12 @@ const Notifications = () => {
     const {currentUser, users} = useContext(UserContext);
     const navigate = useNavigate();
 
-    useEffect(() => {
-        try {
-            const result = window.localStorage.getItem("userId");
-            if (result === "null"){
-                navigate("/sign-in")
-            }
-        } catch (error) {
-            navigate("/sign-in")
-        }
-    }, [])
     // fetch users notifications
     return currentUser !== null && users !== null?(
         <Wrapper>
             <h2>Notifications</h2>
             <DisplayNotifications notifications={currentUser.notifications}/>
+            <h2>Requests</h2>
             <DisplayRequests friendRequests={currentUser.friendRequests} planRequests={currentUser.planRequests} users={users}/>
         </Wrapper>
     ):(

@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { FriendActionContext } from "../context/FriendActionContext";
 
 const DisplayRequests = ({friendRequests, planRequests, users}) => {
-    const {isError} = useContext(FriendActionContext);
+    const {isError, friendRequestHandler} = useContext(FriendActionContext);
     const [requests, setRequests] = useState([]);
     const [isLoading, setIsLoading] = useState();
 
@@ -26,9 +26,6 @@ const DisplayRequests = ({friendRequests, planRequests, users}) => {
         }
     }, [requests])
 
-    
-
-
 
     const getRequests = () => {
         console.log("=== getting friend requests ===")
@@ -43,8 +40,8 @@ const DisplayRequests = ({friendRequests, planRequests, users}) => {
                             <p>{request.timestamp}</p>
                         </span>
                         <span>
-                            <button>Accept</button>
-                            <button>Decline</button>
+                            <button onClick={() => friendRequestHandler({userId:request.userId, reply:"accepted"})}>Accept</button>
+                            <button onClick={() => friendRequestHandler({userId:request.userId, reply:"declined"})}>Decline</button>
                         </span>
                     </div>;
                     setRequests((arr) => [...arr, element])
@@ -52,7 +49,7 @@ const DisplayRequests = ({friendRequests, planRequests, users}) => {
                 })
             })
         } catch (error) {
-            setRequests((arr) => [...arr, <h2>You have replied tofriend requests</h2>])
+            console.log(error)
         }
         console.log("=== getting plan requests ===")
         try {
@@ -75,7 +72,7 @@ const DisplayRequests = ({friendRequests, planRequests, users}) => {
                 })
             })
         } catch (error) {
-            setRequests((arr) => [...arr, <h2>You have replied to all event requests</h2>])
+            console.log(error)
         }
         console.log("=== done ===")
     }
@@ -88,7 +85,6 @@ const DisplayRequests = ({friendRequests, planRequests, users}) => {
         </Wrapper>
     ):(
         <Wrapper>
-            <h1>loading...</h1>
         </Wrapper>
     )
 };

@@ -3,14 +3,19 @@ import DisplayRequests from "./DisplayRequests";
 
 const DisplayNotifications = ({notifications}) => {
     // make an array of requests 
-    const requests = [];
+    console.log(notifications)
     // another array of non-requests
     
     return(
         <Wrapper>
-            <h2>Requests</h2>
             <div>
-                <DisplayRequests array={requests}/>
+                {notifications.map(notification => {
+                    return(
+                        <div className="notification">
+                            <p>{notification}</p>
+                        </div>
+                    );
+                })}
             </div>
         </Wrapper>
     );

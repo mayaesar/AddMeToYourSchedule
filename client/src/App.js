@@ -54,9 +54,9 @@ const { currentUser } = useContext(UserContext);
       <Header />
       <Routes>
         <Route path="/" element={isSignedIn?<Feed />:<Navigate to="/sign-in"/>} />
-        <Route path="/search" element={isSignedIn?<Search logout={logout}/>:<Navigate to="/sign-in"/>} />
+        <Route path="/search" element={isSignedIn?<Search />:<Navigate to="/sign-in"/>} />
         <Route path="/sign-in" element={isSignedIn?<Navigate to="/"/>:<SignIn loginWithRedirect={loginWithRedirect} isAuthenticated={isAuthenticated} user={user} />} />
-        <Route path="/profile" element={isSignedIn?<Profile />:<Navigate to="/sign-in"/>} />
+        <Route path="/profile" element={isSignedIn?<Profile logout={logout}/>:<Navigate to="/sign-in"/>} />
         <Route path="/notifications" element={isSignedIn?<Notifications />:<Navigate to="/sign-in"/>} />
         <Route path="/my-schedule" element={isSignedIn?<MySchedule />:<Navigate to="/sign-in"/>} />
         <Route path="/friends-list" element={isSignedIn?<FriendsList />:<Navigate to="/sign-in"/>} />

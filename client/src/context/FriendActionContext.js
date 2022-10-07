@@ -41,8 +41,30 @@ export const FriendActionProvider = ({children}) => {
             setIsError(true);
         }
     }
-    const friendRequestHandler = (answer) => {
+    const friendRequestHandler = async ({userId, reply}) => {
+        console.log("=== friend request handler ===")
+        const _id = currentUser._id;
         
+        try {
+            const res = await fetch('/api/friend-request', {
+                method: "PATCH",
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({_id, userId, reply})
+            });
+            const json = await res.json();
+            if(json.status === 200){
+                console.log(json)
+            }
+            else{
+                console.log(json.message);
+                setIsError(true);
+            }
+        } catch (err) {
+            console.log(err.message);
+            setIsError(true);
+        }
     }
      // <-------------------------------------------------- add all fetches here
     return(
@@ -50,6 +72,7 @@ export const FriendActionProvider = ({children}) => {
         value={{
             isError,
             sendFriendRequest,
+            friendRequestHandler,
         }}
         >
             {children}

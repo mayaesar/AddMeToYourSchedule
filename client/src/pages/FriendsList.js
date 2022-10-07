@@ -1,16 +1,23 @@
 import styled from "styled-components";
 import DisplayFriends from "../components/DisplayFriends";
 import DisplayRequests from "../components/DisplayRequests";
+import { UserContext } from "../context/UserContext";
+import { useContext } from "react";
+
 const FriendsList = () => {
-    // fetch the user's friends and user Pendings
+    const {currentUser, users} = useContext(UserContext);
     const friends = [];
     const pendings = [];
-    return(
+    return currentUser !== null && users !== null?(
         <Wrapper>
             <h2>Friends</h2>
-            <DisplayFriends array={friends}/>
+            <DisplayFriends friends={currentUser.friends} users={users}/>
             <h2>Pending friend requests</h2>
-            <DisplayRequests array={pendings}/>
+            <DisplayRequests friendRequests={currentUser.friendRequests} users={users}/>
+        </Wrapper>
+    ):(
+        <Wrapper>
+
         </Wrapper>
     )
 };

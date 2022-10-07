@@ -6,9 +6,9 @@ const Logout = ({logout, setUserId}) => {
     // this will update 0auth, userContext and localStorage that the user has signed out then bring user back to sign in page 
     const handleLogout = () => {
         logout();
-        window.localStorage.setItem("userId", null);
+        window.localStorage.removeItem("userId");
         setUserId(null);
-        navigate("/sign-in");
+        //navigate("/sign-in");
     }
     return (
         <Wrapper>

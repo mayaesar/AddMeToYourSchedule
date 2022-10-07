@@ -5,7 +5,6 @@ const Header = () => {
 //console.log(currentUser)
     return(
         <Wrapper>
-            <HeaderLinks to={"/sign-in"}>SignIn</HeaderLinks>
             <HeaderLinks to={"/"}>Feed</HeaderLinks>
             <HeaderLinks to={"/my-schedule"}>My Schedule</HeaderLinks>
             <HeaderLinks to={"/search"}>Search</HeaderLinks>
@@ -16,7 +15,7 @@ const Header = () => {
 };
 const Wrapper = styled.div`
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
     max-width: var(--max-width);
     border-bottom: var(--border) ;
     margin: auto;

@@ -6,7 +6,7 @@ import { UserContext } from "../context/UserContext";
 import DisplayRequests from "../components/DisplayRequests";
 
 const Notifications = () => {
-    const {userId, friendRequests, planRequests, notifications} = useContext(UserContext);
+    const {currentUser} = useContext(UserContext);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -20,11 +20,15 @@ const Notifications = () => {
         }
     }, [])
     // fetch users notifications
-    return(
+    return currentUser !== null?(
         <Wrapper>
             <h2>Notifications</h2>
-            <DisplayNotifications notifications={notifications}/>
-            <DisplayRequests friendRequests={friendRequests} planRequests={planRequests}/>
+            <DisplayNotifications notifications={currentUser.notifications}/>
+            <DisplayRequests friendRequests={currentUser.friendRequests} planRequests={currentUser.planRequests}/>
+        </Wrapper>
+    ):(
+        <Wrapper>
+            <h1>Loading...</h1>
         </Wrapper>
     )
 };

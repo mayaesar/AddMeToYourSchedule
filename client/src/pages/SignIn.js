@@ -6,26 +6,21 @@ import { UserContext } from "../context/UserContext";
 
 const SignIn = ({loginWithRedirect, isAuthenticated, user}) => {
 const [currentUserId, setCurrentUserId] = useState(null);
+const [isLoading, setIsLoading] = useState(false);
 const { setUserId, userId } = useContext(UserContext);
 
 const navigate = useNavigate();
-
 useEffect(() => {
-    if(userId !== 'null'){
-        navigate("/")
-    }
     try {
         const result = window.localStorage.getItem("userId");
         if(result === "[object Object]"){
             window.localStorage.setItem("userId", currentUserId.data);
             console.log(window.localStorage.getItem("userId"))
             setUserId(currentUserId.data)
-            navigate("/")
         }
         else{
-            if(result !== 'null'){
+            if(result !== null){
                 setUserId(currentUserId)
-                navigate("/")
             }
         }
     } catch (error) {
@@ -37,6 +32,7 @@ useEffect(() => {
     // if user does not exist it will update userId with 'notFound'
     useEffect(() => {
         if (isAuthenticated){
+            setIsLoading(true);
             console.log(isAuthenticated);
             console.log(user);
             
@@ -68,8 +64,7 @@ useEffect(() => {
             console.log("==== CREATING USER ====");
             const email = user.email;
             const name = `${user.given_name} ${user.family_name}`;
-            const profileImg = user.picture;
-            axios.post("/api/create-user", {email, name, profileImg})
+            axios.post("/api/create-user", {email, name})
             .then(data => {
                 window.localStorage.setItem("userId", data.data);
                 setCurrentUserId(data.data);
@@ -80,13 +75,17 @@ useEffect(() => {
         }
     }, [currentUserId])
 
-    return (
+    return isLoading === false?(
         <Wrapper>
             <h1>Hello, and welcome to Add Me To Your Schedule!</h1>
             <p>Before continuing to the site you must sign in</p>
             <button onClick={loginWithRedirect}>Sign In</button>
         </Wrapper>
-    );
+    ):(
+        <Wrapper>
+            <h1>loading...</h1>
+        </Wrapper>
+    )
 };
 const Wrapper = styled.div`
     width: 90%;

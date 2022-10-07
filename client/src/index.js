@@ -4,6 +4,7 @@ import App from './App';
 import {Auth0Provider} from '@auth0/auth0-react';
 import { UserProvider } from './context/UserContext';
 import { EventActionProvider } from './context/EventActionContext';
+import { FriendActionProvider } from './context/FriendActionContext';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -13,9 +14,11 @@ root.render(
       redirectUri={process.env.REACT_APP_REDIRECT_URL}
     >
       <UserProvider>
-        <EventActionProvider>
-          <App />
-        </EventActionProvider>
+        <FriendActionProvider>
+          <EventActionProvider>
+            <App />
+          </EventActionProvider>
+        </FriendActionProvider>
       </UserProvider>
     </Auth0Provider>
 )

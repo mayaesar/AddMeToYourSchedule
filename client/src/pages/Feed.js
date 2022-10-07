@@ -5,25 +5,18 @@ import { useNavigate } from "react-router-dom";
 import { UserContext } from "../context/UserContext";
 
 const Feed = () => {
-    const { userId } = useContext(UserContext);
+    const { currentUser } = useContext(UserContext);
     const navigate = useNavigate();
-
-    useEffect(() => {
-        try {
-            const result = window.localStorage.getItem("userId");
-            if (result === "null"){
-                navigate("/sign-in")
-            }
-        } catch (error) {
-            navigate("/sign-in")
-        }
-    }, [])
 
 //fetch users feed
 const array = [];
-    return(
+    return currentUser !== null ?(
         <Wrapper>
             <DisplayFeed array={array}/>
+        </Wrapper>
+    ):(
+        <Wrapper>
+            <h1>Loading...</h1>
         </Wrapper>
     )
 };

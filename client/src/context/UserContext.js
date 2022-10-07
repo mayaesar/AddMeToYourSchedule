@@ -5,16 +5,8 @@ export const UserContext = createContext(null);
 export const UserProvider = ({children}) => {
     const [isError, setIsError] = useState(null);
     const [userId, setUserId] = useState(window.localStorage.getItem("userId"));
-    // user will hold name, email, profileImg and scheduleId
-    const [user, setUser] = useState(null);
-    const [users, setUsers] = useState(null);
-    const [friends, setFriends] = useState(null);
-    const [tags, setTags] = useState(null);
-    const [friendRequests, setFriendRequests] = useState(null);
-    const [planRequests, setPlanRequests] = useState(null);
-    const [notifications, setNotifications] = useState(null);
-
-    
+    const [currentUser, setCurrentUser] = useState(null);
+    const [users, setUsers] = useState(null)
 
     // fetch user info 
     const getUserInfo = async () => {
@@ -23,18 +15,14 @@ export const UserProvider = ({children}) => {
             const data = await res.json();
             const info = data.data;
             // gets the data from the backend and stores them into useStates
-            setUser({'name': info.name, 'email':info.email, 'profileImg':info.profileImg, 'scheduleId':info.scheduleId});
-            setFriends(info.friends);
-            setTags(info.tags);
-            setFriendRequests(info.friendRequests);
-            setPlanRequests(info.planRequests);
-            setNotifications(info.notifications);
+            setCurrentUser(info)
         } catch (err) {
             setIsError(true);
         }
     }
 
     const getUsers = async () => {
+        console.log("=== get users ===")
         try {
             const res = await fetch('/api/get-users');
             const data = await res.json();
@@ -46,7 +34,8 @@ export const UserProvider = ({children}) => {
     
     //if user is signed in then it will fetch information
     useEffect(() => {
-        if (userId !== null){
+        console.log(userId)
+        if (userId){
             getUserInfo();
             getUsers();
             setIsError(false);
@@ -56,25 +45,16 @@ export const UserProvider = ({children}) => {
 
 
     //once everything is loaded then it will return 
-    if(user !== null){
-        return(
-            <UserContext.Provider value={{
-                userId,
-                setUserId,
-                user,
-                users,
-                friends,
-                tags,
-                setFriendRequests,
-                friendRequests,
-                setPlanRequests,
-                planRequests,
-                notifications,
-                isError,
-            }}>
-                {children}
-            </UserContext.Provider>
-        )
-    }
-    
+    return(
+        <UserContext.Provider value={{
+            userId,
+            setUserId,
+            users,
+            currentUser,
+            isError,
+            getUserInfo,
+        }}>
+            {children}
+        </UserContext.Provider>
+    )
 }

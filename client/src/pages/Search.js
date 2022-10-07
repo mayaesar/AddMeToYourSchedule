@@ -6,10 +6,9 @@ import { useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "../context/UserContext";
 const Search = () => {
-    const { users, friends, friendRequest} = useContext(UserContext);
+    const { users, currentUser } = useContext(UserContext);
     const navigate = useNavigate();
 
-    console.log(users);
     useEffect(() => {
         try {
             const result = window.localStorage.getItem("userId");
@@ -27,15 +26,19 @@ const Search = () => {
 // friends
 const array = [];
 
-    return(
+    return users !== null && currentUser !== null?(
         <Wrapper>
             <div className="search">
-                <SearchBar users={users}/>
+                <SearchBar users={users} currentUser={currentUser}/>
             </div>
             <h2>Friends</h2>
-            <DisplayFriends friends={friends}/>
+            <DisplayFriends friends={currentUser.friends}/>
             <h2>Pending requests</h2>
-            <DisplayRequests friendRequest={friendRequest}/>
+            <DisplayRequests friendRequest={currentUser.friendRequest}/>
+        </Wrapper>
+    ):(
+        <Wrapper>
+            <h1>Loading...</h1>
         </Wrapper>
     )
 };

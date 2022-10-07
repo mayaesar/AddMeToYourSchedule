@@ -6,63 +6,70 @@ export const EventActionContext = createContext(null);
 
 export const EventActionProvider = ({children}) => {
     const {
-        setIsError, 
-        user, 
+        currentUser, 
         userId,
     } = useContext(UserContext);
     const [schedulerData, setSchedulerData] = useState([]);
-    const [isUpdated, setIsUpdated] = useState(false)
-
-    const scheduleId = user.scheduleId;
+    const [isError, setIsError] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
+    const [scheduleId, setScheduleId] = useState(null);
+    
+    useEffect(() => {
+        if (currentUser !== null){
+            setIsLoading(true)
+            setScheduleId(currentUser.scheduleId);
+            
+        }
+    }, [currentUser]);
 
     useEffect(() => {
-        if(userId !== null){
-            setIsUpdated(false)
+        if(scheduleId !== null){
             updateEventList();
         }
-    }, [userId]);
+    },[scheduleId])
 
     // add all fetches here-------------------------------------------------->
-        const updateEventList = () => {
+        const updateEventList = async() => {
             console.log("=== updating list ===")
-            fetch(`/api/get-schedule/${scheduleId}`)
-            .then(res => res.json())
-            .then(json => {
-                setSchedulerData(json.data.events);
-            })
-            .catch(() => {
+            console.log(scheduleId)
+            try {
+                const res = await fetch(`/api/get-schedule/${scheduleId}`);
+                const data = await res.json();
+                if (data.status !== 200) return setIsError(true);
+                setSchedulerData(data.data.events);
+                setIsLoading(false)
+            } catch (error) {
                 setIsError(true);
-            })
-            .finally(() => setIsUpdated(true))
+            }
         }
-        const addEvent = (title, startDate, endDate, description) => {
-
+        
+        const addEvent = async (title, startDate, endDate, description) => {
             console.log("=== adding event ===")
-            
-            fetch(`/api/add-event/${scheduleId}`, {
-                method: "PATCH",
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({title, startDate, endDate, description})
-            })
-            .then(res => res.json())
-            .then(data => {
+            setIsLoading(true)
+            try {
+                const res = await fetch(`/api/add-event/${scheduleId}`, {
+                    method: "PATCH",
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({title, startDate, endDate, description})
+                });
+                const data = res.json();
+                if (data.status !== 200) return setIsError(true)
                 console.log(data);
                 updateEventList();
-            })
-            .catch((err) => {
-                console.log(err.message);
-                setIsError(true);
-            })
+            } catch (error) {
+                setIsError(true)
+            }
         }
     // <-------------------------------------------------- add all fetches here
+    
     return(
         <EventActionContext.Provider 
         value={{
             addEvent,
             schedulerData,
-            isUpdated,
+            isLoading,
         }}
         >
             {children}

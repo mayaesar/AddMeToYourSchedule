@@ -1,9 +1,11 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import styled from "styled-components";
+import { FriendActionContext } from "../context/FriendActionContext";
 
 const SearchBar = ({users}) => {
     const [suggestions, setSuggestions] = useState();
     const [typedValue, setTypedValue] = useState("");
+    const {sendFriendRequest} = useContext(FriendActionContext);
 
     const searchMatches = () => {
         if (users){
@@ -11,7 +13,8 @@ const SearchBar = ({users}) => {
             users.map(user => {
                 const name = user.name.toLowerCase();
                 if (name.search(typedValue.toLowerCase()) !== -1){
-                    matches.push(<p className="suggested"><img src=""/> {user.name} <button>addFriend</button></p>);
+                    const id = user._id;
+                    matches.push(<p className="suggested">{user.name} <button onClick={() => sendFriendRequest(id)}>addFriend</button></p>);
                 }
             })
             setSuggestions(matches);

@@ -6,19 +6,8 @@ import { UserContext } from "../context/UserContext";
 
 const Profile = ({logout}) => {
     //gets user information
-    const { user, setUserId, userId, isError } = useContext(UserContext);
+    const { setUserId, currentUser, isError } = useContext(UserContext);
     const navigate = useNavigate();
-
-    useEffect(() => {
-        try {
-            const result = window.localStorage.getItem("userId");
-            if (result === "null"){
-                navigate("/sign-in")
-            }
-        } catch (error) {
-            navigate("/sign-in")
-        }
-    }, [])
 
     if (isError){
         return(
@@ -28,12 +17,12 @@ const Profile = ({logout}) => {
         );
     }
     
-    return (
+    return currentUser !== null?(
         <Wrapper>
             <Top>
                 <div className="icon">profile icon</div>
                 <div className="info">
-                    <p>{user.name}</p>
+                    <p>{currentUser.name}</p>
                     <div className="buttons">
                         <Buttons to={"/friends-list"}>
                             My friends
@@ -46,6 +35,10 @@ const Profile = ({logout}) => {
                 <h2>My Schedule</h2>
                 <div></div>
             </Schedule>
+        </Wrapper>
+    ):(
+        <Wrapper>
+            <h1>Loading...</h1>
         </Wrapper>
     )
 };

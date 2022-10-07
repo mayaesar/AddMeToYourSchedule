@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 const DisplayRequests = (array) => {
-
+    
     return(
         <Wrapper>
 

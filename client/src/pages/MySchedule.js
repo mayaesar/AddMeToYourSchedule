@@ -4,10 +4,11 @@ import styled from "styled-components";
 import { UserContext } from "../context/UserContext";
 import { EventActionContext } from "../context/EventActionContext";
 import DisplaySchedule from "../components/schedule/DisplaySchedule";
+import { Scheduler } from "@devexpress/dx-react-scheduler";
 
 const MySchedule = () => {
-    const {userId, isError, isUpdated} = useContext(UserContext);
-    const {schedulerData} = useContext(EventActionContext);
+    const {currentUser, isError} = useContext(UserContext);
+
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -29,7 +30,7 @@ const MySchedule = () => {
         );
     }    
 
-    return (schedulerData || !schedulerData)?(
+    return (currentUser !== null)?(
         <Wrapper>
             <h1>
                 My Schedule

@@ -6,6 +6,7 @@
 //     friends: […friend, {userId, tags[…]}],
 //     tags: [],
 //     friendRequests: [from userId],
+//     requested: [to userId],
 //     planRequests: [{from userId, eventId}],
 //     notifications; [],
 //     scheduleId: …,
@@ -53,7 +54,7 @@ const addUser = async (req, res) => {
         requested: [],
         // hold all requests from other users for plans
         planRequests: [],
-        Notifications: [],
+        notifications: [],
         scheduleId: scheduleId,
     };
     console.log("=== new user ===");
@@ -89,7 +90,7 @@ const getUser = async (req, res) => {
         // user found
         ? res.status(200).json({ status: 200, data: result})
         // user not found
-        : res.status(404).json({ status: 404, data: "User not found." });
+        : res.status(404).json({ status: 404, message: "User not found." });
     } catch (err) {
         res.status(500).json({ status: 500, message: err.message });
     }
@@ -104,7 +105,7 @@ const getUsers = async (req, res) => {
         const result = await users.find().toArray();
         result.length > 0 
         ? res.status(200).json({status: 200, data: result}) 
-        : res.status(404).json({status: 404, data: "Data not found."});
+        : res.status(404).json({status: 404, message: "Data not found."});
 
     } catch (err) {
         res.status(500).json({status: 500, message: err.message});
@@ -120,7 +121,6 @@ const updateUser = async (req, res) => {
         _id,
         name,
         email,
-        profileImg,
         friends,
         tags,
         friendRequests,
@@ -134,12 +134,12 @@ const updateUser = async (req, res) => {
         await client.connect();
         const user = await users.findOne({_id});
         if (!user){
-            res.status(404).json({status: 404, data: "User not found."});
+            res.status(404).json({status: 404, message: "User not found."});
             client.close();
             return;
         }
-        if(name || email || profileImg || scheduleId){
-            res.status(404).json({status: 404, data: "Cannot change this information."});
+        if(name || email || scheduleId){
+            res.status(404).json({status: 404, message: "Cannot change this information."});
             client.close();
             return;
         }
@@ -156,9 +156,35 @@ const updateUser = async (req, res) => {
             res.status(200).json({status: 200, message:"not coded yet"})
         }
         if(requested){
-            //const sentTo = await users.updateOne({_id: requested}, {tags: {$set: tags}})
-            //const updateTags = await users.updateOne({_id}, {tags: {$set: tags}})
-            res.status(200).json({status: 200, message:"Not coded yet"})
+            console.log("=== requested ===")
+            console.log(requested)
+            const userId = requested.addUserId;
+            console.log(userId);
+            const friend = await users.findOne({_id:userId})
+            console.log(friend);
+            if(!friend){
+                res.status(404).json({status: 404, message: "Cannot find user request was sent to."});
+                client.close();
+                return;
+            }
+            console.log("=== friend request to ===")
+            console.log(friend)
+             // updates requested
+            const newRequestedArr = user.requested;
+            newRequestedArr.push(requested);
+            const updateRequested = await users.updateOne({_id}, {$set: {requested: newRequestedArr}})
+            // updates other users friend request
+            const newFriendRequestArr = friend.friendRequests;
+            const request = {userId:_id, timestamp:requested.timestamp};
+            newFriendRequestArr.push(request);
+            const updateFriendRequest = await users.updateOne({_id:userId}, {$set: {friendRequests: newFriendRequestArr}})
+
+            if (!updateRequested || !updateFriendRequest){
+                res.status(404).json({status: 404, message: "Friend request not complete"});
+                client.close();
+                return;
+            }
+            res.status(200).json({status: 200, message:"request sent"})
         }
         if(planRequests){
             res.status(200).json({status: 200, message:"Not coded yet"})

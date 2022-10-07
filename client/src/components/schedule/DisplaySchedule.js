@@ -2,18 +2,21 @@ import {ViewState, EditingState, IntegratedEditing } from '@devexpress/dx-react-
 import EventForm from './EventForm';
 import {Scheduler, Toolbar, WeekView, Appointments, AppointmentForm, DateNavigator, TodayButton, AppointmentTooltip} from '@devexpress/dx-react-scheduler-material-ui';
 import styled from 'styled-components';
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { EventActionContext } from "../../context/EventActionContext";
 import BasicLayout, {Select} from './BasicLayout';
 
 
 
 
-const DisplaySchedule = ({ eventList }) => {
+const DisplaySchedule = () => {
 
-    const {addEvent, schedulerData} = useContext(EventActionContext);
-
-
+    const {addEvent, schedulerData, isLoading} = useContext(EventActionContext);
+    const [events, setEvents] = useState(null);
+    useEffect(() => {
+        setEvents(schedulerData);
+    }, [schedulerData])
+    console.log(schedulerData)
 
     const handleChangeEvent = ({added, changed, deleted}) => {
         console.log("=== commit changes ===", deleted)
@@ -45,9 +48,10 @@ const DisplaySchedule = ({ eventList }) => {
 
 
 
-    return (
+
+    return !isLoading && events !== null ?(
         <Wrapper>
-            <Scheduler data={schedulerData}>
+            <Scheduler data={events}>
                 <ViewState />
                 <EditingState  onCommitChanges={handleChangeEvent}/>
                 <IntegratedEditing  />
@@ -60,7 +64,11 @@ const DisplaySchedule = ({ eventList }) => {
                 <AppointmentForm basicLayoutComponent={BasicLayout} selectPropsComponent={Select}/>
             </Scheduler>
         </Wrapper>
-    );
+    ):(
+        <Wrapper>
+            <h1>Loading...</h1>
+        </Wrapper>
+    )
 }
 
 const Wrapper = styled.div`

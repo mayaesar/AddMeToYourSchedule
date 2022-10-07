@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import DisplayEvent from "./DisplayEvent";
+
 const DisplayFeed = (array) => {
     const event = null;
     return(

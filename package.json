@@ -2,6 +2,7 @@
   "dependencies": {
     "@emotion/react": "^11.10.4",
     "@emotion/styled": "^11.10.4",
-    "@mui/material": "^5.10.8"
+    "@mui/material": "^5.10.8",
+    "moment": "^2.29.4"
   }
 }

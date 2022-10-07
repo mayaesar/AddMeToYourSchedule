@@ -18,32 +18,28 @@ export const EventActionProvider = ({children}) => {
         if (currentUser !== null){
             setIsLoading(true)
             setScheduleId(currentUser.scheduleId);
-            
         }
     }, [currentUser]);
 
     useEffect(() => {
         if(scheduleId !== null){
-            updateEventList();
-        }
-    },[scheduleId])
-
-    // add all fetches here-------------------------------------------------->
-        const updateEventList = async() => {
-            console.log("=== updating list ===")
-            console.log(scheduleId)
             try {
-                const res = await fetch(`/api/get-schedule/${scheduleId}`);
-                const data = await res.json();
-                if (data.status !== 200) return setIsError(true);
-                setSchedulerData(data.data.events);
-                setIsLoading(false)
+                fetch(`/api/get-schedule/${scheduleId}`)
+                    .then(res => res.json())
+                    .then(data => {
+                        if (data.status !== 200) return setIsError(true);
+                        setSchedulerData(data.data.events);
+                        setIsLoading(false)
+                    })
             } catch (error) {
                 setIsError(true);
             }
         }
+    },[scheduleId])
+
+    // add all fetches here-------------------------------------------------->
         
-        const addEvent = async (title, startDate, endDate, description) => {
+        const addEvent = async (title, startDate, endDate, description, tags) => {
             console.log("=== adding event ===")
             setIsLoading(true)
             try {
@@ -52,12 +48,13 @@ export const EventActionProvider = ({children}) => {
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify({title, startDate, endDate, description})
+                    body: JSON.stringify({title, startDate, endDate, description, tags})
                 });
-                const data = res.json();
+                const data = await res.json();
                 if (data.status !== 200) return setIsError(true)
-                console.log(data);
-                updateEventList();
+                setSchedulerData(data.data.events);
+                setIsLoading(false)
+                //updateEventList();
             } catch (error) {
                 setIsError(true)
             }

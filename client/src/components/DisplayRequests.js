@@ -26,6 +26,8 @@ const DisplayRequests = ({friendRequests, planRequests, users}) => {
         }
     }, [requests])
 
+    
+
 
 
     const getRequests = () => {

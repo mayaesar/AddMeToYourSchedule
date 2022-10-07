@@ -4,7 +4,7 @@ import {Scheduler, Toolbar, WeekView, Appointments, AppointmentForm, DateNavigat
 import styled from 'styled-components';
 import { useContext, useEffect, useState } from "react";
 import { EventActionContext } from "../../context/EventActionContext";
-import BasicLayout, {Select} from './BasicLayout';
+import BasicLayout, {Select, BooleanBtn} from './BasicLayout';
 
 
 
@@ -33,8 +33,11 @@ const DisplaySchedule = () => {
             const title = (data.title);
             const startDate = (data.startDate);
             const endDate = (data.endDate);
-            
-            addEvent(title, startDate, endDate, description);
+            const tags = [];
+            if(data.tags){
+                tags.push(data.tags);
+            }
+            addEvent(title, startDate, endDate, description, tags);
         }
         if (changed){
             data = changed;
@@ -44,9 +47,6 @@ const DisplaySchedule = () => {
         }
         
     }
-
-
-
 
 
     return !isLoading && events !== null ?(
@@ -61,7 +61,7 @@ const DisplaySchedule = () => {
                 <TodayButton />
                 <Appointments />
                 <AppointmentTooltip showOpenButton={true} showDeleteButton={true} showCloseButton={true}/>
-                <AppointmentForm basicLayoutComponent={BasicLayout} selectPropsComponent={Select}/>
+                <AppointmentForm basicLayoutComponent={BasicLayout} selectPropsComponent={Select} booleanEditorComponent={BooleanBtn}/>
             </Scheduler>
         </Wrapper>
     ):(

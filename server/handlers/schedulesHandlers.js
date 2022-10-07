@@ -44,7 +44,6 @@ const addEvent = async (req, res) => {
         _id: eventId,
         id: eventId,
         ...req.body,
-        tags: [],
         joining: [],
     }
 
@@ -62,7 +61,7 @@ const addEvent = async (req, res) => {
         const updatedList = await schedules.updateOne({_id:scheduleId}, {$set:updateEvents});
         updatedList 
         // Events updated
-        ? res.status(200).json({ status: 200, data: updatedList})
+        ? res.status(200).json({ status: 200, data: updateEvents})
         // Events not updated
         : res.status(404).json({ status: 404, data: "Events not updated." });
     } catch (error) {

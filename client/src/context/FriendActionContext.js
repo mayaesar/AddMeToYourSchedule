@@ -40,12 +40,15 @@ export const FriendActionProvider = ({children}) => {
             console.log(err.message);
             setIsError(true);
         }
+    }
+    const friendRequestHandler = (answer) => {
         
     }
      // <-------------------------------------------------- add all fetches here
     return(
         <FriendActionContext.Provider 
         value={{
+            isError,
             sendFriendRequest,
         }}
         >

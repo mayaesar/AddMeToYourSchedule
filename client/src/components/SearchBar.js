@@ -2,10 +2,42 @@ import { useState, useEffect, useContext } from "react";
 import styled from "styled-components";
 import { FriendActionContext } from "../context/FriendActionContext";
 
-const SearchBar = ({users}) => {
+const SearchBar = ({users, currentUser}) => {
+    const {isError, friendRequestHandler} = useContext(FriendActionContext);
     const [suggestions, setSuggestions] = useState();
     const [typedValue, setTypedValue] = useState("");
     const {sendFriendRequest} = useContext(FriendActionContext);
+
+
+    const getButton = (id) => {
+        let result = (<button onClick={() => {
+            sendFriendRequest(id)
+            setTypedValue("")
+        }}>addFriend</button>)
+        try {
+            currentUser.friends.map(friend => {
+                if(friend === id){
+                    result = <button onClick={() => {
+                        //add remove friend function
+                        setTypedValue("")
+                    }}>Unfriend</button>
+                }
+            })
+            currentUser.requested.map(request => {
+                if(request.addUserId === id){
+                    result = (<button disabled>Pending...</button>)
+                }
+            })
+            currentUser.friendRequests.map(request => {
+                if(request.userId === id){
+                    result = (<button disabled>Pending...</button>)
+                }
+            })
+
+            return result;
+
+        } catch (err) { }
+    }
 
     const searchMatches = () => {
         if (users){
@@ -14,7 +46,10 @@ const SearchBar = ({users}) => {
                 const name = user.name.toLowerCase();
                 if (name.search(typedValue.toLowerCase()) !== -1){
                     const id = user._id;
-                    matches.push(<p className="suggested">{user.name} <button onClick={() => sendFriendRequest(id)}>addFriend</button></p>);
+                    if (id !== currentUser._id){
+                        matches.push(<p className="suggested">{user.name} {getButton(id)}</p>);
+                    }
+                    
                 }
             })
             setSuggestions(matches);

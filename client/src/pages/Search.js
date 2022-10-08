@@ -9,32 +9,15 @@ const Search = () => {
     const { users, currentUser } = useContext(UserContext);
     const navigate = useNavigate();
 
-    useEffect(() => {
-        try {
-            const result = window.localStorage.getItem("userId");
-            if (result === "null"){
-                navigate("/sign-in")
-            }
-        } catch (error) {
-            navigate("/sign-in")
-        }
-    }, [])
-
-// in search there will be 3 lists
-// users that aren't friends
-// pending
-// friends
-const array = [];
-
     return users !== null && currentUser !== null?(
         <Wrapper>
             <div className="search">
-                <SearchBar users={users} currentUser={currentUser}/>
+                <SearchBar users={users} currentUser={currentUser} />
             </div>
+            <h2>Pending friend requests</h2>
+            <DisplayRequests friendRequest={currentUser.friendRequest} users={users}/>
             <h2>Friends</h2>
-            <DisplayFriends friends={currentUser.friends}/>
-            <h2>Pending requests</h2>
-            <DisplayRequests friendRequest={currentUser.friendRequest}/>
+            <DisplayFriends friends={currentUser.friends} users={users}/>
         </Wrapper>
     ):(
         <Wrapper>

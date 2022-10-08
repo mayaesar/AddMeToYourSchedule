@@ -7,19 +7,24 @@ const DisplayFriends = ({friends, users}) => {
 
     useEffect(() => {
         setIsLoading(true);
-        friends.map(friend => {
-            users.map(user => {
-                if (friend === user._id){
-                    const element = <div>
-                        <p>{user.name}</p>
-                        <button>+ tags</button>
-                        <button>unfriend</button>
+        try {
+            friends.map(friend => {
+                users.map(user => {
+                    if (friend === user._id){
+                        const element = <div>
+                            <p>{user.name}</p>
+                            <button>+ tags</button>
+                            <button>unfriend</button>
 
-                    </div>
-                    setFriendsArr((arr) => [...arr, element])
-                }
+                        </div>
+                        setFriendsArr((arr) => [...arr, element])
+                    }
+                })
             })
-        })
+        } catch (error) {
+            
+        }
+        
     }, [friends])
 
     useEffect(() => {

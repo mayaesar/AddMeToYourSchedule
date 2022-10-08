@@ -13,11 +13,12 @@ export const EventActionProvider = ({children}) => {
     const [isError, setIsError] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [scheduleId, setScheduleId] = useState(null);
-    
+    const [schedules, setSchedules] = useState(null)
     useEffect(() => {
         if (currentUser !== null){
             setIsLoading(true)
             setScheduleId(currentUser.scheduleId);
+            getSchedules();
         }
     }, [currentUser]);
 
@@ -38,7 +39,21 @@ export const EventActionProvider = ({children}) => {
     },[scheduleId])
 
     // add all fetches here-------------------------------------------------->
-        
+        const getSchedules = async () => {
+            console.log("=== getting schedules ===")
+            setIsLoading(true)
+            try {
+                const res = await fetch(`/api/get-schedules`);
+                const data = await res.json();
+                if (data.status !== 200) return setIsError(true)
+                setSchedules(data.data)
+                setIsLoading(false)
+            } catch (error) {
+                console.log(error)
+                setIsError(true)
+            }
+
+        }
         const addEvent = async (title, startDate, endDate, description, tags) => {
             console.log("=== adding event ===")
             setIsLoading(true)
@@ -56,6 +71,7 @@ export const EventActionProvider = ({children}) => {
                 setIsLoading(false)
                 //updateEventList();
             } catch (error) {
+                console.log(error)
                 setIsError(true)
             }
         }
@@ -67,6 +83,7 @@ export const EventActionProvider = ({children}) => {
             addEvent,
             schedulerData,
             isLoading,
+            schedules,
         }}
         >
             {children}

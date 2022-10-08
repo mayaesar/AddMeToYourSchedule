@@ -71,5 +71,21 @@ const addEvent = async (req, res) => {
     console.log("disconnected");
     
 }
+const getSchedules = async (req, res) => {
+    const {client, db} = createClient();
+    const schedules = db.collection('schedules');
+    try {
+        await client.connect();
+        const result = await schedules.find().toArray();
+        result.length > 0 
+        ? res.status(200).json({status: 200, data: result}) 
+        : res.status(404).json({status: 404, message: "Data not found."});
 
-module.exports={getSchedule, addEvent};
+    } catch (err) {
+        res.status(500).json({status: 500, message: err.message});
+    }
+    client.close();
+    console.log('disconnected');
+}
+
+module.exports={getSchedule, addEvent, getSchedules};

@@ -61,7 +61,7 @@ export const FriendActionProvider = ({children}) => {
                 console.log(json.message);
                 setIsError(true);
             }
-        } catch (err) {
+        } catch (err) {  
             console.log(err.message);
             setIsError(true);
         }

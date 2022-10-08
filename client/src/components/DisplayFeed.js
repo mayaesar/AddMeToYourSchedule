@@ -1,20 +1,40 @@
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 import DisplayEvent from "./DisplayEvent";
 
-const DisplayFeed = (array) => {
+const DisplayFeed = (friends) => {
+    const [display, setDisplay] = useState();
+
+    const setupDisplay = () => {
+        const arr = [];
+        friends.friends.map(friend => {
+            const element = (
+                <div className="event">
+                    <p>{friend.name}</p>
+                    <DisplayEvent schedule={friend.scheduleId}/>
+                </div>
+            )
+            arr.push(element)
+        })
+        setDisplay(arr);
+    }
+    useEffect(() => {
+        if (friends){
+            setupDisplay();
+        }
+    }, [friends])
     const event = null;
-    return(
+    return display?(
         <Wrapper>
-            <div className="event">
-                <p>@Friends's Handle - <span>Friend's name</span></p>
-                <DisplayEvent event={event} />
-            </div>
-            <div className="event">
-                <p>@Friends's Handle - <span>Friend's name</span></p>
-                <DisplayEvent event={event} />
-            </div>
+            {display.map(element => {
+                return element;
+            })}
         </Wrapper>
-    );
+    ):(
+        <Wrapper>
+
+        </Wrapper>
+    )
 };
 
 const Wrapper = styled.div`

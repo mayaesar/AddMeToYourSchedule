@@ -1,18 +1,51 @@
 import styled from "styled-components";
 import DisplayFeed from "../components/DisplayFeed";
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "../context/UserContext";
 
 const Feed = () => {
-    const { currentUser } = useContext(UserContext);
+    const { currentUser, users } = useContext(UserContext);
+    const [friendInfo, setFriendInfo] = useState();
     const navigate = useNavigate();
 
-//fetch users feed
-const array = [];
-    return currentUser !== null ?(
+    const getFriends = () => {
+        console.log("=== getFriends ===")
+        try {
+            const arr = [];
+            let hasFriends = false;
+            currentUser.friends.map(friend => {
+                users.map(user => {
+                    if (friend === user._id){
+                        arr.push(user);
+                        hasFriends = true;
+                    }
+                })
+            })
+            if(hasFriends){
+                setFriendInfo(arr);
+            }
+            else{
+                return(
+                    <Wrapper>
+                        <h2>Must add other users to view feed.</h2>
+                    </Wrapper>
+                )
+            }
+        } catch (err) {
+            console.log(err)
+        }
+    }
+
+    useEffect(() => {
+        if(currentUser && users){
+            getFriends();
+        }
+    },[currentUser, users])
+
+    return friendInfo ?(
         <Wrapper>
-            <DisplayFeed array={array}/>
+            <DisplayFeed friends={friendInfo}/>
         </Wrapper>
     ):(
         <Wrapper>

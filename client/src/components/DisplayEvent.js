@@ -1,8 +1,13 @@
 import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
+import { EventActionContext } from "../context/EventActionContext";
+import { useContext } from "react";
+
 
 const DisplayEvent = (event) => {
+    const { schedules, isLoading } = useContext(EventActionContext);
 
-    return(
+    return (!isLoading)?(
         <Wrapper>
             <Container> 
                 {/* on click open popup to send request */}
@@ -30,7 +35,10 @@ const DisplayEvent = (event) => {
                 </div>
             </Container>
         </Wrapper>
-    );
+    ):(
+        <>
+        </>
+    )
 };
 
 const Wrapper = styled.div`

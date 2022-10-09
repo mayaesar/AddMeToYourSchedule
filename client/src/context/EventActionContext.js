@@ -53,7 +53,19 @@ export const EventActionProvider = ({children}) => {
                 console.log(error)
                 setIsError(true)
             }
-
+        }
+        const updateEvents = async () => {
+            try {
+                fetch(`/api/get-schedule/${scheduleId}`)
+                    .then(res => res.json())
+                    .then(data => {
+                        if (data.status !== 200) return setIsError(true);
+                        setSchedulerData(data.data.events);
+                        setIsLoading(false)
+                    })
+            } catch (error) {
+                setIsError(true);
+            }
         }
         const addEvent = async (title, startDate, endDate, description, tags) => {
             console.log("=== adding event ===")
@@ -76,7 +88,6 @@ export const EventActionProvider = ({children}) => {
                 setIsError(true)
             }
         }
-
         const deleteEvent = async(event) => {
             console.log("=== deleting event ===")
             console.log(event);
@@ -98,6 +109,45 @@ export const EventActionProvider = ({children}) => {
             }
             setIsLoading(false);
         }
+        const updateEvent = async(updates) => {
+            console.log(updates);
+            const eventId = Object.getOwnPropertyNames(updates)[0];
+            console.log(eventId)
+            let title = null;
+            if (updates[eventId].title){
+                title = updates[eventId].title
+            }
+            let startDate = null;
+            if (updates[eventId].startDate){
+                startDate = updates[eventId].startDate
+            }
+            let endDate = null;
+            if (updates[eventId].endDate){
+                endDate = updates[eventId].endDate
+            }
+            let description = null;
+            if (updates[eventId].notes){
+                description = updates[eventId].notes
+            }
+            let tags = null;
+            setIsLoading(true);
+            try {
+                const res = await fetch(`/api/update-event/${scheduleId}`,{
+                    method: "PATCH",
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({eventId, title, startDate, endDate, description, tags})
+                })
+                const data = await res.json();
+                if (data.status !== 200) return setIsError(true)
+                console.log(data)
+            } catch (err) {
+                console.log(err)
+                setIsError(true)
+            }
+            updateEvents();
+        }
     // <-------------------------------------------------- add all fetches here
     
     return(
@@ -107,7 +157,8 @@ export const EventActionProvider = ({children}) => {
             schedulerData,
             isLoading,
             schedules,
-            deleteEvent
+            deleteEvent,
+            updateEvent,
         }}
         >
             {children}

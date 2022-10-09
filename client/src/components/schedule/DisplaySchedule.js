@@ -9,8 +9,9 @@ import BasicLayout, {Select, BooleanBtn} from './BasicLayout';
 
 const DisplaySchedule = () => {
 
-    const {addEvent, schedulerData, isLoading, deleteEvent} = useContext(EventActionContext);
+    const {addEvent, schedulerData, isLoading, deleteEvent, updateEvent} = useContext(EventActionContext);
     const [events, setEvents] = useState(null);
+
     useEffect(() => {
         setEvents(schedulerData);
     }, [schedulerData])
@@ -30,14 +31,15 @@ const DisplaySchedule = () => {
             const title = (data.title);
             const startDate = (data.startDate);
             const endDate = (data.endDate);
-            const tags = [];
+            let tags = null;
             if(data.tags){
-                tags.push(data.tags);
+                tags = (data.tags);
             }
             addEvent(title, startDate, endDate, description, tags);
         }
         if (changed){
             data = changed;
+            updateEvent(data)
         }
         if (deleted !== undefined){
             data = deleted;

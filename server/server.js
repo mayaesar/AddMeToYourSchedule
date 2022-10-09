@@ -6,7 +6,7 @@ const morgan = require("morgan");
 const bodyParser = require("body-parser");
 
 const {getUserId, getUser, getUsers, addUser, updateUser, friendRequests} = require("./handlers/usersHandlers");
-const {getSchedule, addEvent, getSchedules, deleteEvent} = require("./handlers/schedulesHandlers");
+const {getSchedule, addEvent, getSchedules, deleteEvent, updateEvent} = require("./handlers/schedulesHandlers");
 const jsonParser = bodyParser.json();
 
 express()
@@ -29,6 +29,7 @@ express()
     .get('/api/get-schedules', getSchedules)
     .patch("/api/add-event/:scheduleId", jsonParser, addEvent)
     .delete("/api/delete-event/:scheduleId", jsonParser, deleteEvent)
+    .patch('/api/update-event/:scheduleId', jsonParser, updateEvent)
 
 
     //oops!

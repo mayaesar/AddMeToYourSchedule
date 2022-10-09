@@ -7,7 +7,7 @@
 //      start: yyyy/mm/dd MM:HH,
 //      end: yyyy/mm/dd MM:HH,
 //      description:...,
-//      tags: […],
+//      tags: ...,
 //      joining:[userId],
 //     }],
 //  }
@@ -127,4 +127,60 @@ const deleteEvent = async (req, res) => {
     console.log('disconnected');
 }
 
-module.exports={getSchedule, addEvent, getSchedules, deleteEvent};
+const updateEvent = async (req, res) => {
+    const {client, db} = createClient();
+    const schedules = db.collection('schedules');
+    const scheduleId = req.params.scheduleId;
+    const {
+        eventId, 
+        title,
+        startDate,
+        endDate,
+        description,
+        tags
+    } = req.body;
+
+    try {
+        await client.connect();
+        const schedule = await schedules.findOne({_id:scheduleId})
+        if(!schedule){
+            res.status(404).json({ status: 404, data: "Schedule not found." });
+            client.close();
+            return;
+        }
+        console.log("=== schedule ===")
+        console.log(schedule)
+
+        if(title){
+            console.log("=== changing title ===")
+            const event = await schedules.updateOne({_id:scheduleId, events:{$elemMatch:{_id: eventId}}}, {$set:{"events.$.title": title}})
+        }
+
+        if(startDate){
+            console.log("=== changing start date ===")
+            const event = await schedules.updateOne({_id:scheduleId, events:{$elemMatch:{_id: eventId}}}, {$set:{"events.$.startDate": startDate}})
+        }
+
+        if(endDate){
+            console.log("=== changing end date ===")
+            const event = await schedules.updateOne({_id:scheduleId, events:{$elemMatch:{_id: eventId}}}, {$set:{"events.$.endDate": endDate}})
+        }
+
+        if(description){
+            console.log("=== changing description ===")
+            const event = await schedules.updateOne({_id:scheduleId, events:{$elemMatch:{_id: eventId}}}, {$set:{"events.$.description": description}})
+        }
+
+        if(tags){
+            console.log("=== changing tags ===")
+            const event = await schedules.updateOne({_id:scheduleId, events:{$elemMatch:{_id: eventId}}}, {$set:{"events.$.tags": tags}})
+        }
+        res.status(200).json({ status: 200, message: "done"})
+        
+    } catch (err) {
+        res.status(500).json({status: 500, message: err.message});
+    }
+    client.close();
+    console.log('disconnected');
+}
+module.exports={getSchedule, addEvent, getSchedules, deleteEvent, updateEvent};

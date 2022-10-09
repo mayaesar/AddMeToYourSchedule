@@ -23,7 +23,7 @@ const DisplayFeed = (friends) => {
             setupDisplay();
         }
     }, [friends])
-    const event = null;
+    
     return display?(
         <Wrapper>
             {display.map(element => {

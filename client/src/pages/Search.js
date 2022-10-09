@@ -15,7 +15,7 @@ const Search = () => {
                 <SearchBar users={users} currentUser={currentUser} />
             </div>
             <h2>Pending friend requests</h2>
-            <DisplayRequests friendRequest={currentUser.friendRequest} users={users}/>
+            <DisplayRequests friendRequests={currentUser.friendRequests} users={users} />
             <h2>Friends</h2>
             <DisplayFriends friends={currentUser.friends} users={users}/>
         </Wrapper>

@@ -8,6 +8,7 @@ export const EventActionProvider = ({children}) => {
     const {
         currentUser, 
         userId,
+        getUserInfo,
     } = useContext(UserContext);
     const [schedulerData, setSchedulerData] = useState([]);
     const [isError, setIsError] = useState(false);
@@ -146,6 +147,7 @@ export const EventActionProvider = ({children}) => {
                 console.log(err)
                 setIsError(true)
             }
+            getUserInfo();
             updateEvents();
         }
     // <-------------------------------------------------- add all fetches here

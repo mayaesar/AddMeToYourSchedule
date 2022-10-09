@@ -10,6 +10,7 @@ export const UserProvider = ({children}) => {
 
     // fetch user info 
     const getUserInfo = async () => {
+        console.log("=== getting user info ===")
         try {
             const res = await fetch(`/api/get-user/${userId}`);
             const data = await res.json();
@@ -41,8 +42,6 @@ export const UserProvider = ({children}) => {
             setIsError(false);
         }
     }, [userId])
-
-
 
     //once everything is loaded then it will return 
     return(

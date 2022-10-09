@@ -55,7 +55,7 @@ export const FriendActionProvider = ({children}) => {
             });
             const json = await res.json();
             if(json.status === 200){
-                console.log(json)
+                getUserInfo();
             }
             else{
                 console.log(json.message);

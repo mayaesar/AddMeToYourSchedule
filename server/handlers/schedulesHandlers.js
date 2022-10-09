@@ -15,6 +15,7 @@
 
 const { createClient } = require("./createClient");
 const { v4: uuidv4 } = require("uuid");
+const e = require("express");
 
 const getSchedule = async (req, res) => {
     const {client, db} = createClient();
@@ -88,4 +89,42 @@ const getSchedules = async (req, res) => {
     console.log('disconnected');
 }
 
-module.exports={getSchedule, addEvent, getSchedules};
+const deleteEvent = async (req, res) => {
+    const {client, db} = createClient();
+    const schedules = db.collection('schedules');
+    const scheduleId = req.params.scheduleId;
+    const event = req.body.event;
+    console.log(event)
+    console.log(scheduleId);
+    try {
+        await client.connect();
+        const schedule = await schedules.findOne({_id:scheduleId});
+        if(!schedule){
+            res.status(404).json({ status: 404, data: "Schedule not found." });
+            client.close();
+            return;
+        }
+        const newEventList = [];
+        schedule.events.map(element => {
+            console.log(element._id)
+            if(!(element._id === event)){
+                newEventList.push(element)
+            }
+        })
+        console.log(newEventList)
+        // res.status(200).json({status: 200, message: "so far so good "})
+        const results = await schedules.updateOne({_id:scheduleId}, {$set: {events: newEventList}})
+        results 
+        // Event deleted
+        ? res.status(200).json({ status: 200, data: newEventList})
+        // Event not deleted
+        : res.status(404).json({ status: 404, data: "Events not updated." });
+        
+    } catch (err) {
+        res.status(500).json({status: 500, message: err.message});
+    }
+    client.close();
+    console.log('disconnected');
+}
+
+module.exports={getSchedule, addEvent, getSchedules, deleteEvent};

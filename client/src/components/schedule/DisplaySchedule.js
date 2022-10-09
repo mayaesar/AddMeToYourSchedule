@@ -7,11 +7,9 @@ import { EventActionContext } from "../../context/EventActionContext";
 import BasicLayout, {Select, BooleanBtn} from './BasicLayout';
 
 
-
-
 const DisplaySchedule = () => {
 
-    const {addEvent, schedulerData, isLoading} = useContext(EventActionContext);
+    const {addEvent, schedulerData, isLoading, deleteEvent} = useContext(EventActionContext);
     const [events, setEvents] = useState(null);
     useEffect(() => {
         setEvents(schedulerData);
@@ -19,7 +17,6 @@ const DisplaySchedule = () => {
     console.log(schedulerData)
 
     const handleChangeEvent = ({added, changed, deleted}) => {
-        console.log("=== commit changes ===", deleted)
         
         let data = null;
         if (added){
@@ -44,6 +41,7 @@ const DisplaySchedule = () => {
         }
         if (deleted !== undefined){
             data = deleted;
+            deleteEvent(data);
         }
         
     }

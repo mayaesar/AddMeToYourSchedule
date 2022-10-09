@@ -13,7 +13,8 @@ export const EventActionProvider = ({children}) => {
     const [isError, setIsError] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [scheduleId, setScheduleId] = useState(null);
-    const [schedules, setSchedules] = useState(null)
+    const [schedules, setSchedules] = useState(null);
+
     useEffect(() => {
         if (currentUser !== null){
             setIsLoading(true)
@@ -75,6 +76,28 @@ export const EventActionProvider = ({children}) => {
                 setIsError(true)
             }
         }
+
+        const deleteEvent = async(event) => {
+            console.log("=== deleting event ===")
+            console.log(event);
+            setIsLoading(true);
+            try {
+                const res = await fetch(`/api/delete-event/${scheduleId}`,{
+                    method: "DELETE",
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({event})
+                })
+                const data = await res.json();
+                if (data.status !== 200) return setIsError(true)
+                setSchedulerData(data.data)
+            } catch (err) {
+                console.log(err)
+                setIsError(true)
+            }
+            setIsLoading(false);
+        }
     // <-------------------------------------------------- add all fetches here
     
     return(
@@ -84,6 +107,7 @@ export const EventActionProvider = ({children}) => {
             schedulerData,
             isLoading,
             schedules,
+            deleteEvent
         }}
         >
             {children}

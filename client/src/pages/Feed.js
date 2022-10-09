@@ -26,11 +26,7 @@ const Feed = () => {
                 setFriendInfo(arr);
             }
             else{
-                return(
-                    <Wrapper>
-                        <h2>Must add other users to view feed.</h2>
-                    </Wrapper>
-                )
+                setFriendInfo("no friends")
             }
         } catch (err) {
             console.log(err)
@@ -42,6 +38,12 @@ const Feed = () => {
             getFriends();
         }
     },[currentUser, users])
+
+    if(friendInfo === "no friends"){
+        return <Wrapper>
+            Must accept or send friend requests before viewing your feed.
+        </Wrapper>
+    }
 
     return friendInfo ?(
         <Wrapper>

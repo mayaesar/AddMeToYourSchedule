@@ -18,6 +18,14 @@ const Logout = ({logout, setUserId}) => {
 }
 
 const Wrapper = styled.div`
-
+    button{
+        background-color: white;
+        color: var(--primary-colour);
+        text-decoration: none;
+        font-size: var(--paragraph-font-size);
+        border: var(--border);
+        border-radius: var(--border-radius);
+        padding: .5vw;
+    }
 `;
 export default Logout;

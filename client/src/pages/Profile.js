@@ -1,13 +1,22 @@
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Link, useNavigate} from "react-router-dom";
 import styled from "styled-components";
+import {ViewState, EditingState, IntegratedEditing } from '@devexpress/dx-react-scheduler';
+import {Scheduler, Toolbar, WeekView, Appointments, DateNavigator, TodayButton} from '@devexpress/dx-react-scheduler-material-ui';
 import Logout from "../components/Logout";
 import { UserContext } from "../context/UserContext";
+import { EventActionContext } from "../context/EventActionContext";
+
 
 const Profile = ({logout}) => {
     //gets user information
+    const {schedulerData, isLoading} = useContext(EventActionContext);
     const { setUserId, currentUser, isError } = useContext(UserContext);
-    const navigate = useNavigate();
+    const [events, setEvents] = useState(null);
+    
+    useEffect(() => {
+        setEvents(schedulerData);
+    }, [schedulerData])
 
     if (isError){
         return(
@@ -17,7 +26,7 @@ const Profile = ({logout}) => {
         );
     }
     
-    return currentUser !== null?(
+    return currentUser !== null && !isLoading && events?(
         <Wrapper>
             <Top>
                 <div className="icon">profile icon</div>
@@ -32,8 +41,21 @@ const Profile = ({logout}) => {
                 </div>
             </Top>
             <Schedule>
-                <h2>My Schedule</h2>
-                <div></div>
+                <div className="aboveSchedule">
+                    <h2>My Schedule</h2>
+                    <Btn to="/my-schedule">Edit</Btn>
+                </div>
+                
+                <div className="schedule">
+                    <Scheduler data={events}>
+                    <ViewState />
+                    <WeekView cellDuration={60} startDayHour={6}/>
+                    <Toolbar />
+                    <DateNavigator />
+                    <TodayButton />
+                    <Appointments />
+                    </Scheduler>
+                </div>
             </Schedule>
         </Wrapper>
     ):(
@@ -47,21 +69,24 @@ const Wrapper = styled.div`
     width: 90%;
     max-width: var(--max-width);
     margin: auto;
+    
 `;
 const Top = styled.div`
+    padding: 1vw;
+    font-size: 1.2vw;
     display: flex;
     gap: 1vw;
     border-bottom: var(--border);
     padding-bottom: 1vw;
-    margin-bottom: 1vw;
+    margin-bottom: 2vw;
     .icon{
         border: var(--border);
-        width: 10vw;
-        height: 10vw;
+        width: 8vw;
+        height: 8vw;
     }
     .info{
-        padding-top: 1vw;
         display: grid;
+        gap: 2.5vw;
     }
     .buttons{
         display: flex;
@@ -78,14 +103,34 @@ const Buttons = styled(Link)`
     padding: .5vw;
 `;
 const Schedule = styled.div`
-
+    width: 90%;
+    margin: auto;
+    .aboveSchedule{
+        display: flex;
+        gap: 50vw;
+    }
     h2{
         font-size: var(--subheader-font-size);
         padding-bottom: 1vw;
     }
-    div{
-        border: var(--border);
-        height: 40vw;
+    .schedule{
+
+        height: 700px;
+        max-height: 30vw;
     }
+
+`;
+
+const Btn = styled(Link)`
+    border: var(--border);
+    border-radius: var(--border-radius);
+    border-color:var(--secondary-colour);
+    color: var(--secondary-colour);
+    text-decoration: none;
+    padding: .5vw;
+    padding-left: 1vw;
+    padding-right: 1vw;
+    margin: auto;
+
 `;
 export default Profile;

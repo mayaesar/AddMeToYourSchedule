@@ -11,16 +11,6 @@ const MySchedule = () => {
 
     const navigate = useNavigate();
 
-    useEffect(() => {
-        try {
-            const result = window.localStorage.getItem("userId");
-            if (result === "null"){
-                navigate("/sign-in")
-            }
-        } catch (error) {
-            navigate("/sign-in")
-        }
-    }, [])
 
     if (isError){
         return(

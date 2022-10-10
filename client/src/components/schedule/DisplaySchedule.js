@@ -1,5 +1,4 @@
 import {ViewState, EditingState, IntegratedEditing } from '@devexpress/dx-react-scheduler';
-import EventForm from './EventForm';
 import {Scheduler, Toolbar, WeekView, Appointments, AppointmentForm, DateNavigator, TodayButton, AppointmentTooltip} from '@devexpress/dx-react-scheduler-material-ui';
 import styled from 'styled-components';
 import { useContext, useEffect, useState } from "react";

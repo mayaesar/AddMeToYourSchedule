@@ -61,6 +61,7 @@ const Wrapper = styled.div`
     width: 90%;
     max-width: var(--max-width);
     margin: auto;
+    font-size: 1vw;
 `;
 
 export default Feed;

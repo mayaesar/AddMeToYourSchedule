@@ -5,7 +5,8 @@ export default createGlobalStyle`
         --max-width: 1200px;
         --primary-colour: #383838;
         --secondary-colour: #3D8AD9;
-        --border-radius: 20px;
+        --background-colour: #64B5F6;
+        --border-radius: 8px;
         --border: 1px #383838 solid;
         --primary-font-family: 'Poppins', sans-serif;
         --header-font-size: 1.5vw;

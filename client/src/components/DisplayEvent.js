@@ -92,7 +92,7 @@ const Container = styled.div`
         border: var(--border);
         border-radius: var(--border-radius);
         height: 9vw;
-        background-color: var(--secondary-colour);
+        background-color: var(--background-colour);
         padding: 1vw;
     }
 `;

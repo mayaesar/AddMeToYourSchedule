@@ -1,7 +1,6 @@
 import { useEffect, useState, useContext } from "react";
 import styled from "styled-components";
 import axios from 'axios';
-import { useNavigate } from "react-router-dom";
 import { UserContext } from "../context/UserContext";
 
 const SignIn = ({loginWithRedirect, isAuthenticated, user}) => {
@@ -9,7 +8,6 @@ const [currentUserId, setCurrentUserId] = useState(null);
 const [isLoading, setIsLoading] = useState(false);
 const { setUserId, userId } = useContext(UserContext);
 
-const navigate = useNavigate();
 useEffect(() => {
     try {
         const result = window.localStorage.getItem("userId");

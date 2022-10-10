@@ -2,14 +2,11 @@ import { useContext, useEffect} from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { UserContext } from "../context/UserContext";
-import { EventActionContext } from "../context/EventActionContext";
 import DisplaySchedule from "../components/schedule/DisplaySchedule";
-import { Scheduler } from "@devexpress/dx-react-scheduler";
 
 const MySchedule = () => {
     const {currentUser, isError} = useContext(UserContext);
 
-    const navigate = useNavigate();
 
 
     if (isError){

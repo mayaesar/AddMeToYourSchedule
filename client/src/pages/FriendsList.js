@@ -8,8 +8,6 @@ import { FriendActionContext } from "../context/FriendActionContext";
 const FriendsList = () => {
     const {currentUser, users} = useContext(UserContext);
     const {removeFriend} =useContext(FriendActionContext)
-    const friends = [];
-    const pendings = [];
     return currentUser !== null && users !== null?(
         <Wrapper>
             <h2>Friends</h2>

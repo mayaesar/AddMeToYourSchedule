@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import { Link, useNavigate} from "react-router-dom";
 import styled from "styled-components";
-import {ViewState, EditingState, IntegratedEditing } from '@devexpress/dx-react-scheduler';
+import {ViewState} from '@devexpress/dx-react-scheduler';
 import {Scheduler, Toolbar, WeekView, Appointments, DateNavigator, TodayButton} from '@devexpress/dx-react-scheduler-material-ui';
 import Logout from "../components/Logout";
 import { UserContext } from "../context/UserContext";

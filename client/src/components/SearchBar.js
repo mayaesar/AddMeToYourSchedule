@@ -3,7 +3,6 @@ import styled from "styled-components";
 import { FriendActionContext } from "../context/FriendActionContext";
 
 const SearchBar = ({users, currentUser}) => {
-    const {isError, friendRequestHandler} = useContext(FriendActionContext);
     const [suggestions, setSuggestions] = useState();
     const [typedValue, setTypedValue] = useState("");
     const {sendFriendRequest} = useContext(FriendActionContext);

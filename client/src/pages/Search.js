@@ -3,11 +3,9 @@ import SearchBar from "../components/SearchBar";
 import DisplayFriends from "../components/DisplayFriends";
 import DisplayRequests from "../components/DisplayRequests";
 import { useContext, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import { UserContext } from "../context/UserContext";
 const Search = () => {
     const { users, currentUser } = useContext(UserContext);
-    const navigate = useNavigate();
 
     return users !== null && currentUser !== null?(
         <Wrapper>

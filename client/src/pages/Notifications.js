@@ -1,13 +1,11 @@
 import styled from "styled-components";
 import DisplayNotifications from "../components/DisplayNotifications";
 import { useContext, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import { UserContext } from "../context/UserContext";
 import DisplayRequests from "../components/DisplayRequests";
 
 const Notifications = () => {
     const {currentUser, users} = useContext(UserContext);
-    const navigate = useNavigate();
 
     // fetch users notifications
     return currentUser !== null && users !== null?(

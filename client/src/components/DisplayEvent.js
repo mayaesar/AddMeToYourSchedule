@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import { useNavigate } from "react-router-dom";
 import { EventActionContext } from "../context/EventActionContext";
 import { useContext, useEffect, useState } from "react";
 import moment from "moment";

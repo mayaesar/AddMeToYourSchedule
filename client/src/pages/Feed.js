@@ -1,13 +1,11 @@
 import styled from "styled-components";
 import DisplayFeed from "../components/DisplayFeed";
 import { useContext, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { UserContext } from "../context/UserContext";
 
 const Feed = () => {
     const { currentUser, users } = useContext(UserContext);
     const [friendInfo, setFriendInfo] = useState();
-    const navigate = useNavigate();
 
     const getFriends = () => {
         console.log("=== getFriends ===")

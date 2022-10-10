@@ -185,9 +185,6 @@ const updateUser = async (req, res) => {
             }
             res.status(200).json({status: 200, message:"request sent"})
         }
-        if(planRequests){
-            res.status(200).json({status: 200, message:"Not coded yet"})
-        }
         if(notifications){
             const updateNotifications = await users.updateOne({_id}, {notifications: {$set: notifications}})
             res.status(200).json({status: 200, data: updateNotifications, message:"Notifications are updated!"})
@@ -269,5 +266,43 @@ const friendRequests = async (req, res) => {
     client.close();
     console.log("disconnected");
 }
+const sendPlanRequest = async (req, res) => {
+    const {client, db} = createClient();
+    const users = db.collection('users');
+    const {
+        user,
+        friendId,
+        event,
+        timestamp,
+    } = req.body;
+    console.log(timestamp)
+    try {
+        await client.connect();
+        const friend = await users.findOne({_id:friendId});
+        if(!friend){
+            res.status(404).json({status: 404, message: "Cannot find user "});
+            client.close();
+            return;
+        }
+        console.log(friend)
+        const planRequests = friend.planRequests;
+        const request = {
+            user: user._id,
+            event: event._id,
+            timestamp: timestamp,
+        }
+        planRequests.push(request);
+        const results = await users.updateOne({_id:friendId}, {$set: {planRequests: planRequests}});
+        results 
+        // Event deleted
+        ? res.status(200).json({ status: 200, message: "request sent" })
+        // Event not deleted
+        : res.status(404).json({ status: 404, message: "request not sent" });
 
-module.exports={getUserId, getUser, getUsers, addUser, updateUser, friendRequests};
+    } catch (err) {
+        res.status(500).json({ status: 500, message: err.message });
+    }
+    client.close();
+    console.log("disconnected");
+}
+module.exports={getUserId, getUser, getUsers, addUser, updateUser, friendRequests, sendPlanRequest};

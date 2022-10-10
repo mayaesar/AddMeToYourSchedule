@@ -11,7 +11,7 @@ const DisplayFeed = (friends) => {
             const element = (
                 <div className="event">
                     <p>{friend.name}</p>
-                    <DisplayEvent schedule={friend.scheduleId}/>
+                    <DisplayEvent schedule={friend.scheduleId} friend={friend}/>
                 </div>
             )
             arr.push(element)
@@ -44,7 +44,7 @@ const Wrapper = styled.div`
         margin-bottom: 1vw;
         padding: 1vw;
         border: var(--border);
-        height: 12vw;
+        height: 14vw;
     }
 `;
 

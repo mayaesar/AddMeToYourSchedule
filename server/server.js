@@ -5,7 +5,7 @@ const helmet = require("helmet");
 const morgan = require("morgan");
 const bodyParser = require("body-parser");
 
-const {getUserId, getUser, getUsers, addUser, updateUser, friendRequests} = require("./handlers/usersHandlers");
+const {getUserId, getUser, getUsers, addUser, updateUser, friendRequests, sendPlanRequest} = require("./handlers/usersHandlers");
 const {getSchedule, addEvent, getSchedules, deleteEvent, updateEvent} = require("./handlers/schedulesHandlers");
 const jsonParser = bodyParser.json();
 
@@ -22,7 +22,7 @@ express()
     .post("/api/create-user", jsonParser, addUser)
     .patch("/api/update-user", jsonParser, updateUser)
     .patch("/api/friend-request", jsonParser, friendRequests)
-    
+    .patch("/api/send-plan-request", jsonParser, sendPlanRequest)
 
     //manages all schedule information
     .get("/api/get-schedule/:scheduleId", getSchedule)
@@ -30,6 +30,7 @@ express()
     .patch("/api/add-event/:scheduleId", jsonParser, addEvent)
     .delete("/api/delete-event/:scheduleId", jsonParser, deleteEvent)
     .patch('/api/update-event/:scheduleId', jsonParser, updateEvent)
+    
 
 
     //oops!

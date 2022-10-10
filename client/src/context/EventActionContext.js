@@ -1,6 +1,7 @@
 
 import { createContext, useState, useContext, useEffect } from "react";
 import { UserContext } from "./UserContext";
+import moment from "moment";
 
 export const EventActionContext = createContext(null);
 
@@ -150,6 +151,34 @@ export const EventActionProvider = ({children}) => {
             getUserInfo();
             updateEvents();
         }
+        const sendPlanRequest = async (event, friend) => {
+            console.log("=== sending plan request ===")
+            const friendId = friend._id;
+            const user = currentUser;
+            const timestamp = moment().format();
+            console.log(timestamp)
+            try {
+                const res = await fetch('/api/send-plan-request', {
+                    method: "PATCH",
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({event, friendId, user, timestamp})
+                });
+                const json = await res.json();
+                if(json.status === 200){
+                    console.log(json)
+                }
+                else{
+                    console.log(json.message);
+                    setIsError(true);
+                }
+            } catch (err) {
+                console.log(err.message);
+                setIsError(true);
+            }
+
+        }
     // <-------------------------------------------------- add all fetches here
     
     return(
@@ -161,6 +190,7 @@ export const EventActionProvider = ({children}) => {
             schedules,
             deleteEvent,
             updateEvent,
+            sendPlanRequest,
         }}
         >
             {children}

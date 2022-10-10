@@ -183,4 +183,8 @@ const updateEvent = async (req, res) => {
     client.close();
     console.log('disconnected');
 }
-module.exports={getSchedule, addEvent, getSchedules, deleteEvent, updateEvent};
+
+const handlePlanRequest = async (req, res) => {
+
+}
+module.exports={getSchedule, addEvent, getSchedules, deleteEvent, updateEvent, handlePlanRequest};

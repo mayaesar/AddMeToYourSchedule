@@ -88,7 +88,6 @@ const Container = styled.div`
     .eventContainer {
         min-width: 16vw;
         max-width: 16vw;
-        border: var(--border);
         border-radius: var(--border-radius);
         height: 9vw;
         background-color: var(--background-colour);

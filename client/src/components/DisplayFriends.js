@@ -1,9 +1,12 @@
 import { useEffect, useState} from "react";
 import styled from "styled-components";
+import TagModal from './TagModal'
 
 const DisplayFriends = ({friends, users, removeFriend}) => {
     const [friendsArr, setFriendsArr] = useState();
     const [isLoading, setIsLoading] = useState();
+    const [show, setShow] = useState(false);
+    const [modal, setModal] = useState(null)
 
     useEffect(() => {
         setIsLoading(true);
@@ -14,7 +17,10 @@ const DisplayFriends = ({friends, users, removeFriend}) => {
                     if (friend === user._id){
                         const element = <div>
                             <p>{user.name}</p>
-                            <button>+ tags</button>
+                            <button onClick={() => {
+                                    setShow(true)
+                                    setModal(user)
+                                }}>+ tags</button>
                             <button onClick={() => removeFriend(friend)}>unfriend</button>
                         </div>
                         arr.push(element)
@@ -40,6 +46,7 @@ const DisplayFriends = ({friends, users, removeFriend}) => {
 
     return !isLoading && friendsArr?(
         <Wrapper>
+            <TagModal show={show} modal={modal} onClose={() => setShow(false)}/>
             {friendsArr.map(friend => {
                 return friend;
             })}

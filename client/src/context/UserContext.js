@@ -32,6 +32,27 @@ export const UserProvider = ({children}) => {
             setIsError(true);
         }
     }
+
+    const addTag = async ({tag, friendId}) => {
+        const change = "add tag";
+        console.log(friendId)
+        console.log(tag)
+        try {
+            const res = await fetch(`/api/update-tags/${userId}`, {
+                method: "PATCH",
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({tag, friendId, change})
+            });
+            const data = await res.json();
+            if (data.status !== 200) return setIsError(true);
+            getUserInfo();
+
+        } catch (err) {
+            setIsError(true);
+        }
+    }
     
     //if user is signed in then it will fetch information
     useEffect(() => {
@@ -52,6 +73,7 @@ export const UserProvider = ({children}) => {
             currentUser,
             isError,
             getUserInfo,
+            addTag,
         }}>
             {children}
         </UserContext.Provider>

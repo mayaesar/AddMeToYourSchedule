@@ -122,10 +122,7 @@ const updateUser = async (req, res) => {
         name,
         email,
         friends,
-        tags,
-        friendRequests,
         requested,
-        planRequests,
         notifications,
         scheduleId,
     } = req.body;
@@ -146,13 +143,6 @@ const updateUser = async (req, res) => {
         if(friends){
             const updateFriends = await users.updateOne({_id}, {friends: {$set: friends}})
             res.status(200).json({status: 200, data: updateFriends, message:"friends list is updated!"})
-        }
-        if(tags){
-            const updateTags = await users.updateOne({_id}, {tags: {$set: tags}})
-            res.status(200).json({status: 200, data: updateTags, message:"Tags list is updated!"})
-        }
-        if(friendRequests){
-            res.status(200).json({status: 204, message:"wrong endpoint"})
         }
         if(requested){
             console.log("=== requested ===")
@@ -372,4 +362,72 @@ const removeFriend = async (req, res) => {
     console.log("disconnected");
     
 }
-module.exports={getUserId, getUser, getUsers, addUser, updateUser, friendRequests, sendPlanRequest, removeFriend};
+const updateTags = async (req, res) => {
+    const {client, db} = createClient();
+    const users = db.collection('users');
+    const {userId} = req.params;
+    const {
+        tag,
+        friendId,
+        change,
+    } = req.body;
+    console.log("=== change ===")
+    console.log(change)
+    try {
+        await client.connect();
+        const user = await users.findOne({_id:userId})
+        if(!user){
+            res.status(404).json({status: 404, message: "User not found."});
+            client.close();
+            return;
+        }
+        console.log(user)
+        const tags = user.tags;
+
+        if(change === "add tag"){
+            console.log("=== add tag ===")
+            if(!tag){
+                res.status(404).json({status: 404, message: "Need to send a tag first"});
+                client.close();
+                return;
+            }
+            try {
+                let match = false;
+                tags.map(tag => {
+                    if(tag.tag == tag){
+                        match = true;
+                    }
+                })
+                if(match){
+                    res.status(404).json({status: 404, message: "Tag already created"});
+                    client.close();
+                    return;
+                }
+            } catch (err) {
+                
+            }
+            if(friendId){
+                const arr = [];
+                arr.push(friendId);
+                newTag = {tag:tag, friendId:arr}
+                tags.push(newTag)
+            }
+            else{
+                newTag = {tag:tag, friendId:[]}
+                tags.push(newTag)
+            }
+            console.log("=== new tags array ===")
+            console.log(tags)
+            await users.updateOne({_id:userId},{$set:{tags:tags}})
+            res.status(200).json({status: 200, message:"done"})
+            client.close();
+            return;
+        }
+        
+    } catch (err) {
+        res.status(500).json({status: 500, message: err.message});
+    }
+    client.close();
+    console.log('disconnected');
+}
+module.exports={getUserId, getUser, getUsers, addUser, updateUser, friendRequests, sendPlanRequest, removeFriend, updateTags};

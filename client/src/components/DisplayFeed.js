@@ -44,6 +44,7 @@ const Wrapper = styled.div`
         margin-bottom: 1vw;
         padding: 1vw;
         border: var(--border);
+        border-radius: var(--border-radius);
         height: 14vw;
     }
 `;

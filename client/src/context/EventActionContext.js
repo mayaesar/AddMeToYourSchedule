@@ -179,6 +179,33 @@ export const EventActionProvider = ({children}) => {
             }
 
         }
+
+        const handlePlanRequest = async ({event, userId, reply}) => {
+            console.log("=== sending plan request ===")
+            const _id = currentUser._id;
+            console.log(_id)
+            try {
+                const res = await fetch('/api/plan-request', {
+                    method: "PATCH",
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({_id, event, userId, reply})
+                });
+                const json = await res.json();
+                if(json.status === 200){
+                    console.log(json)
+                    getUserInfo();
+                }
+                else{
+                    console.log(json);
+                    setIsError(true);
+                }
+            } catch (err) {
+                console.log(err.message);
+                setIsError(true);
+            }
+        }
     // <-------------------------------------------------- add all fetches here
     
     return(
@@ -191,6 +218,7 @@ export const EventActionProvider = ({children}) => {
             deleteEvent,
             updateEvent,
             sendPlanRequest,
+            handlePlanRequest,
         }}
         >
             {children}

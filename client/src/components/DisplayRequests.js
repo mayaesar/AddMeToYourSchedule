@@ -1,12 +1,16 @@
 import { useEffect, useState, useContext } from "react";
 import styled from "styled-components";
 import { FriendActionContext } from "../context/FriendActionContext";
+import moment from "moment";
+import { EventActionContext } from "../context/EventActionContext";
 
 const DisplayRequests = ({friendRequests, planRequests, users}) => {
     const {isError, friendRequestHandler} = useContext(FriendActionContext);
+    const {handlePlanRequest} = useContext(EventActionContext);
     const [requests, setRequests] = useState([]);
     const [isLoading, setIsLoading] = useState();
 
+    console.log(planRequests)
     useEffect(() => {
         if(friendRequests !== undefined || planRequests !== undefined){
             setRequests([])
@@ -30,6 +34,7 @@ const DisplayRequests = ({friendRequests, planRequests, users}) => {
     const getRequests = () => {
         console.log("=== getting friend requests ===")
         try {
+            const arr = []
             friendRequests.map(request => {
                 users.map(user => {
                     if (request.userId === user._id){
@@ -37,7 +42,6 @@ const DisplayRequests = ({friendRequests, planRequests, users}) => {
                         <span>
                             <h2>{user.name}</h2>
                             <p>has sent you a friend request</p>
-                            <p>{request.timestamp}</p>
                         </span>
                         <span>
                             <button onClick={() => friendRequestHandler({userId:request.userId, reply:"accepted"})}>Accept</button>
@@ -55,16 +59,17 @@ const DisplayRequests = ({friendRequests, planRequests, users}) => {
         try {
             planRequests.map(request => {
                 users.map(user => {
-                    if (request.userId === user._id){
+                    if (request.user === user._id){
+                        console.log(user)
+                        const startDate = moment(request.event.startDate).format('MMMM Do');
                         const element = <div className="requests">
                         <span>
                             <h2>{user.name}</h2>
-                            <p>has sent you a request on your event called {request.event.title} on {request.event.startDate}</p>
-                            <p>{request.timestamp}</p>
+                            <p>has sent you a request on your event called {request.event.title} on {startDate}</p>
                         </span>
                         <span>
-                            <button>Accept</button>
-                            <button>Decline</button>
+                            <button onClick={() => handlePlanRequest({event:request.event, userId:request.user, reply:"accepted"})}>Accept</button>
+                            <button onClick={() => handlePlanRequest({event:request.event, userId:request.user, reply:"declined"})}>Decline</button>
                         </span>
                     </div>;
                     setRequests((arr) => [...arr, element])

@@ -257,8 +257,8 @@ const friendRequests = async (req, res) => {
                 client.close();
                 return;
             }
-            res.status(200).json({status: 200, message:"friend added"})
         }
+        res.status(200).json({status: 200, message:"done"})
 
     } catch (err) {
         res.status(500).json({ status: 500, message: err.message });
@@ -269,6 +269,7 @@ const friendRequests = async (req, res) => {
 const sendPlanRequest = async (req, res) => {
     const {client, db} = createClient();
     const users = db.collection('users');
+    const schedules = db.collection('schedules');
     const {
         user,
         friendId,
@@ -278,6 +279,25 @@ const sendPlanRequest = async (req, res) => {
     console.log(timestamp)
     try {
         await client.connect();
+        const check = await schedules.findOne({_id:user.scheduleId});
+        if(!check){
+            res.status(404).json({status: 404, message: "Cannot check schedule "});
+            client.close();
+            return;
+        }
+        console.log(event._id)
+        let match = false;
+        check.events.map(userEvent => {
+            console.log(userEvent._id)
+            if(event._id === userEvent._id){
+                match = true
+            }
+        })
+        if(match){
+            res.status(404).json({status: 404, message: "already participating in this event"});
+            client.close();
+            return;
+        }
         const friend = await users.findOne({_id:friendId});
         if(!friend){
             res.status(404).json({status: 404, message: "Cannot find user "});
@@ -288,7 +308,7 @@ const sendPlanRequest = async (req, res) => {
         const planRequests = friend.planRequests;
         const request = {
             user: user._id,
-            event: event._id,
+            event: event,
             timestamp: timestamp,
         }
         planRequests.push(request);

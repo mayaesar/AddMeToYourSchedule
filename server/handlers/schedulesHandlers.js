@@ -185,6 +185,98 @@ const updateEvent = async (req, res) => {
 }
 
 const handlePlanRequest = async (req, res) => {
+    const {client, db} = createClient();
+    const schedules = db.collection('schedules');
+    const users = db.collection('users');
+    const {
+        _id,
+        event,
+        userId,
+        reply,
+    } = req.body;
+    try {
+        await client.connect();
+        const user = await users.findOne({_id});
+        if(!user){
+            res.status(404).json({ status: 404, data: "user not found." });
+            client.close();
+            return;
+        }
+        const newPlanRequests = [];
+        const newEvent = [];
+        user.planRequests.map(plan => {
+            if(plan.event._id !== event._id){
+                newPlanRequests.push(plan)
+            }
+        })
+        const updatePlanRequest = await users.updateOne({_id}, {$set:{planRequests:newPlanRequests}})
+        console.log(updatePlanRequest)
+        if(reply === "accepted"){
+            console.log("=== accepted ===")
+            const friend = await users.findOne({_id:userId})
+            if(!friend){
+                res.status(404).json({ status: 404, data: "other user not found." });
+                client.close();
+                return;
+            }
+            // change joining list on both 
+            // add event to schedule
+            const schedule = await schedules.findOne({_id:user.scheduleId})
+            if(!schedule){
+                res.status(404).json({ status: 404, data: "schedule not found." });
+                client.close();
+                return;
+            }
+            // change joining
+            const friendsSchedule = await schedules.findOne({_id:friend.scheduleId})
+            if(!friendsSchedule){
+                res.status(404).json({ status: 404, data: "schedule not found." });
+                client.close();
+                return;
+            }
+            // update friends schedule
+            const newFriendsSchedule = friendsSchedule.events
+            const newEvent = event;
+            newFriendsSchedule.push(newEvent)
+            console.log("=== new friend events ===")
+            console.log(newFriendsSchedule)
+            const friendResults = await schedules.updateOne({_id:friend.scheduleId},{$set:{events:newFriendsSchedule}})
+            // update users event for joining 
+            const newSchedule = [];
+            const updateEvent = event;
+            console.log(event.joining)
+            updateEvent.joining.push(userId)
+            schedule.events.map(userEvent => {
+                if(userEvent._id === event._id){
+                    newSchedule.push(updateEvent)
+                }
+                else{
+                    newSchedule.push(userEvent)
+                }
+            })
+            console.log("=== new events ===")
+            console.log(newSchedule)
+            const userResults = await schedules.updateOne({_id:user.scheduleId},{$set:{events:newSchedule}})
+            if(!friendResults || !userResults){
+                res.status(404).json({ status: 404, data: "schedules not updated" });
+                client.close();
+                return;
+            }
+            const notificationArr = friend.notifications;
+            notificationArr.push(`${user.name} has accepted your plan request, you can now view this event in your schedule!`); 
+            const newNotification = await users.updateOne({_id:userId},  {$set: {notifications: notificationArr}});
+            if (!newNotification){
+                res.status(404).json({status: 404, message: "notification did not send."});
+                client.close();
+                return;
+            }
+        }
+        res.status(200).json({status: 200, message: "done"})
 
+    }  catch (err) {
+        res.status(500).json({status: 500, message: err.message});
+    }
+    client.close();
+    console.log('disconnected');
 }
 module.exports={getSchedule, addEvent, getSchedules, deleteEvent, updateEvent, handlePlanRequest};

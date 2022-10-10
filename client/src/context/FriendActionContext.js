@@ -66,6 +66,25 @@ export const FriendActionProvider = ({children}) => {
             setIsError(true);
         }
     }
+    const removeFriend = async (friend) => {
+        console.log(friend)
+        const _id = currentUser._id;
+        try {
+            const res = await fetch('/api/remove-friend/',{
+                method: "DELETE",
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({_id, friend})
+            })
+            const data = await res.json();
+            if (data.status !== 200) return setIsError(true)
+            getUserInfo();
+        } catch (err) {
+            console.log(err)
+            setIsError(true)
+        }
+    }
      // <-------------------------------------------------- add all fetches here
     return(
         <FriendActionContext.Provider 
@@ -73,6 +92,7 @@ export const FriendActionProvider = ({children}) => {
             isError,
             sendFriendRequest,
             friendRequestHandler,
+            removeFriend,
         }}
         >
             {children}

@@ -1,26 +1,27 @@
 import { useEffect, useState} from "react";
 import styled from "styled-components";
 
-const DisplayFriends = ({friends, users}) => {
-    const [friendsArr, setFriendsArr] = useState([]);
+const DisplayFriends = ({friends, users, removeFriend}) => {
+    const [friendsArr, setFriendsArr] = useState();
     const [isLoading, setIsLoading] = useState();
 
     useEffect(() => {
         setIsLoading(true);
         try {
+            const arr = [];
             friends.map(friend => {
                 users.map(user => {
                     if (friend === user._id){
                         const element = <div>
                             <p>{user.name}</p>
                             <button>+ tags</button>
-                            <button>unfriend</button>
-
+                            <button onClick={() => removeFriend(friend)}>unfriend</button>
                         </div>
-                        setFriendsArr((arr) => [...arr, element])
+                        arr.push(element)
                     }
                 })
             })
+            setFriendsArr(arr)
         } catch (error) {
             
         }
@@ -37,7 +38,7 @@ const DisplayFriends = ({friends, users}) => {
         }
     }, [friendsArr])
 
-    return !isLoading?(
+    return !isLoading && friendsArr?(
         <Wrapper>
             {friendsArr.map(friend => {
                 return friend;

@@ -325,4 +325,51 @@ const sendPlanRequest = async (req, res) => {
     client.close();
     console.log("disconnected");
 }
-module.exports={getUserId, getUser, getUsers, addUser, updateUser, friendRequests, sendPlanRequest};
+const removeFriend = async (req, res) => {
+    const {client, db} = createClient();
+    const users = db.collection('users');
+    const {_id, friend} = req.body;
+    try {
+        await client.connect();
+        const user = await users.findOne({_id});
+        if(!user){
+            res.status(404).json({ status: 404, message: "User not found." });
+            client.close();
+            return;
+        }
+        const otherUser = await users.findOne({_id:friend});
+        if(!otherUser){
+            res.status(404).json({ status: 404, message: "Other user not found." });
+            client.close();
+            return;
+        }
+        const userFriends = []
+        user.friends.map(userFriend => {
+            if(!(userFriend === friend)){
+                userFriends.push(userFriend)
+            }
+        })
+        console.log(userFriends);
+        const userFriendsUpdate = await users.updateOne({_id}, {$set:{friends:userFriends}})
+        const otherUserFriends = []
+        user.friends.map(otherUserFriend => {
+            if(!(otherUserFriend === _id)){
+                otherUserFriends.push(otherUserFriend)
+            }
+        })
+        console.log(otherUserFriends);
+        const otherUserFriendsUpdate = await users.updateOne({_id:friend}, {$set:{friends:otherUserFriends}})
+        if(!userFriendsUpdate || !otherUserFriendsUpdate){
+            res.status(404).json({ status: 404, message: "friend was not removed" });
+            client.close();
+            return;
+        }
+        res.status(200).json({ status: 200, message:"done"})
+    } catch (err) {
+        res.status(500).json({ status: 500, message: err.message });
+    }
+    client.close();
+    console.log("disconnected");
+    
+}
+module.exports={getUserId, getUser, getUsers, addUser, updateUser, friendRequests, sendPlanRequest, removeFriend};

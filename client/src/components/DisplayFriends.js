@@ -15,13 +15,16 @@ const DisplayFriends = ({friends, users, removeFriend}) => {
             friends.map(friend => {
                 users.map(user => {
                     if (friend === user._id){
-                        const element = <div>
-                            <p>{user.name}</p>
-                            <button onClick={() => {
-                                    setModal(user)
-                                    setShow(true)
-                                }}>+ tags</button>
-                            <button onClick={() => removeFriend(friend)}>unfriend</button>
+                        const element = <div className="requests">
+                            <h2>{user.name}</h2>
+                            <div>
+                                <button onClick={() => {
+                                        setModal(user)
+                                        setShow(true)
+                                    }}>+ tags</button>
+                                <button onClick={() => removeFriend(friend)}>unfriend</button>
+                            </div>
+                            
                         </div>
                         arr.push(element)
                     }
@@ -59,8 +62,15 @@ const DisplayFriends = ({friends, users, removeFriend}) => {
 };
 
 const Wrapper = styled.div`
-    button{
+    .requests{
         box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+        border: 1px solid rgba(255, 255, 255, 0.31);
+        border-radius: var(--border-radius);
+        padding: .5vw;
+        align-items: center;
+        margin-top: .5vw;
+    }
+    button{
         color: var(--primary-colour);
         background-color: rgba(255, 255, 255, 0.0);
         text-decoration: none;
@@ -68,6 +78,7 @@ const Wrapper = styled.div`
         border: var(--border);
         border-radius: var(--border-radius);
         padding: .2vw;
+        margin: .5vw;
     }
 `;
 

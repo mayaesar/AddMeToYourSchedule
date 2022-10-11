@@ -127,8 +127,14 @@ const Container = styled.div`
         max-width: 16vw;
         border-radius: var(--border-radius);
         height: 9vw;
-        background-color: var(--background-colour);
-        padding: 1vw;
+        padding: 2vw;
+        background: rgba(255, 255, 255, 0.1);
+        border: var(--border);
+        backdrop-filter: blur(8.6px);
+        border-bottom-left-radius: var(--border-radius);
+        border-bottom-right-radius: var(--border-radius);
+        padding-top: 1vw;
+        font-size: 1vw;
     }
 `;
 

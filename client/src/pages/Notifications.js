@@ -12,9 +12,9 @@ const Notifications = () => {
     // fetch users notifications
     return currentUser !== null && users !== null?(
         <Wrapper>
-            <h2>Notifications</h2>
+            <p className="subheader">Notifications</p>
             <DisplayNotifications notifications={currentUser.notifications}/>
-            <h2>Requests</h2>
+            <p className="subheader">Requests</p>
             <DisplayRequests friendRequests={currentUser.friendRequests} planRequests={currentUser.planRequests} users={users}/>
         </Wrapper>
     ):(
@@ -25,8 +25,7 @@ const Notifications = () => {
 };
 
 const Wrapper = styled.div`
-    min-height: 43vw;
-    max-height: 43vw;
+    min-height: 88vh;
     overflow: scroll;   
     padding: 2vw;
     background: rgba(255, 255, 255, 0.2);
@@ -40,6 +39,11 @@ const Wrapper = styled.div`
     max-width: var(--max-width);
     margin: auto;
     font-size: 1vw;
+    .subheader{
+        margin-top: 1vw;
+        font-size: var(--subheader-font-size);
+        border-bottom: var(--border) ;
+    }
 `;
 const Loader = styled.div`
     position:fixed;

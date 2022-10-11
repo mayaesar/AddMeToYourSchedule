@@ -30,7 +30,6 @@ const Profile = ({logout}) => {
     return currentUser !== null && !isLoading && events?(
         <Wrapper>
             <Top>
-                <div className="icon">profile icon</div>
                 <div className="info">
                     <p>{currentUser.name}</p>
                     <div className="buttons">
@@ -66,8 +65,7 @@ const Profile = ({logout}) => {
     )
 };
 const Wrapper = styled.div`
-    min-height: 43vw;
-    max-height: 43vw;
+    min-height: 88vh;
     overflow: scroll;
     padding: 2vw;
     background: rgba(255, 255, 255, 0.2);
@@ -97,16 +95,12 @@ const Loader = styled.div`
 const Top = styled.div`
     padding: 1vw;
     font-size: 1.2vw;
+    height: 16vh;
     display: flex;
     gap: 1vw;
     border-bottom: var(--border);
     padding-bottom: 1vw;
     margin-bottom: 2vw;
-    .icon{
-        border: var(--border);
-        width: 8vw;
-        height: 8vw;
-    }
     .info{
         display: grid;
         gap: 2.5vw;
@@ -138,9 +132,12 @@ const Schedule = styled.div`
     h2{
         font-size: var(--subheader-font-size);
         padding-bottom: 1vw;
+        color: #717171;
     }
     .schedule{
-        height: 23vw;
+        min-height: 54vh;
+        max-height: 54vh;
+        overflow: scroll;
     }
 
 `;

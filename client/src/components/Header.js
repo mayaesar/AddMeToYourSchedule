@@ -21,10 +21,10 @@ const Header = () => {
 };
 const Wrapper = styled.div`
     padding: 2vw;
+    height: 8vh;
     text-align: center;
     background: rgba(255, 255, 255, 0.2);
     box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
-    
     border: 1px solid rgba(255, 255, 255, 0.31);
     backdrop-filter: blur(8.6px);
     z-index: 1;

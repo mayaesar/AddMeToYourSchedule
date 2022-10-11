@@ -26,6 +26,8 @@ const Modal = ({modal, show, handleClick, onClose}) => {
     )
 }
 const Wrapper = styled.div`
+    z-index: 1;
+    border-radius: var(--border-radius);
     position:fixed;
     left: 0;
     right: 0;
@@ -36,12 +38,23 @@ const Wrapper = styled.div`
     background-color: rgba(0,0,0,0.5);
     display: flex;
     .modalContent{
+        border-radius: var(--border-radius);
         padding: 2vw;
         width: 500px;
         background-color: white;
     }
     p, button{
         margin-top: 1vw;
+    }
+    button{
+        color: var(--primary-colour);
+        background-color: rgba(255, 255, 255, 0.0);
+        text-decoration: none;
+        font-size: var(--paragraph-font-size);
+        border: var(--border);
+        border-radius: var(--border-radius);
+        padding: .2vw;
+        margin-right: 1vw;
     }
 
 `;

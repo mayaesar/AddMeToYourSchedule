@@ -12,9 +12,9 @@ const FriendsList = () => {
     const {removeFriend} =useContext(FriendActionContext)
     return currentUser !== null && users !== null?(
         <Wrapper>
-            <h2>Friends</h2>
+            <p className="subheader">Friends</p>
             <DisplayFriends friends={currentUser.friends} users={users} removeFriend={removeFriend} />
-            <h2>Pending friend requests</h2>
+            <p className="subheader">Pending friend requests</p>
             <DisplayRequests friendRequests={currentUser.friendRequests} users={users}/>
         </Wrapper>
     ):(
@@ -24,8 +24,7 @@ const FriendsList = () => {
     )
 };
 const Wrapper = styled.div`
-    min-height: 43vw;
-    max-height: 43vw;
+    min-height: 88vh;
     overflow: scroll;
     padding: 2vw;
     background: rgba(255, 255, 255, 0.2);
@@ -39,6 +38,11 @@ const Wrapper = styled.div`
     max-width: var(--max-width);
     margin: auto;
     font-size: 1vw;
+    .subheader{
+        margin-top: 1vw;
+        font-size: var(--subheader-font-size);
+        border-bottom: var(--border) ;
+    }
 `;
 const Loader = styled.div`
     position:fixed;

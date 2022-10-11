@@ -5,7 +5,7 @@ import { FriendActionContext } from "../context/FriendActionContext";
 const SearchBar = ({users, currentUser}) => {
     const [suggestions, setSuggestions] = useState();
     const [typedValue, setTypedValue] = useState("");
-    const {sendFriendRequest} = useContext(FriendActionContext);
+    const {sendFriendRequest, removeFriend} = useContext(FriendActionContext);
 
 
     const getButton = (id) => {
@@ -17,7 +17,7 @@ const SearchBar = ({users, currentUser}) => {
             currentUser.friends.map(friend => {
                 if(friend === id){
                     result = <button onClick={() => {
-                        //add remove friend function
+                        removeFriend(friend)
                         setTypedValue("")
                     }}>Unfriend</button>
                 }
@@ -48,7 +48,6 @@ const SearchBar = ({users, currentUser}) => {
                     if (id !== currentUser._id){
                         matches.push(<p className="suggested">{user.name} {getButton(id)}</p>);
                     }
-                    
                 }
             })
             setSuggestions(matches);
@@ -110,24 +109,29 @@ const Wrapper = styled.div`
         font-size: var(--subheader-font-size);
         border: var(--border);
         border-radius: var(--border-radius);
-        padding: .5vw;
+        padding: .2vw;
+        margin-left: 1vw;
     }
     
     
 `;
 const Suggestions = styled.div`
     padding-top: 1vw;
+    border-radius: var(--border-radius);
+    margin-left: -2vw;
     z-index: 1;
-    max-width: 25vw;
-    background-color: lightgray;
+    width: 25vw;
+    background: rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.31);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
     display: grid;
     gap: 1vw;
-    max-height: 35vw;
+    max-height: 12vw;
     overflow: scroll;
 
     .suggested{
         padding: 0.5vw;
-        border-bottom: var(--border);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.31);
     }
 `
 

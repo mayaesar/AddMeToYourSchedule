@@ -10,7 +10,7 @@ const DisplayFeed = ({friends, userId}) => {
         friends.map(friend => {
             const element = (
                 <div className="event">
-                    <p>{friend.name}</p>
+                    <p className="top">{friend.name}</p>
                     <DisplayEvent schedule={friend.scheduleId} friend={friend} userId={userId}/>
                 </div>
             )
@@ -40,11 +40,16 @@ const DisplayFeed = ({friends, userId}) => {
 const Wrapper = styled.div`
     width: 90%;
     margin: auto;
+    .top{
+        width: 90%;
+        margin: auto;
+        border-bottom: var(--border) ;
+    }
     .event{
         box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
         margin-bottom: 1vw;
         padding: 1vw;
-        border: var(--border);
+        border: 1px solid rgba(255, 255, 255, 0.31);
         border-radius: var(--border-radius);
         height: 14vw;
     }

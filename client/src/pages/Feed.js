@@ -56,8 +56,7 @@ const Feed = () => {
 };
 
 const Wrapper = styled.div`
-    min-height: 43vw;
-    max-height: 43vw;
+    min-height: 88vh;
     overflow: scroll;
     padding: 2vw;
     background: rgba(255, 255, 255, 0.2);

@@ -67,10 +67,10 @@ const DisplayRequests = ({friendRequests, planRequests, users}) => {
                             <h2>{user.name}</h2>
                             <p>has sent you a request on your event called {request.event.title} on {startDate}</p>
                         </span>
-                        <span>
+                        <div className="buttons">
                             <button onClick={() => handlePlanRequest({event:request.event, userId:request.user, reply:"accepted"})}>Accept</button>
                             <button onClick={() => handlePlanRequest({event:request.event, userId:request.user, reply:"declined"})}>Decline</button>
-                        </span>
+                        </div>
                     </div>;
                     setRequests((arr) => [...arr, element])
                     }
@@ -95,8 +95,15 @@ const DisplayRequests = ({friendRequests, planRequests, users}) => {
 };
 
 const Wrapper = styled.div`
-    button{
+    .requests{
         box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+        border: 1px solid rgba(255, 255, 255, 0.31);
+        border-radius: var(--border-radius);
+        padding: .5vw;
+        align-items: center;
+        margin-top: .5vw;
+    }
+    button{
         color: var(--primary-colour);
         background-color: rgba(255, 255, 255, 0.0);
         text-decoration: none;
@@ -104,7 +111,9 @@ const Wrapper = styled.div`
         border: var(--border);
         border-radius: var(--border-radius);
         padding: .2vw;
+        margin: .5vw;
     }
+    
 `;
 
 export default DisplayRequests;

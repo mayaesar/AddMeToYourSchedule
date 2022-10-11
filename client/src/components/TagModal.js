@@ -56,7 +56,10 @@ const TagModal = ({show, modal, onClose}) => {
     return show?(
         <Wrapper>
             <div className="modalContent">
-                <p>{modal.name}</p>
+                <div className="close">
+                    <button onClick={() => onClose()}>X</button>
+                </div>
+                <h2>{modal.name}</h2>
                 <p>Friend's tags:</p>
                 {friendsTags?(
                     friendsTags.map(tag => {
@@ -74,7 +77,7 @@ const TagModal = ({show, modal, onClose}) => {
                     null
                 )}
                 {!showInput?(
-                    <button onClick={() => setShowInput(true)}>+ create tag</button>
+                    <button onClick={() => setShowInput(true)}>+ Create tag</button>
                 ):(
                     <div>
                         <input value={typedValue} onChange={getValue}/> 
@@ -82,16 +85,12 @@ const TagModal = ({show, modal, onClose}) => {
                             updateTag({tag:typedValue, friendId:modal._id, change:"add tag"})
                             setShowInput(false)
                             setTypedValue("")
-                        }}> add tag </button> <button onClick={() => {
+                        }}> Add tag </button> <button onClick={() => {
                             setShowInput(false)
-                            setTypedValue("")}}> cancel </button>
+                            setTypedValue("")}}> Cancel </button>
                     </div>
                     
                 )}
-                <div>
-                    <button onClick={() => onClose()}>Close</button>
-                </div>
-                
             </div>
         </Wrapper>
     ):(
@@ -100,6 +99,7 @@ const TagModal = ({show, modal, onClose}) => {
 }
 
 const Wrapper = styled.div`
+    border-radius: var(--border-radius);
     position:fixed;
     left: 0;
     right: 0;
@@ -110,10 +110,28 @@ const Wrapper = styled.div`
     background-color: rgba(0,0,0,0.5);
     display: flex;
     .modalContent{
+        border-radius: var(--border-radius);
         padding: 2vw;
         width: 500px;
         background-color: white;
     }
+    .close{
+        position: relative;
+        z-index: 1;
+        left: 48vh;
+        bottom: 1.5vw;
+    }
+    input{
+        font-size: 1.2vw;
+        padding: .2vw;
+        box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+        width: 10vw;
+        padding-left: 1vw;
+        font-size: var(--subheader-font-size);
+        border-radius: var(--border-radius);
+        border: var(--border);
+    }
+
 `;
 
 export default TagModal;

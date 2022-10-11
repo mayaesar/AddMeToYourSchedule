@@ -74,7 +74,7 @@ const DisplaySchedule = () => {
 
 const Wrapper = styled.div`
     box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
-    max-height: 37vw;
+    max-height: 78vh;
     overflow: scroll;
     padding: 1vw;
     margin: 1vw;

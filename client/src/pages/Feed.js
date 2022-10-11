@@ -45,7 +45,7 @@ const Feed = () => {
 
     return friendInfo ?(
         <Wrapper>
-            <DisplayFeed friends={friendInfo}/>
+            <DisplayFeed friends={friendInfo} userId={currentUser._id}/>
         </Wrapper>
     ):(
         <Wrapper>

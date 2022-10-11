@@ -2,16 +2,16 @@ import { useEffect, useState } from "react";
 import styled from "styled-components";
 import DisplayEvent from "./DisplayEvent";
 
-const DisplayFeed = (friends) => {
+const DisplayFeed = ({friends, userId}) => {
     const [display, setDisplay] = useState();
 
     const setupDisplay = () => {
         const arr = [];
-        friends.friends.map(friend => {
+        friends.map(friend => {
             const element = (
                 <div className="event">
                     <p>{friend.name}</p>
-                    <DisplayEvent schedule={friend.scheduleId} friend={friend}/>
+                    <DisplayEvent schedule={friend.scheduleId} friend={friend} userId={userId}/>
                 </div>
             )
             arr.push(element)

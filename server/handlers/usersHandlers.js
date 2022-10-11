@@ -20,8 +20,6 @@ const getUserId = async (req, res) => {
     const {client, db} = createClient();
     const users = db.collection('users');
     const {email} = req.params;
-    console.log("=== email ===")
-    console.log(email)
     try {
         await client.connect();
         const result = await users.findOne({email:email});
@@ -57,8 +55,6 @@ const addUser = async (req, res) => {
         notifications: [],
         scheduleId: scheduleId,
     };
-    console.log("=== new user ===");
-    console.log(newUser);
     try {
         await client.connect();
         await users.insertOne(newUser);
@@ -81,8 +77,6 @@ const getUser = async (req, res) => {
     const {client, db} = createClient();
     const users = db.collection('users');
     const {userId} = req.params;
-    console.log("=== ID ===")
-    console.log(userId)
     try {
         await client.connect();
         const result = await users.findOne({_id:userId});
@@ -145,19 +139,13 @@ const updateUser = async (req, res) => {
             res.status(200).json({status: 200, data: updateFriends, message:"friends list is updated!"})
         }
         if(requested){
-            console.log("=== requested ===")
-            console.log(requested)
             const userId = requested.addUserId;
-            console.log(userId);
             const friend = await users.findOne({_id:userId})
-            console.log(friend);
             if(!friend){
                 res.status(404).json({status: 404, message: "Cannot find user request was sent to."});
                 client.close();
                 return;
             }
-            console.log("=== friend request to ===")
-            console.log(friend)
              // updates requested
             const newRequestedArr = user.requested;
             newRequestedArr.push(requested);
@@ -195,7 +183,6 @@ const friendRequests = async (req, res) => {
         userId,
         reply,
     } = req.body;
-    console.log(reply)
     try {
         await client.connect();
         const user = await users.findOne({_id});
@@ -204,16 +191,12 @@ const friendRequests = async (req, res) => {
             client.close();
             return;
         }
-        console.log("=== user ===")
-        console.log(user)
         const otherUser = await users.findOne({_id:userId});
         if (!otherUser){
             res.status(404).json({status: 404, message: "Other user not found."});
             client.close();
             return;
         }
-        console.log("=== other user ===")
-        console.log(otherUser)
 
         const updateFriendRequest = await users.updateOne({_id}, {$pull: {friendRequests: {userId:userId}}})
         const updateRequested = await users.updateOne({_id:userId}, {$pull: {requested: {addUserId:_id}}})
@@ -266,7 +249,6 @@ const sendPlanRequest = async (req, res) => {
         event,
         timestamp,
     } = req.body;
-    console.log(timestamp)
     try {
         await client.connect();
         const check = await schedules.findOne({_id:user.scheduleId});
@@ -275,10 +257,8 @@ const sendPlanRequest = async (req, res) => {
             client.close();
             return;
         }
-        console.log(event._id)
         let match = false;
         check.events.map(userEvent => {
-            console.log(userEvent._id)
             if(event._id === userEvent._id){
                 match = true
             }
@@ -294,7 +274,6 @@ const sendPlanRequest = async (req, res) => {
             client.close();
             return;
         }
-        console.log(friend)
         const planRequests = friend.planRequests;
         const request = {
             user: user._id,
@@ -339,7 +318,6 @@ const removeFriend = async (req, res) => {
                 userFriends.push(userFriend)
             }
         })
-        console.log(userFriends);
         const userFriendsUpdate = await users.updateOne({_id}, {$set:{friends:userFriends}})
         const otherUserFriends = []
         user.friends.map(otherUserFriend => {
@@ -347,7 +325,6 @@ const removeFriend = async (req, res) => {
                 otherUserFriends.push(otherUserFriend)
             }
         })
-        console.log(otherUserFriends);
         const otherUserFriendsUpdate = await users.updateOne({_id:friend}, {$set:{friends:otherUserFriends}})
         if(!userFriendsUpdate || !otherUserFriendsUpdate){
             res.status(404).json({ status: 404, message: "friend was not removed" });
@@ -371,10 +348,6 @@ const updateTags = async (req, res) => {
         friendId,
         change,
     } = req.body;
-    console.log("=== change ===")
-    console.log(change)
-    console.log("=== tag ===")
-    console.log(tag)
     try {
         await client.connect();
         const user = await users.findOne({_id:userId})
@@ -391,7 +364,6 @@ const updateTags = async (req, res) => {
         const tags = user.tags;
 
         if(change === "add tag"){
-            console.log("=== add tag ===")
             try {
                 let match = false;
                 tags.map(item => {
@@ -417,18 +389,14 @@ const updateTags = async (req, res) => {
                 newTag = {tag:tag, friendId:[]}
                 tags.push(newTag)
             }
-            console.log("=== new tags array ===")
-            console.log(tags)
             await users.updateOne({_id:userId},{$set:{tags:tags}})
             res.status(200).json({status: 200, message:"done"})
             client.close();
             return;
         }
         if(change === "remove friend of tag"){
-            console.log("=== remove friend of tag ===")
             const newTagsArr = [];
             tags.map(item => {
-                console.log((item.tag == tag))
                 if(item.tag == tag){
                     const newFriendArr = [];
                     item.friendId.map(id => {
@@ -442,17 +410,14 @@ const updateTags = async (req, res) => {
                     newTagsArr.push(item)
                 }
             })
-            console.log(newTagsArr);
             await users.updateOne({_id:userId},{$set:{tags:newTagsArr}})
             res.status(200).json({status: 200, message:"done"})
             client.close();
             return;
         }
         if(change === "add friend to tag"){
-            console.log("=== add friend to tag ===")
             const newTagsArr = [];
             tags.map(item => {
-                console.log((item.tag == tag))
                 if(item.tag == tag){
                     const newFriendArr = item.friendId;
                     newFriendArr.push(friendId)
@@ -462,7 +427,6 @@ const updateTags = async (req, res) => {
                     newTagsArr.push(item)
                 }
             })
-            console.log(newTagsArr);
             await users.updateOne({_id:userId},{$set:{tags:newTagsArr}})
             res.status(200).json({status: 200, message:"done"})
             client.close();

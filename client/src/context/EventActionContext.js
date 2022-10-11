@@ -43,7 +43,6 @@ export const EventActionProvider = ({children}) => {
 
     // add all fetches here-------------------------------------------------->
         const getSchedules = async () => {
-            console.log("=== getting schedules ===")
             setIsLoading(true)
             try {
                 const res = await fetch(`/api/get-schedules`);
@@ -70,7 +69,6 @@ export const EventActionProvider = ({children}) => {
             }
         }
         const addEvent = async (title, startDate, endDate, description, tags) => {
-            console.log("=== adding event ===")
             setIsLoading(true)
             try {
                 const res = await fetch(`/api/add-event/${scheduleId}`, {
@@ -91,8 +89,6 @@ export const EventActionProvider = ({children}) => {
             }
         }
         const deleteEvent = async(event) => {
-            console.log("=== deleting event ===")
-            console.log(event);
             setIsLoading(true);
             try {
                 const res = await fetch(`/api/delete-event/${scheduleId}`,{
@@ -112,9 +108,7 @@ export const EventActionProvider = ({children}) => {
             setIsLoading(false);
         }
         const updateEvent = async(updates) => {
-            console.log(updates);
             const eventId = Object.getOwnPropertyNames(updates)[0];
-            console.log(eventId)
             let title = null;
             if (updates[eventId].title){
                 title = updates[eventId].title
@@ -146,7 +140,6 @@ export const EventActionProvider = ({children}) => {
                 })
                 const data = await res.json();
                 if (data.status !== 200) return setIsError(true)
-                console.log(data)
             } catch (err) {
                 console.log(err)
                 setIsError(true)
@@ -155,11 +148,9 @@ export const EventActionProvider = ({children}) => {
             updateEvents();
         }
         const sendPlanRequest = async (event, friend) => {
-            console.log("=== sending plan request ===")
             const friendId = friend._id;
             const user = currentUser;
             const timestamp = moment().format();
-            console.log(timestamp)
             try {
                 const res = await fetch('/api/send-plan-request', {
                     method: "PATCH",
@@ -173,7 +164,6 @@ export const EventActionProvider = ({children}) => {
                     console.log(json)
                 }
                 else{
-                    console.log(json.message);
                     setIsError(true);
                 }
             } catch (err) {
@@ -184,9 +174,7 @@ export const EventActionProvider = ({children}) => {
         }
 
         const handlePlanRequest = async ({event, userId, reply}) => {
-            console.log("=== sending plan request ===")
             const _id = currentUser._id;
-            console.log(_id)
             try {
                 const res = await fetch('/api/plan-request', {
                     method: "PATCH",
@@ -197,7 +185,6 @@ export const EventActionProvider = ({children}) => {
                 });
                 const json = await res.json();
                 if(json.status === 200){
-                    console.log(json)
                     getUserInfo();
                 }
                 else{

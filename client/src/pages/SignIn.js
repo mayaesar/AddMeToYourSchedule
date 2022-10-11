@@ -15,7 +15,6 @@ useEffect(() => {
         const result = window.localStorage.getItem("userId");
         if(result === "[object Object]"){
             window.localStorage.setItem("userId", currentUserId.data);
-            console.log(window.localStorage.getItem("userId"))
             setUserId(currentUserId.data)
         }
         else{
@@ -33,16 +32,12 @@ useEffect(() => {
     useEffect(() => {
         if (isAuthenticated){
             setIsLoading(true);
-            console.log(isAuthenticated);
-            console.log(user);
             
             const getId = async () => {
-                console.log("=== finding User ===")
                 try {
                     const response = await fetch(`/api/get-user-id/${user.email}`);
                     const json = await response.json();
                     if (response.ok == true){
-                        console.log(json.data);
                         window.localStorage.setItem("userId", json.data);
                         setCurrentUserId(json.data);
                     }
@@ -61,7 +56,6 @@ useEffect(() => {
     // if userId is updated it will create a new user ONLY if userId is = to 'notFound'
     useEffect(() => {
         if(currentUserId == "notFound"){
-            console.log("==== CREATING USER ====");
             const email = user.email;
             const name = `${user.given_name} ${user.family_name}`;
             axios.post("/api/create-user", {email, name})

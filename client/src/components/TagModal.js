@@ -12,7 +12,6 @@ const TagModal = ({show, modal, onClose}) => {
 
     useEffect(() => {
         if(currentUser){
-            console.log(currentUser.tags)
             setTags(currentUser.tags)
         }
     }, [currentUser])
@@ -52,7 +51,6 @@ const TagModal = ({show, modal, onClose}) => {
     const getValue = (event) => {
         setTypedValue(event.target.value);
     }
-    console.log(friendsTags)
     return show?(
         <Wrapper>
             <div className="modalContent">

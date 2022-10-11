@@ -10,11 +10,9 @@ const DisplayRequests = ({friendRequests, planRequests, users}) => {
     const [requests, setRequests] = useState([]);
     const [isLoading, setIsLoading] = useState();
 
-    console.log(planRequests)
     useEffect(() => {
         if(friendRequests !== undefined || planRequests !== undefined){
             setRequests([])
-            console.log(friendRequests)
             setIsLoading(true)
             getRequests();
         }
@@ -32,7 +30,6 @@ const DisplayRequests = ({friendRequests, planRequests, users}) => {
 
 
     const getRequests = () => {
-        console.log("=== getting friend requests ===")
         try {
             const arr = []
             friendRequests.map(request => {
@@ -55,12 +52,10 @@ const DisplayRequests = ({friendRequests, planRequests, users}) => {
         } catch (error) {
             console.log(error)
         }
-        console.log("=== getting plan requests ===")
         try {
             planRequests.map(request => {
                 users.map(user => {
                     if (request.user === user._id){
-                        console.log(user)
                         const startDate = moment(request.event.startDate).format('MMMM Do');
                         const element = <div className="requests">
                         <span>
@@ -79,7 +74,6 @@ const DisplayRequests = ({friendRequests, planRequests, users}) => {
         } catch (error) {
             console.log(error)
         }
-        console.log("=== done ===")
     }
 
     return !isLoading?(

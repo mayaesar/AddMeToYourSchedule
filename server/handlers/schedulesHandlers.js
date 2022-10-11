@@ -21,8 +21,6 @@ const getSchedule = async (req, res) => {
     const {client, db} = createClient();
     const schedules = db.collection('schedules');
     const {scheduleId} = req.params;
-    console.log("=== schedule id ===")
-    console.log(scheduleId)
     try {
         await client.connect();
         const result = await schedules.findOne({_id:scheduleId});
@@ -48,8 +46,6 @@ const addEvent = async (req, res) => {
         joining: [],
     }
 
-    console.log("=== new Event ===");
-    console.log(newEvent);
     try {
         await client.connect();
         const schedule = await schedules.findOne({_id:scheduleId})
@@ -94,8 +90,6 @@ const deleteEvent = async (req, res) => {
     const schedules = db.collection('schedules');
     const scheduleId = req.params.scheduleId;
     const event = req.body.event;
-    console.log(event)
-    console.log(scheduleId);
     try {
         await client.connect();
         const schedule = await schedules.findOne({_id:scheduleId});
@@ -106,12 +100,10 @@ const deleteEvent = async (req, res) => {
         }
         const newEventList = [];
         schedule.events.map(element => {
-            console.log(element._id)
             if(!(element._id === event)){
                 newEventList.push(element)
             }
         })
-        console.log(newEventList)
         // res.status(200).json({status: 200, message: "so far so good "})
         const results = await schedules.updateOne({_id:scheduleId}, {$set: {events: newEventList}})
         results 
@@ -148,31 +140,24 @@ const updateEvent = async (req, res) => {
             client.close();
             return;
         }
-        console.log("=== schedule ===")
-        console.log(schedule)
 
         if(title){
-            console.log("=== changing title ===")
             const event = await schedules.updateOne({_id:scheduleId, events:{$elemMatch:{_id: eventId}}}, {$set:{"events.$.title": title}})
         }
 
         if(startDate){
-            console.log("=== changing start date ===")
             const event = await schedules.updateOne({_id:scheduleId, events:{$elemMatch:{_id: eventId}}}, {$set:{"events.$.startDate": startDate}})
         }
 
         if(endDate){
-            console.log("=== changing end date ===")
             const event = await schedules.updateOne({_id:scheduleId, events:{$elemMatch:{_id: eventId}}}, {$set:{"events.$.endDate": endDate}})
         }
 
         if(description){
-            console.log("=== changing description ===")
             const event = await schedules.updateOne({_id:scheduleId, events:{$elemMatch:{_id: eventId}}}, {$set:{"events.$.description": description}})
         }
 
         if(tags){
-            console.log("=== changing tags ===")
             const event = await schedules.updateOne({_id:scheduleId, events:{$elemMatch:{_id: eventId}}}, {$set:{"events.$.tags": tags}})
         }
         res.status(200).json({ status: 200, message: "done"})
@@ -210,9 +195,7 @@ const handlePlanRequest = async (req, res) => {
             }
         })
         const updatePlanRequest = await users.updateOne({_id}, {$set:{planRequests:newPlanRequests}})
-        console.log(updatePlanRequest)
         if(reply === "accepted"){
-            console.log("=== accepted ===")
             const friend = await users.findOne({_id:userId})
             if(!friend){
                 res.status(404).json({ status: 404, data: "other user not found." });
@@ -238,13 +221,10 @@ const handlePlanRequest = async (req, res) => {
             const newFriendsSchedule = friendsSchedule.events
             const newEvent = event;
             newFriendsSchedule.push(newEvent)
-            console.log("=== new friend events ===")
-            console.log(newFriendsSchedule)
             const friendResults = await schedules.updateOne({_id:friend.scheduleId},{$set:{events:newFriendsSchedule}})
             // update users event for joining 
             const newSchedule = [];
             const updateEvent = event;
-            console.log(event.joining)
             updateEvent.joining.push(userId)
             schedule.events.map(userEvent => {
                 if(userEvent._id === event._id){
@@ -254,8 +234,6 @@ const handlePlanRequest = async (req, res) => {
                     newSchedule.push(userEvent)
                 }
             })
-            console.log("=== new events ===")
-            console.log(newSchedule)
             const userResults = await schedules.updateOne({_id:user.scheduleId},{$set:{events:newSchedule}})
             if(!friendResults || !userResults){
                 res.status(404).json({ status: 404, data: "schedules not updated" });

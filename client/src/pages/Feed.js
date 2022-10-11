@@ -9,7 +9,6 @@ const Feed = () => {
     const [friendInfo, setFriendInfo] = useState();
 
     const getFriends = () => {
-        console.log("=== getFriends ===")
         try {
             const arr = [];
             let hasFriends = false;

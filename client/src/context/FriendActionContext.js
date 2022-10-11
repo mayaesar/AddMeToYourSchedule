@@ -16,8 +16,6 @@ export const FriendActionProvider = ({children}) => {
     // add all fetches here-------------------------------------------------->
     const sendFriendRequest = async (userSentId) => {
         if(!userId) return;
-        console.log("===friends id===")
-        console.log(userSentId)
         const timeStamp = moment().format();
         
         try {
@@ -42,7 +40,6 @@ export const FriendActionProvider = ({children}) => {
         }
     }
     const friendRequestHandler = async ({userId, reply}) => {
-        console.log("=== friend request handler ===")
         const _id = currentUser._id;
         
         try {
@@ -67,7 +64,6 @@ export const FriendActionProvider = ({children}) => {
         }
     }
     const removeFriend = async (friend) => {
-        console.log(friend)
         const _id = currentUser._id;
         try {
             const res = await fetch('/api/remove-friend/',{

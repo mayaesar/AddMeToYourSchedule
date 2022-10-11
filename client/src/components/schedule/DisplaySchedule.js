@@ -14,15 +14,12 @@ const DisplaySchedule = () => {
     useEffect(() => {
         setEvents(schedulerData);
     }, [schedulerData])
-    console.log(schedulerData)
 
     const handleChangeEvent = ({added, changed, deleted}) => {
         
         let data = null;
         if (added){
             data = added;
-            console.log("=== added data ===");
-            console.log(data);
             let description = null;
             if(data.notes){
                 description = (data.notes);
@@ -37,9 +34,7 @@ const DisplaySchedule = () => {
             addEvent(title, startDate, endDate, description, tags);
         }
         if (changed){
-            console.log("=== changed data ===");
             data = changed;
-            console.log(data)
             updateEvent(data)
         }
         if (deleted !== undefined){

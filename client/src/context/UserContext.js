@@ -10,12 +10,10 @@ export const UserProvider = ({children}) => {
 
     // fetch user info 
     const getUserInfo = async () => {
-        console.log("=== getting user info ===")
         try {
             const res = await fetch(`/api/get-user/${userId}`);
             const data = await res.json();
             const info = data.data;
-            console.log(data.data)
             // gets the data from the backend and stores them into useStates
             setCurrentUser(info)
         } catch (err) {
@@ -24,7 +22,6 @@ export const UserProvider = ({children}) => {
     }
 
     const getUsers = async () => {
-        console.log("=== get users ===")
         try {
             const res = await fetch('/api/get-users');
             const data = await res.json();
@@ -45,7 +42,6 @@ export const UserProvider = ({children}) => {
             });
             const data = await res.json();
             if (data.status !== 200) return setIsError(true);
-            console.log(data);
             getUserInfo();
 
         } catch (err) {
@@ -55,7 +51,6 @@ export const UserProvider = ({children}) => {
 
     //if user is signed in then it will fetch information
     useEffect(() => {
-        console.log(userId)
         if (userId){
             getUserInfo();
             getUsers();

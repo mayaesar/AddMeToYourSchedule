@@ -15,6 +15,7 @@ export const UserProvider = ({children}) => {
             const res = await fetch(`/api/get-user/${userId}`);
             const data = await res.json();
             const info = data.data;
+            console.log(data.data)
             // gets the data from the backend and stores them into useStates
             setCurrentUser(info)
         } catch (err) {
@@ -33,10 +34,7 @@ export const UserProvider = ({children}) => {
         }
     }
 
-    const addTag = async ({tag, friendId}) => {
-        const change = "add tag";
-        console.log(friendId)
-        console.log(tag)
+    const updateTag = async ({tag, friendId, change}) => {
         try {
             const res = await fetch(`/api/update-tags/${userId}`, {
                 method: "PATCH",
@@ -47,13 +45,14 @@ export const UserProvider = ({children}) => {
             });
             const data = await res.json();
             if (data.status !== 200) return setIsError(true);
+            console.log(data);
             getUserInfo();
 
         } catch (err) {
             setIsError(true);
         }
     }
-    
+
     //if user is signed in then it will fetch information
     useEffect(() => {
         console.log(userId)
@@ -73,7 +72,7 @@ export const UserProvider = ({children}) => {
             currentUser,
             isError,
             getUserInfo,
-            addTag,
+            updateTag,
         }}>
             {children}
         </UserContext.Provider>

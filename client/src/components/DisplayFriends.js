@@ -18,8 +18,8 @@ const DisplayFriends = ({friends, users, removeFriend}) => {
                         const element = <div>
                             <p>{user.name}</p>
                             <button onClick={() => {
-                                    setShow(true)
                                     setModal(user)
+                                    setShow(true)
                                 }}>+ tags</button>
                             <button onClick={() => removeFriend(friend)}>unfriend</button>
                         </div>
@@ -46,7 +46,7 @@ const DisplayFriends = ({friends, users, removeFriend}) => {
 
     return !isLoading && friendsArr?(
         <Wrapper>
-            <TagModal show={show} modal={modal} onClose={() => setShow(false)}/>
+            {modal?(<TagModal show={show} modal={modal} onClose={() => setShow(false)}/>):(null)}
             {friendsArr.map(friend => {
                 return friend;
             })}

@@ -5,45 +5,89 @@ import { getValue } from "@mui/system";
 
 
 const TagModal = ({show, modal, onClose}) => {
-    const {currentUser, addTag} = useContext(UserContext);
+    const {currentUser, updateTag} = useContext(UserContext);
     const [tags, setTags] = useState();
     const [friendsTags, setFriendsTags] = useState();
+    const [otherTags, setOtherTags] = useState();
     const [showInput, setShowInput] = useState(false);
     const [typedValue, setTypedValue] = useState("");
 
     useEffect(() => {
         if(currentUser){
+            console.log(currentUser.tags)
             setTags(currentUser.tags)
         }
     }, [currentUser])
 
     useEffect(() => {
         if(tags){
-            console.log(tags)
+            const arr = [];
+            let isArr = false;
+            const otherArr = [];
+            let isOtherArr = false;
+            tags.map(tag => {
+                if(tag.friendId == modal._id){
+                    isArr = true;
+                    const element = <button onClick={() => updateTag({tag:tag.tag, friendId:modal._id, change:"remove friend of tag"})}>
+                        - {tag.tag}
+                    </button>
+                    arr.push(element)
+                }
+                else{
+                    isOtherArr = true;
+                    const element = <button onClick={() => updateTag({tag:tag.tag, friendId:modal._id, change:"add friend to tag"})}>
+                        + {tag.tag}
+                    </button>
+                    otherArr.push(element)
+                }
+            })
+            if(isArr){
+                setFriendsTags(arr);
+            }
+            if(isOtherArr){
+                setOtherTags(otherArr);
+            }
+            
         }
     }, [tags])
 
     const getValue = (event) => {
         setTypedValue(event.target.value);
     }
-
+    console.log(friendsTags)
     return show?(
         <Wrapper>
             <div className="modalContent">
                 <p>{modal.name}</p>
+                <p>Friend's tags:</p>
+                {friendsTags?(
+                    friendsTags.map(tag => {
+                        return tag;
+                    })
+                ):(
+                    null
+                )}
+                <p>Other tags:</p>
+                {otherTags?(
+                    otherTags.map(tag => {
+                        return tag;
+                    })
+                ):(
+                    null
+                )}
                 {!showInput?(
                     <button onClick={() => setShowInput(true)}>+ create tag</button>
                 ):(
-                    <span>
+                    <div>
                         <input value={typedValue} onChange={getValue}/> 
                         <button disabled={typedValue.length<3} onClick={() => {
-                            addTag({tag:typedValue, friendId:modal._id})
+                            updateTag({tag:typedValue, friendId:modal._id, change:"add tag"})
                             setShowInput(false)
                             setTypedValue("")
                         }}> add tag </button> <button onClick={() => {
                             setShowInput(false)
                             setTypedValue("")}}> cancel </button>
-                    </span>
+                    </div>
                     
                 )}
                 <div>

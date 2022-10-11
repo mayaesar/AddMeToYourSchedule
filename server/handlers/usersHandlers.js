@@ -373,6 +373,8 @@ const updateTags = async (req, res) => {
     } = req.body;
     console.log("=== change ===")
     console.log(change)
+    console.log("=== tag ===")
+    console.log(tag)
     try {
         await client.connect();
         const user = await users.findOne({_id:userId})
@@ -381,20 +383,19 @@ const updateTags = async (req, res) => {
             client.close();
             return;
         }
-        console.log(user)
+        if(!tag){
+            res.status(404).json({status: 404, message: "Need to send a tag first"});
+            client.close();
+            return;
+        }
         const tags = user.tags;
 
         if(change === "add tag"){
             console.log("=== add tag ===")
-            if(!tag){
-                res.status(404).json({status: 404, message: "Need to send a tag first"});
-                client.close();
-                return;
-            }
             try {
                 let match = false;
-                tags.map(tag => {
-                    if(tag.tag == tag){
+                tags.map(item => {
+                    if(item.tag == tag){
                         match = true;
                     }
                 })
@@ -419,6 +420,50 @@ const updateTags = async (req, res) => {
             console.log("=== new tags array ===")
             console.log(tags)
             await users.updateOne({_id:userId},{$set:{tags:tags}})
+            res.status(200).json({status: 200, message:"done"})
+            client.close();
+            return;
+        }
+        if(change === "remove friend of tag"){
+            console.log("=== remove friend of tag ===")
+            const newTagsArr = [];
+            tags.map(item => {
+                console.log((item.tag == tag))
+                if(item.tag == tag){
+                    const newFriendArr = [];
+                    item.friendId.map(id => {
+                        if(id !== friendId){
+                            newFriendArr.push(id)
+                        }
+                    })
+                    newTagsArr.push({tag:item.tag, friendId:newFriendArr});
+                }
+                else{
+                    newTagsArr.push(item)
+                }
+            })
+            console.log(newTagsArr);
+            await users.updateOne({_id:userId},{$set:{tags:newTagsArr}})
+            res.status(200).json({status: 200, message:"done"})
+            client.close();
+            return;
+        }
+        if(change === "add friend to tag"){
+            console.log("=== add friend to tag ===")
+            const newTagsArr = [];
+            tags.map(item => {
+                console.log((item.tag == tag))
+                if(item.tag == tag){
+                    const newFriendArr = item.friendId;
+                    newFriendArr.push(friendId)
+                    newTagsArr.push({tag:item.tag, friendId:newFriendArr});
+                }
+                else{
+                    newTagsArr.push(item)
+                }
+            })
+            console.log(newTagsArr);
+            await users.updateOne({_id:userId},{$set:{tags:newTagsArr}})
             res.status(200).json({status: 200, message:"done"})
             client.close();
             return;

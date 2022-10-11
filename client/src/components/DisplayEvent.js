@@ -62,9 +62,6 @@ const DisplayEvent = ({schedule, friend, userId}) => {
                         <p>{start} - {end}</p>
                         <p>{until}</p>
                     </div>
-
-                    
-                    console.log(until)
                     
                     if(tag){
                         if(userTags){

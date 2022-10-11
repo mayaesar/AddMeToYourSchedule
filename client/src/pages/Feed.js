@@ -2,6 +2,7 @@ import styled from "styled-components";
 import DisplayFeed from "../components/DisplayFeed";
 import { useContext, useEffect, useState } from "react";
 import { UserContext } from "../context/UserContext";
+import {RotatingLines} from "react-loader-spinner"
 
 const Feed = () => {
     const { currentUser, users } = useContext(UserContext);
@@ -43,14 +44,14 @@ const Feed = () => {
         </Wrapper>
     }
 
-    return friendInfo ?(
+    return friendInfo?(
         <Wrapper>
             <DisplayFeed friends={friendInfo} userId={currentUser._id}/>
         </Wrapper>
     ):(
-        <Wrapper>
-            <h1>Loading...</h1>
-        </Wrapper>
+        <Loader>
+            <RotatingLines strokeColor="#2d2e2e"/>
+        </Loader>
     )
 };
 
@@ -60,6 +61,18 @@ const Wrapper = styled.div`
     max-width: var(--max-width);
     margin: auto;
     font-size: 1vw;
+`;
+
+const Loader = styled.div`
+    position:fixed;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(0,0,0,0.3);
+    display: flex;
 `;
 
 export default Feed;

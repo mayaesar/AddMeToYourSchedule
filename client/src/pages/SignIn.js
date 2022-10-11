@@ -2,11 +2,13 @@ import { useEffect, useState, useContext } from "react";
 import styled from "styled-components";
 import axios from 'axios';
 import { UserContext } from "../context/UserContext";
+import {RotatingLines} from "react-loader-spinner"
+
 
 const SignIn = ({loginWithRedirect, isAuthenticated, user}) => {
 const [currentUserId, setCurrentUserId] = useState(null);
 const [isLoading, setIsLoading] = useState(false);
-const { setUserId, userId } = useContext(UserContext);
+const { setUserId } = useContext(UserContext);
 
 useEffect(() => {
     try {
@@ -80,14 +82,26 @@ useEffect(() => {
             <button onClick={loginWithRedirect}>Sign In</button>
         </Wrapper>
     ):(
-        <Wrapper>
-            <h1>loading...</h1>
-        </Wrapper>
+        <Loader>
+            <RotatingLines strokeColor="#2d2e2e"/>
+        </Loader>
     )
 };
 const Wrapper = styled.div`
     width: 90%;
     margin: auto;
+`;
+
+const Loader = styled.div`
+    position:fixed;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(0,0,0,0.3);
+    display: flex;
 `;
 
 export default SignIn;

@@ -6,6 +6,7 @@ import {Scheduler, Toolbar, WeekView, Appointments, DateNavigator, TodayButton} 
 import Logout from "../components/Logout";
 import { UserContext } from "../context/UserContext";
 import { EventActionContext } from "../context/EventActionContext";
+import {RotatingLines} from "react-loader-spinner"
 
 
 const Profile = ({logout}) => {
@@ -59,9 +60,9 @@ const Profile = ({logout}) => {
             </Schedule>
         </Wrapper>
     ):(
-        <Wrapper>
-            <h1>Loading...</h1>
-        </Wrapper>
+        <Loader>
+            <RotatingLines strokeColor="#2d2e2e"/>
+        </Loader>
     )
 };
 const Wrapper = styled.div`
@@ -70,6 +71,17 @@ const Wrapper = styled.div`
     max-width: var(--max-width);
     margin: auto;
     
+`;
+const Loader = styled.div`
+    position:fixed;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(0,0,0,0.3);
+    display: flex;
 `;
 const Top = styled.div`
     padding: 1vw;

@@ -132,6 +132,9 @@ export const EventActionProvider = ({children}) => {
                 description = updates[eventId].notes
             }
             let tags = null;
+            if(updates[eventId].tags){
+                tags = updates[eventId].tags
+            }
             setIsLoading(true);
             try {
                 const res = await fetch(`/api/update-event/${scheduleId}`,{

@@ -1,8 +1,6 @@
 import styled from "styled-components"
 import { useContext, useEffect, useState } from "react";
 import { UserContext } from "../context/UserContext";
-import { getValue } from "@mui/system";
-
 
 const TagModal = ({show, modal, onClose}) => {
     const {currentUser, updateTag} = useContext(UserContext);

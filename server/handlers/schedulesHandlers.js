@@ -137,7 +137,7 @@ const updateEvent = async (req, res) => {
         startDate,
         endDate,
         description,
-        tags
+        tags,
     } = req.body;
 
     try {

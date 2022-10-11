@@ -37,7 +37,9 @@ const DisplaySchedule = () => {
             addEvent(title, startDate, endDate, description, tags);
         }
         if (changed){
+            console.log("=== changed data ===");
             data = changed;
+            console.log(data)
             updateEvent(data)
         }
         if (deleted !== undefined){

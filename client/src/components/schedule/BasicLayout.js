@@ -1,4 +1,6 @@
 import { AppointmentForm } from '@devexpress/dx-react-scheduler-material-ui';
+import { UserContext } from "../../context/UserContext";
+import { useContext, useEffect, useState } from "react";
 
 export const Select = (props) => {
     return   <AppointmentForm.SelectProps {...props}/>
@@ -8,6 +10,23 @@ export const BooleanBtn = (props) => {
 }
 
 const BasicLayout = ({ onFieldChange, appointmentData, ...restProps }) => {
+    const {currentUser} = useContext(UserContext);
+    const [tags, setTags] = useState();
+    
+    useEffect(() => {
+        if(currentUser){
+            const arr = [];
+            currentUser.tags.map(item => {
+                const element = {
+                    id:item.tag,
+                    text:item.tag,
+                    value:item,
+                }
+                arr.push(element)
+            })
+            setTags(arr);
+        }
+    },[currentUser])
 
     const onCustomFieldChange = (nextValue) => {
         onFieldChange({ tags: nextValue });
@@ -21,9 +40,9 @@ const BasicLayout = ({ onFieldChange, appointmentData, ...restProps }) => {
             >
                 <AppointmentForm.Label text='Tags' type='title'/>
                 <AppointmentForm.Select
-                    value={appointmentData.tags}
+                    value={appointmentData.tags?appointmentData.tags:""}
                     onValueChange={onCustomFieldChange}
-                    availableOptions={[{id:1, text:"abc", value:"tag1"}, {id:2, text:"abc", value:"tag2"}, {id:3, text:"abc", value:"tag3"}]}
+                    availableOptions={tags}
                 />
                 
             </AppointmentForm.BasicLayout>

@@ -17,7 +17,7 @@ const Logout = ({logout, setUserId}) => {
 
 const Wrapper = styled.div`
     button{
-        background-color: white;
+        background-color: rgba(255, 255, 255, 0.0);
         color: var(--primary-colour);
         text-decoration: none;
         font-size: var(--paragraph-font-size);

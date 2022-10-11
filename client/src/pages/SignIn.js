@@ -77,9 +77,12 @@ useEffect(() => {
 
     return isLoading === false?(
         <Wrapper>
-            <h1>Hello, and welcome to Add Me To Your Schedule!</h1>
-            <p>Before continuing to the site you must sign in</p>
-            <button onClick={loginWithRedirect}>Sign In</button>
+            <SignInBox>
+                <h1>Welcome to Free Time Only!</h1>
+                <p>Before continuing to the site you must sign in</p>
+                <button onClick={loginWithRedirect}>Sign In</button>
+            </SignInBox>
+            
         </Wrapper>
     ):(
         <Loader>
@@ -88,8 +91,48 @@ useEffect(() => {
     )
 };
 const Wrapper = styled.div`
-    width: 90%;
-    margin: auto;
+    background-color: white;
+    background-image:
+        radial-gradient(at top left, #64B5F6, transparent),
+        radial-gradient(at top right,#8a6efa, transparent),
+        radial-gradient(at bottom left, #a24e9a, transparent);
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    position:fixed;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+`;
+const SignInBox = styled.div`
+    padding: 2vw;
+    width: 40vw;
+    text-align: center;
+    background: rgba(255, 255, 255, 0.2);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.31);
+    backdrop-filter: blur(8.6px);
+    border-radius: var(--border-radius);
+
+    button{
+        color: var(--primary-colour);
+        background-color: rgba(255, 255, 255, 0.0);
+        text-decoration: none;
+        font-size: var(--subheader-font-size);
+        border: var(--border);
+        border-radius: var(--border-radius);
+        padding: .5vw;
+    }
+    h1{
+        font-size: 2vw;
+        padding-bottom: 1vw;
+    }
+    p{
+        padding-bottom: 1vw;
+    }
 `;
 
 const Loader = styled.div`

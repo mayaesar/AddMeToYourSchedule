@@ -66,10 +66,21 @@ const Profile = ({logout}) => {
     )
 };
 const Wrapper = styled.div`
+    min-height: 43vw;
+    max-height: 43vw;
+    overflow: scroll;
+    padding: 2vw;
+    background: rgba(255, 255, 255, 0.2);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.31);
+    backdrop-filter: blur(8.6px);
+    border-top: none;
+    border-bottom-left-radius: var(--border-radius);
+    border-bottom-right-radius: var(--border-radius);
     padding-top: 1vw;
-    width: 90%;
     max-width: var(--max-width);
     margin: auto;
+    font-size: 1vw;
     
 `;
 const Loader = styled.div`
@@ -115,20 +126,21 @@ const Buttons = styled(Link)`
     padding: .5vw;
 `;
 const Schedule = styled.div`
-    width: 90%;
-    margin: auto;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+    padding: 1vw;
+    margin: 1vw;
+    border-radius: var(--border-radius);
+    background: white;
     .aboveSchedule{
         display: flex;
-        gap: 50vw;
+        gap: 40vw;
     }
     h2{
         font-size: var(--subheader-font-size);
         padding-bottom: 1vw;
     }
     .schedule{
-
-        height: 700px;
-        max-height: 30vw;
+        height: 23vw;
     }
 
 `;

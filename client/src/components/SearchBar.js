@@ -94,6 +94,7 @@ const Wrapper = styled.div`
         gap: 2vw;
     }
     input {
+        box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
         width: 25vw;
         height: 2.3vw;
         padding-left: 1vw;
@@ -101,6 +102,17 @@ const Wrapper = styled.div`
         border-radius: var(--border-radius);
         border: var(--border);
     }
+    button{
+        box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+        color: var(--primary-colour);
+        background-color: rgba(255, 255, 255, 0.0);
+        text-decoration: none;
+        font-size: var(--subheader-font-size);
+        border: var(--border);
+        border-radius: var(--border-radius);
+        padding: .5vw;
+    }
+    
     
 `;
 const Suggestions = styled.div`

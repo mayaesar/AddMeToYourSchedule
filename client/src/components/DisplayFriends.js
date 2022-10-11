@@ -59,7 +59,16 @@ const DisplayFriends = ({friends, users, removeFriend}) => {
 };
 
 const Wrapper = styled.div`
-
+    button{
+        box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+        color: var(--primary-colour);
+        background-color: rgba(255, 255, 255, 0.0);
+        text-decoration: none;
+        font-size: var(--paragraph-font-size);
+        border: var(--border);
+        border-radius: var(--border-radius);
+        padding: .2vw;
+    }
 `;
 
 export default DisplayFriends;

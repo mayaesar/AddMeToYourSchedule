@@ -73,7 +73,13 @@ const DisplaySchedule = () => {
 }
 
 const Wrapper = styled.div`
-    height: 700px;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+    max-height: 37vw;
+    overflow: scroll;
+    padding: 1vw;
+    margin: 1vw;
+    border-radius: var(--border-radius);
+    background: white;
 `;
 const Loader = styled.div`
     position:fixed;

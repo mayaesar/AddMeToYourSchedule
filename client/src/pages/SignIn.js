@@ -73,7 +73,7 @@ useEffect(() => {
     return isLoading === false?(
         <Wrapper>
             <SignInBox>
-                <h1>Welcome to Free Time Only!</h1>
+                <h1>Welcome to Add me to your Schedule!</h1>
                 <p>Before continuing to the site you must sign in</p>
                 <button onClick={loginWithRedirect}>Sign In</button>
             </SignInBox>

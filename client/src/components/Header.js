@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { UserContext } from "../context/UserContext";
 import { useContext } from "react";
 
-
+// will be at the top of every page except the sign in
 const Header = () => {
     const { currentUser } = useContext(UserContext);
 

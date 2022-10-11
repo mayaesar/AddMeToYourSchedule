@@ -1,6 +1,8 @@
 import styled from "styled-components"
 import moment from "moment"
 
+// this is the pop up for the send a plan request on the feed page 
+// also gives information on the event 
 const Modal = ({modal, show, handleClick, onClose}) => {
 
     let start = null;
@@ -10,7 +12,8 @@ const Modal = ({modal, show, handleClick, onClose}) => {
         end = moment(modal.endDate).format('h:mm a')
     }
     
-    
+    // if show is true the modal will appear
+    // can send join request 
     return show?(
         <Wrapper>
             <div className="modalContent">

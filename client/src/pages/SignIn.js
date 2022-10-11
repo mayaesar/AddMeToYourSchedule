@@ -4,7 +4,8 @@ import axios from 'axios';
 import { UserContext } from "../context/UserContext";
 import {RotatingLines} from "react-loader-spinner"
 
-
+// to sign in
+//cannot navigate anywhere else if not signed in
 const SignIn = ({loginWithRedirect, isAuthenticated, user}) => {
 const [currentUserId, setCurrentUserId] = useState(null);
 const [isLoading, setIsLoading] = useState(false);

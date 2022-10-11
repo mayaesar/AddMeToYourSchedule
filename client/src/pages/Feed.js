@@ -7,7 +7,7 @@ import {RotatingLines} from "react-loader-spinner"
 const Feed = () => {
     const { currentUser, users } = useContext(UserContext);
     const [friendInfo, setFriendInfo] = useState();
-
+    // goes through the list of friends saving user info
     const getFriends = () => {
         try {
             const arr = [];
@@ -36,7 +36,8 @@ const Feed = () => {
             getFriends();
         }
     },[currentUser, users])
-
+    
+    // checks if user has friends 
     if(friendInfo === "no friends"){
         return <Wrapper>
             Must accept or send friend requests before viewing your feed.

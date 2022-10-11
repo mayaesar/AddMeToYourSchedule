@@ -1,7 +1,7 @@
 import { createContext, useEffect, useState } from "react";
 
 export const UserContext = createContext(null);
-
+//will take care of any data manipulation, or retreiving that involves the user
 export const UserProvider = ({children}) => {
     const [isError, setIsError] = useState(null);
     const [userId, setUserId] = useState(window.localStorage.getItem("userId"));
@@ -20,7 +20,7 @@ export const UserProvider = ({children}) => {
             setIsError(true);
         }
     }
-
+    // gets all users 
     const getUsers = async () => {
         try {
             const res = await fetch('/api/get-users');
@@ -30,7 +30,7 @@ export const UserProvider = ({children}) => {
             setIsError(true);
         }
     }
-
+    //any changes to the tag array
     const updateTag = async ({tag, friendId, change}) => {
         try {
             const res = await fetch(`/api/update-tags/${userId}`, {

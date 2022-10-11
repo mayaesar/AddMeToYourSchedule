@@ -2,6 +2,7 @@ import styled from "styled-components"
 import { useContext, useEffect, useState } from "react";
 import { UserContext } from "../context/UserContext";
 
+//this pop up is shown when user wants to add remove or modify a friend's tags
 const TagModal = ({show, modal, onClose}) => {
     const {currentUser, updateTag} = useContext(UserContext);
     const [tags, setTags] = useState();
@@ -10,12 +11,14 @@ const TagModal = ({show, modal, onClose}) => {
     const [showInput, setShowInput] = useState(false);
     const [typedValue, setTypedValue] = useState("");
 
+    //gets the tags
     useEffect(() => {
         if(currentUser){
             setTags(currentUser.tags)
         }
     }, [currentUser])
 
+    //creates the elements and display for each tag
     useEffect(() => {
         if(tags){
             const arr = [];
@@ -51,6 +54,8 @@ const TagModal = ({show, modal, onClose}) => {
     const getValue = (event) => {
         setTypedValue(event.target.value);
     }
+    // if show is true the modal will appear
+    // can make changed to friend's tags
     return show?(
         <Wrapper>
             <div className="modalContent">

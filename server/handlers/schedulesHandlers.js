@@ -3,9 +3,10 @@
 //     userId: …,
 //     events: [{
 //       _id: … ,
+//       id:...,
 //      title:...,
-//      start: yyyy/mm/dd MM:HH,
-//      end: yyyy/mm/dd MM:HH,
+//      startDate: yyyy/mm/dd MM:HH,
+//      endDate: yyyy/mm/dd MM:HH,
 //      description:...,
 //      tags: ...,
 //      joining:[userId],
@@ -16,7 +17,7 @@
 const { createClient } = require("./createClient");
 const { v4: uuidv4 } = require("uuid");
 const e = require("express");
-
+// function to retrive a users schedule
 const getSchedule = async (req, res) => {
     const {client, db} = createClient();
     const schedules = db.collection('schedules');
@@ -33,7 +34,7 @@ const getSchedule = async (req, res) => {
         res.status(500).json({ status: 500, message: err.message });
     }
 }
-
+//to add an event in the schedules database
 const addEvent = async (req, res) => {
     const {client, db} = createClient();
     const schedules = db.collection('schedules');
@@ -45,7 +46,6 @@ const addEvent = async (req, res) => {
         ...req.body,
         joining: [],
     }
-
     try {
         await client.connect();
         const schedule = await schedules.findOne({_id:scheduleId})
@@ -54,6 +54,7 @@ const addEvent = async (req, res) => {
             client.close();
             return;
         }
+        // creates new list of events to replace the old one
         const updateEvents = {events: [...schedule.events, newEvent]}
         const updatedList = await schedules.updateOne({_id:scheduleId}, {$set:updateEvents});
         updatedList 
@@ -68,6 +69,7 @@ const addEvent = async (req, res) => {
     console.log("disconnected");
     
 }
+// gets all schedules 
 const getSchedules = async (req, res) => {
     const {client, db} = createClient();
     const schedules = db.collection('schedules');
@@ -84,7 +86,7 @@ const getSchedules = async (req, res) => {
     client.close();
     console.log('disconnected');
 }
-
+// delets an event from database
 const deleteEvent = async (req, res) => {
     const {client, db} = createClient();
     const schedules = db.collection('schedules');
@@ -98,13 +100,13 @@ const deleteEvent = async (req, res) => {
             client.close();
             return;
         }
+        // creates new list without the event to update 
         const newEventList = [];
         schedule.events.map(element => {
             if(!(element._id === event)){
                 newEventList.push(element)
             }
         })
-        // res.status(200).json({status: 200, message: "so far so good "})
         const results = await schedules.updateOne({_id:scheduleId}, {$set: {events: newEventList}})
         results 
         // Event deleted
@@ -118,7 +120,7 @@ const deleteEvent = async (req, res) => {
     client.close();
     console.log('disconnected');
 }
-
+// update most information of an event
 const updateEvent = async (req, res) => {
     const {client, db} = createClient();
     const schedules = db.collection('schedules');
@@ -168,7 +170,7 @@ const updateEvent = async (req, res) => {
     client.close();
     console.log('disconnected');
 }
-
+//if user accepts or declines a plan request
 const handlePlanRequest = async (req, res) => {
     const {client, db} = createClient();
     const schedules = db.collection('schedules');

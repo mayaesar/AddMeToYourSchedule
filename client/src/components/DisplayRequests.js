@@ -4,12 +4,15 @@ import { FriendActionContext } from "../context/FriendActionContext";
 import moment from "moment";
 import { EventActionContext } from "../context/EventActionContext";
 
+// this will display all requests 
+// allowing the user to respond to the requests 
 const DisplayRequests = ({friendRequests, planRequests, users}) => {
     const {isError, friendRequestHandler} = useContext(FriendActionContext);
     const {handlePlanRequest} = useContext(EventActionContext);
     const [requests, setRequests] = useState([]);
     const [isLoading, setIsLoading] = useState();
 
+    //runs when both friendrequest and [lan requests are loaded 
     useEffect(() => {
         if(friendRequests !== undefined || planRequests !== undefined){
             setRequests([])
@@ -28,7 +31,8 @@ const DisplayRequests = ({friendRequests, planRequests, users}) => {
         }
     }, [requests])
 
-
+// creates the friend and plan request elements
+// and allowing user to reply to each one with accept or decline
     const getRequests = () => {
         try {
             const arr = []

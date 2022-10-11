@@ -8,7 +8,8 @@ import { UserContext } from "../context/UserContext";
 import { EventActionContext } from "../context/EventActionContext";
 import {RotatingLines} from "react-loader-spinner"
 
-
+// user can view friends list and schedule 
+// and can logout 
 const Profile = ({logout}) => {
     //gets user information
     const {schedulerData, isLoading} = useContext(EventActionContext);

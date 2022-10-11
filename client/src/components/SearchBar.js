@@ -2,12 +2,14 @@ import { useState, useEffect, useContext } from "react";
 import styled from "styled-components";
 import { FriendActionContext } from "../context/FriendActionContext";
 
+// search through users 
 const SearchBar = ({users, currentUser}) => {
     const [suggestions, setSuggestions] = useState();
     const [typedValue, setTypedValue] = useState("");
     const {sendFriendRequest, removeFriend} = useContext(FriendActionContext);
 
-
+    // this function will change depending on that users relationship
+    // show pending, addfriend or remove friend 
     const getButton = (id) => {
         let result = (<button onClick={() => {
             sendFriendRequest(id)
@@ -38,6 +40,7 @@ const SearchBar = ({users, currentUser}) => {
         } catch (err) { }
     }
 
+    // will set the suggestions once user starts typing 
     const searchMatches = () => {
         if (users){
             const matches = []
@@ -53,6 +56,8 @@ const SearchBar = ({users, currentUser}) => {
             setSuggestions(matches);
         }
     }
+    
+    // gets new suggestions every time user types
     useEffect(() => {
         setSuggestions(null);
         if (typedValue.length >= 1){
@@ -60,6 +65,7 @@ const SearchBar = ({users, currentUser}) => {
         }
     }, [typedValue])
 
+    //set user typed value when changed
     const getValue = (event) => {
         setTypedValue(event.target.value);
     };

@@ -2,12 +2,17 @@ import { useEffect, useState} from "react";
 import styled from "styled-components";
 import TagModal from './TagModal'
 
+// this will show the user all of their friends
+// allow user to respond to friend request 
+// and to remove friends 
 const DisplayFriends = ({friends, users, removeFriend}) => {
     const [friendsArr, setFriendsArr] = useState();
     const [isLoading, setIsLoading] = useState();
     const [show, setShow] = useState(false);
     const [modal, setModal] = useState(null)
 
+    //runs once friends array is loaded 
+    // creates the element for each friend 
     useEffect(() => {
         setIsLoading(true);
         try {
@@ -21,8 +26,8 @@ const DisplayFriends = ({friends, users, removeFriend}) => {
                                 <button onClick={() => {
                                         setModal(user)
                                         setShow(true)
-                                    }}>+ tags</button>
-                                <button onClick={() => removeFriend(friend)}>unfriend</button>
+                                    }}>+ Tags</button>
+                                <button onClick={() => removeFriend(friend)}>Unfriend</button>
                             </div>
                             
                         </div>
@@ -36,7 +41,7 @@ const DisplayFriends = ({friends, users, removeFriend}) => {
         }
         
     }, [friends])
-
+    // runs when friend array is changed 
     useEffect(() => {
         try {
             if(friendsArr.length >= 1){

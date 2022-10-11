@@ -3,7 +3,7 @@ import { UserContext } from "./UserContext";
 import moment from "moment"
 
 export const FriendActionContext = createContext(null);
-
+//will take care of any data manipulation, or retreiving that involves the users friends
 export const FriendActionProvider = ({children}) => {
     const [isError, setIsError] = useState(false);
     const { 
@@ -14,6 +14,7 @@ export const FriendActionProvider = ({children}) => {
 
 
     // add all fetches here-------------------------------------------------->
+    // send a request to other user and modifies requested array
     const sendFriendRequest = async (userSentId) => {
         if(!userId) return;
         const timeStamp = moment().format();
@@ -39,6 +40,7 @@ export const FriendActionProvider = ({children}) => {
             setIsError(true);
         }
     }
+    // handles the response of a friend request and updates for both users 
     const friendRequestHandler = async ({userId, reply}) => {
         const _id = currentUser._id;
         
@@ -63,6 +65,7 @@ export const FriendActionProvider = ({children}) => {
             setIsError(true);
         }
     }
+    // remove friend will update friends list on both sides
     const removeFriend = async (friend) => {
         const _id = currentUser._id;
         try {

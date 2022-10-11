@@ -6,7 +6,7 @@ import Modal from "./Modal";
 
 
 
-
+// this manages all the events the the user sees in feed 
 const DisplayEvent = ({schedule, friend, userId}) => {
     const { schedules, isLoading, sendPlanRequest } = useContext(EventActionContext);
     const [events, setEvents] = useState(null);
@@ -15,7 +15,9 @@ const DisplayEvent = ({schedule, friend, userId}) => {
     const [modal, setModal] = useState(null);
     const [userTags, setUserTags] = useState(null)
 
-
+    // this function is executed when friend and schedules have data
+    //will save all events of that users friend 
+    // check what tags user has access to  
     useEffect(() => {
         if(schedules && friend){
             const arr = []
@@ -45,6 +47,9 @@ const DisplayEvent = ({schedule, friend, userId}) => {
         }
     }, [schedules || friend])
 
+    //executes once events are loaded 
+    // goes through each one and creates the element 
+    // and makes sure that the user has permission to access this event 
     useEffect(() => {
         if(events !== null){
             try {
@@ -93,8 +98,8 @@ const DisplayEvent = ({schedule, friend, userId}) => {
         }
     }, [events])
 
+    // if user clicks on send invite 
     const handleClick = (event) => {
-        
         sendPlanRequest(event, friend);
         setShow(false);
     }

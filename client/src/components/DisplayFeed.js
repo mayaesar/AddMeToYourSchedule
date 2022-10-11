@@ -2,9 +2,10 @@ import { useEffect, useState } from "react";
 import styled from "styled-components";
 import DisplayEvent from "./DisplayEvent";
 
+// gets each friend and creates the container to place all events
 const DisplayFeed = ({friends, userId}) => {
     const [display, setDisplay] = useState();
-
+    // once friends has data this function  will create the element that holds all of the events from that user 
     const setupDisplay = () => {
         const arr = [];
         friends.map(friend => {

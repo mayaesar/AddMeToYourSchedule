@@ -6,7 +6,7 @@ import { useContext } from "react";
 import { FriendActionContext } from "../context/FriendActionContext";
 import {RotatingLines} from "react-loader-spinner"
 
-
+//where user can view and manage friends and friend requests
 const FriendsList = () => {
     const {currentUser, users} = useContext(UserContext);
     const {removeFriend} =useContext(FriendActionContext)

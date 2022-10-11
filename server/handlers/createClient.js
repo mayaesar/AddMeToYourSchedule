@@ -1,7 +1,8 @@
 const { MongoClient } = require('mongodb');
 require('dotenv').config();
 const { MONGO_URI } = process.env;
-
+// creates the client 
+// set up the code to connect
 const options = { 
     useNewUrlParser: true,
     useUnifiedTopology: true,

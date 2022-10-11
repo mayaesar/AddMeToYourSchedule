@@ -6,7 +6,9 @@ import { useContext } from "react";
 import { UserContext } from "../context/UserContext";
 import {RotatingLines} from "react-loader-spinner"
 
-
+// user can search for other users,
+// see friends,
+// and reply to friend requests
 const Search = () => {
     const { users, currentUser } = useContext(UserContext);
 

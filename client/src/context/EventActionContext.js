@@ -4,7 +4,7 @@ import { UserContext } from "./UserContext";
 import moment from "moment";
 
 export const EventActionContext = createContext(null);
-
+//will take care of any data manipulation, or retreiving that involves an event
 export const EventActionProvider = ({children}) => {
     const {
         currentUser, 
@@ -17,6 +17,7 @@ export const EventActionProvider = ({children}) => {
     const [scheduleId, setScheduleId] = useState(null);
     const [schedules, setSchedules] = useState(null);
 
+    // once user is loaded it will run or when its updated
     useEffect(() => {
         if (currentUser !== null){
             setIsLoading(true)
@@ -25,6 +26,8 @@ export const EventActionProvider = ({children}) => {
         }
     }, [currentUser]);
 
+    //when scheduleId is not null or updated
+    //will get infomation about the users schedule
     useEffect(() => {
         if(scheduleId !== null){
             try {
@@ -42,6 +45,7 @@ export const EventActionProvider = ({children}) => {
     },[scheduleId])
 
     // add all fetches here-------------------------------------------------->
+        // fetches all schedules
         const getSchedules = async () => {
             setIsLoading(true)
             try {
@@ -55,6 +59,7 @@ export const EventActionProvider = ({children}) => {
                 setIsError(true)
             }
         }
+        // get all events then update the schedularData
         const updateEvents = async () => {
             try {
                 fetch(`/api/get-schedule/${scheduleId}`)
@@ -68,6 +73,7 @@ export const EventActionProvider = ({children}) => {
                 setIsError(true);
             }
         }
+        // add a new event then update the schedularData
         const addEvent = async (title, startDate, endDate, description, tags) => {
             setIsLoading(true)
             try {
@@ -88,6 +94,7 @@ export const EventActionProvider = ({children}) => {
                 setIsError(true)
             }
         }
+        // to delete an event then update the schedularData
         const deleteEvent = async(event) => {
             setIsLoading(true);
             try {
@@ -107,6 +114,7 @@ export const EventActionProvider = ({children}) => {
             }
             setIsLoading(false);
         }
+        // if changes are made to an event this will modify the information then update the schedularData
         const updateEvent = async(updates) => {
             const eventId = Object.getOwnPropertyNames(updates)[0];
             let title = null;
@@ -129,6 +137,7 @@ export const EventActionProvider = ({children}) => {
             if(updates[eventId].tags){
                 tags = updates[eventId].tags
             }
+            // whenever a function is fetching
             setIsLoading(true);
             try {
                 const res = await fetch(`/api/update-event/${scheduleId}`,{
@@ -147,6 +156,8 @@ export const EventActionProvider = ({children}) => {
             getUserInfo();
             updateEvents();
         }
+
+        // handles the request for plans by sending it to the other user
         const sendPlanRequest = async (event, friend) => {
             const friendId = friend._id;
             const user = currentUser;
@@ -172,7 +183,8 @@ export const EventActionProvider = ({children}) => {
             }
 
         }
-
+        // plan request reply handler 
+        // will update for both users 
         const handlePlanRequest = async ({event, userId, reply}) => {
             const _id = currentUser._id;
             try {

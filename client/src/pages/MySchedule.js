@@ -1,14 +1,12 @@
-import { useContext, useEffect} from "react";
-import { useNavigate } from "react-router-dom";
+import { useContext} from "react";
 import styled from "styled-components";
 import { UserContext } from "../context/UserContext";
 import DisplaySchedule from "../components/schedule/DisplaySchedule";
 import {RotatingLines} from "react-loader-spinner"
 
+//where user can add modify or delete events from their schedule
 const MySchedule = () => {
     const {currentUser, isError} = useContext(UserContext);
-
-
 
     if (isError){
         return(

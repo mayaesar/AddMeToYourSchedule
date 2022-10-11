@@ -5,7 +5,7 @@ import { UserContext } from "../context/UserContext";
 import DisplayRequests from "../components/DisplayRequests";
 import {RotatingLines} from "react-loader-spinner"
 
-
+// gets all request and notifications 
 const Notifications = () => {
     const {currentUser, users} = useContext(UserContext);
 

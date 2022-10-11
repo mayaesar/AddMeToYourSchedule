@@ -1,5 +1,5 @@
 import styled from "styled-components";
-
+// gets the notifications then display
 const DisplayNotifications = ({notifications}) => {
     
     return(

@@ -10,11 +10,13 @@ const DisplaySchedule = () => {
 
     const {addEvent, schedulerData, isLoading, deleteEvent, updateEvent} = useContext(EventActionContext);
     const [events, setEvents] = useState(null);
-
+    // updates the events everytime theres a change to scheduler data 
+    // allow events to be automatically updated 
     useEffect(() => {
         setEvents(schedulerData);
     }, [schedulerData])
 
+    // any time user creates edit or deletes an item its being handeled in this function
     const handleChangeEvent = ({added, changed, deleted}) => {
         
         let data = null;
